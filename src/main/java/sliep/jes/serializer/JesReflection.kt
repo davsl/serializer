@@ -11,12 +11,15 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
 
+val IS_ANDROID = runCatching { Class.forName("android.view.View"); return@runCatching true }.getOrDefault(false)
+
 inline var Field.isFinal: Boolean
     get() = Modifier.isFinal(modifiers)
     set(value) {
         if (Modifier.isFinal(modifiers) != value) {
-            val modifiersField: Field = kotlin.runCatching { this.field("modifiers", false) }
-                    .getOrElse { kotlin.runCatching { this.field("accessFlags", false) }.getOrNull() } ?: return
+            val modifiersField: Field = kotlin.runCatching {
+                this.field(if (IS_ANDROID) "accessFlags" else "modifiers", false)
+            }.getOrNull() ?: return
             kotlin.runCatching {
                 modifiersField.setInt(
                         this,

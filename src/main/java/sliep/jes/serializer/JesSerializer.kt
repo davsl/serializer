@@ -27,7 +27,7 @@ object JesSerializer {
 
     fun toJson(instance: Any): JSONObject {
         when {
-            instance.javaClass.kotlin.javaPrimitiveType != null -> throw IllegalArgumentException("Can't convert primitive value to json!")
+            instance.isTypePrimitive -> throw IllegalArgumentException("Can't convert primitive value to json!")
             instance.javaClass.isArray -> throw IllegalArgumentException("Can't convert array to json object!")
             instance.javaClass.isEnum -> throw IllegalArgumentException("Can't convert enum to json object!")
             !JesObject::class.java.isAssignableFrom(instance.javaClass) -> throw IllegalArgumentException("Can't serialize non JesObject instance!")
@@ -41,7 +41,7 @@ object JesSerializer {
     }
 
     fun <T : Any> fromJson(jes: JSONObject, type: Class<T>): T = when {
-        type.kotlin.javaPrimitiveType != null -> throw IllegalArgumentException("Can't convert json object to primitive value!")
+        type.isTypePrimitive -> throw IllegalArgumentException("Can't convert json object to primitive value!")
         type.isArray -> throw IllegalArgumentException("Can't convert json object to array!")
         type.isEnum -> throw IllegalArgumentException("Can't convert json object to enum!")
         else -> objectValue(jes, type) as T
@@ -64,18 +64,6 @@ object JesSerializer {
         }
     }
 
-    fun getAbsoluteField(clazz: Class<*>, name: String): Field? {
-        var workingClass = clazz
-        while (true) {
-            try {
-                return workingClass.getDeclaredField(name)
-            } catch (ignored: NoSuchFieldException) {
-                if (workingClass.superclass == null) return null
-                workingClass = workingClass.superclass as Class<*>
-            }
-        }
-    }
-
     private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): Any = when {
         instance.javaClass.isArray -> {
             val response = JSONArray()
@@ -90,7 +78,7 @@ object JesSerializer {
             response
         }
         instance.javaClass.isEnum -> (instance as Enum<*>).name
-        instance.javaClass.kotlin.javaPrimitiveType != null || !JesObject::class.java.isAssignableFrom(instance.javaClass) -> instance
+        instance.isTypePrimitive || !JesObject::class.java.isAssignableFrom(instance.javaClass) -> instance
         else -> {
             val hashCode = System.identityHashCode(instance)
             if (blackList.contains(hashCode)) throw IllegalStateException()

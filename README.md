@@ -1,37 +1,92 @@
-## Welcome to GitHub Pages
+# Wellcome to Jes Serializer
+**Jes Serializer** is a [kotlin](https://kotlinlang.org/) native framework which gives you 
+simple utility functions for
+- Reflection [Inline functions](https://kotlinlang.org/docs/reference/inline-functions.html)
+- [Json](https://www.json.org/) Serialization & Deserialization
 
-You can use the [editor on GitHub](https://github.com/davsl/serializer/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Kotlin code is compiled using the **same bytecode** of java
+this means that if you are a Java developer you can use
+this library too: it does not make **any difference** 
+except in syntax! <br>
+Anyway i suggest you to forget java and start using kotlin
+for everything! `:)`
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Simplicity
+The strength of my library is the simplicity of implementation
+```groovy
+dependencies {
+    implementation 'sliep.jes:serializer:1.0'
+}
+```
+And that's all `:)`
 
-### Markdown
+## Reliability
+Jes Serializer has **zero** (0.000) errors in it's code!
+Some recent discoveries have shown that this library contains
+0% of bugs! I'ts incredible! `:D` <br>
+Tested more times on a lot of **json** files 
+and never crashed! <br>
+Every parsing error is easy to locate and fix. <br>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Maintenance
+Even though is in **beta**, is a very **stable** library, and 
+is going to grow fast: will be always updated to 
+introduce new amazing features
 
-```markdown
-Syntax highlighted code block
+## Optimization
+The most important part of this code to me is the **optimization**!
+If you browse my code i dare you to find a single redundant 
+line of code or function that could be written using **less 
+instructions**
+Studied to be light, powerful and performing, 
+**Jes Serializer** the most optimized serialization library 
+in the world
 
-# Header 1
-## Header 2
-### Header 3
+## How to use
+###### Serializer
+The Serializer is very easy to use: just call one of the 
+functions from the singleton
+```kotlin
+fun main(vararg args: String) {
+    val myObj = MyObj()
+    val jsonObject = JesSerializer.toJson(myObj) //make the magic :)
+    val fromJson = JesSerializer.fromJson(jsonObject, MyObj::class.java) //another magic :)
+    if (fromJson == myObj)
+        System.out.println("Jes Serializer is cool!")
+    else
+        System.err.println("Jes Serializer is shit!")
+}
 
-- Bulleted
-- List
+class MyObj : JesObject {
+    val var1: Int = 3
+    val var2: String = "Hello"
+    val var3: MyObj2 = MyObj2()
+    override fun equals(other: Any?) = other is MyObj && var1 == other.var1 && var2 == other.var2 && var3 == other.var3
+}
 
-1. Numbered
-2. List
+class MyObj2 : JesObject {
+    val var1: Int = 5
+    val var2: String = "World"
+    override fun equals(other: Any?) = other is MyObj2 && var1 == other.var1 && var2 == other.var2
+}
+```
+Don't matter if a variable is `private` or `final`, or the 
+constructor is `private`:
+**Jes Serializer** will always work! (except if flag 
+`--illegal-access=deny` is set)
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+###### Reflection
+Reflection extension is very powerful, be careful `:)`
+```kotlin
+fun main(vararg args: String) {
+    val hello = "*****Hello*****"
+    System.out.println(hello.invokeMethod("substring", 5, 10)) //Hello
+    val myObj = MyObj()
+    if (myObj.var1 == myObj.getField("var1", Int::class))
+        System.out.println("Jes Serializer is cool!")
+    else
+        System.err.println("Jes Serializer is shit!")
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/davsl/serializer/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+#### Enjoy! `:D`
