@@ -14,6 +14,11 @@ for everything! `:)`
 ## Simplicity
 The strength of my library is the simplicity of implementation
 ```groovy
+repositories {
+    maven {
+        url "https://dl.bintray.com/sliep/jes"
+    }
+}
 dependencies {
     implementation 'sliep.jes:serializer:1.0'
 }
