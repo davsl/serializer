@@ -1,16 +1,105 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
+    id "com.jfrog.bintray" version "1.8.4"
+    id 'maven-publish'
 }
+def VERSION = '1.1'
+def ART_ID = 'serializer'
 
 group 'sliep.jes'
-version '1.0-SNAPSHOT'
+version VERSION
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
+}
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "sliep"
+            name "Sliep"
+            email "dade.sliep@gmail.com"
+        }
+    }
+    scm {
+        url "https://github.com/davsl/" + ART_ID
+    }
 }
 
+task sourcesJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allSource
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+publishing {
+    publications {
+        toJCenter(MavenPublication) {
+            from components.java
+            groupId = 'sliep.jes'
+            artifactId = ART_ID
+            version = VERSION
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'An AWESOME lib Really')
+                root.appendNode('name', ART_ID)
+                root.appendNode('url', 'https://github.com/davsl/' + ART_ID)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.json:json:20180813"
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+bintray {
+    user = 'sliep'
+    key = '6c391567a9baf7e05277444df227394845ebe1b5'
+    publications = ['toJCenter']
+    pkg {
+        repo = 'jes'
+        name = ART_ID
+        userOrg = 'sliep'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/davsl/' + ART_ID + '.git'
+        version {
+            name = VERSION
+            desc = 'Very good lib'
+            released = new Date()
+        }
+    }
 }
