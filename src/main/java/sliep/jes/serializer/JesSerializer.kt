@@ -27,7 +27,7 @@ object JesSerializer {
 
     fun toJson(instance: Any): JSONObject {
         when {
-            instance.isTypePrimitive -> throw IllegalArgumentException("Can't convert primitive value to json!")
+            instance::class.isTypePrimitive -> throw IllegalArgumentException("Can't convert primitive value to json!")
             instance.javaClass.isArray -> throw IllegalArgumentException("Can't convert array to json object!")
             instance.javaClass.isEnum -> throw IllegalArgumentException("Can't convert enum to json object!")
             !JesObject::class.java.isAssignableFrom(instance.javaClass) -> throw IllegalArgumentException("Can't serialize non JesObject instance!")
@@ -78,7 +78,7 @@ object JesSerializer {
             response
         }
         instance.javaClass.isEnum -> (instance as Enum<*>).name
-        instance.isTypePrimitive || !JesObject::class.java.isAssignableFrom(instance.javaClass) -> instance
+        instance::class.isTypePrimitive || !JesObject::class.java.isAssignableFrom(instance.javaClass) -> instance
         else -> {
             val hashCode = System.identityHashCode(instance)
             if (blackList.contains(hashCode)) throw IllegalStateException()
@@ -110,7 +110,7 @@ object JesSerializer {
             val response = type.newUnsafeInstance()
             while (keys.hasNext()) {
                 val name = keys.next()
-                val field = kotlin.runCatching { type.field(name, true) }.getOrNull() ?: continue
+                val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
                 field.isAccessible = true
                 val value =
                         if (field.type.isArray) objectValue(

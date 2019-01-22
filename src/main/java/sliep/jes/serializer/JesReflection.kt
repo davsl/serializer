@@ -5,54 +5,68 @@ package sliep.jes.serializer
 import sun.misc.Unsafe
 import java.io.ObjectInputStream
 import java.io.ObjectStreamClass
-import java.lang.reflect.Field
-import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
-import java.lang.reflect.Modifier
+import java.lang.reflect.*
+import java.util.*
 import kotlin.reflect.KClass
 
-val IS_ANDROID = runCatching { Class.forName("android.view.View"); return@runCatching true }.getOrDefault(false)
+/************************************************************\
+ ** -------------------  CONSTRUCTORS  ------------------- **
+\************************************************************/
+/** --------  FUNCTIONS  -------- **/
+inline fun <T> Class<T>.newInstance(vararg params: Any?): T {
+    if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
+    val constructor = guessFromParameters(name, declaredConstructors, name, params)
+    constructor.isAccessible = true
+    return constructor.newInstance(*params) as T
+}
 
-inline var Field.isFinal: Boolean
-    get() = Modifier.isFinal(modifiers)
-    set(value) {
-        if (Modifier.isFinal(modifiers) != value) {
-            val modifiersField: Field = kotlin.runCatching {
-                this.field(if (IS_ANDROID) "accessFlags" else "modifiers", false)
-            }.getOrNull() ?: return
-            kotlin.runCatching {
-                modifiersField.setInt(
-                        this,
-                        modifiers and if (value) Modifier.FINAL else Modifier.FINAL.inv()
-                )
-            }
-        }
-    }
+inline fun <T> Class<T>.constructor(vararg paramsTypes: KClass<*>): Constructor<out T> = constructor(*Array(paramsTypes.size) { i -> paramsTypes[i].java })
+inline fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
+    if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
+    val constructor = getDeclaredConstructor(*paramsTypes)
+    constructor.isAccessible = true
+    return constructor
+}
 
-inline val Class<*>.canAllocate: Boolean
+@Throws(UnsupportedOperationException::class)
+inline fun <T> Class<T>.newUnsafeInstance(): T {
+    if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
+    if (!canAllocate) throw UnsupportedOperationException("Cannot allocate abstract class!")
+    val clazz = this
+    for (allocation in AllocationMethod.values())
+        allocation.runCatching { return newInstance(clazz) }
+    throw UnsupportedOperationException("Cannot allocate instance of type: $name")
+}
+
+/** --------  VARIABLES  -------- **/
+val Class<*>.canAllocate: Boolean
     get() = !Modifier.isAbstract(modifiers)
 
-inline val Any.unwrappedClass: Class<*> get() = this.kClass.javaPrimitiveType ?: this.kClass.java
-inline val Any.wrappedClass: Class<*> get() = this.kClass.javaObjectType
-inline val Any.isTypePrimitive: Boolean get() = this.kClass.javaPrimitiveType != null
+/************************************************************\
+ ** ----------------------  FIELDS  ---------------------- **
+\************************************************************/
+/** --------  FUNCTIONS  -------- **/
+@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
+inline fun <R : Any> Any.field(name: String, type: KClass<R>, inParent: Boolean = true): R = field(name, inParent) as R
 
-inline val Any.kClass: KClass<*>
-    get() = when {
-        this is Class<*> -> this.kotlin
-        this is KClass<*> -> this
-        else -> this::class
+@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
+inline fun <R : Any> Any.field(name: String, type: Class<R>, inParent: Boolean = true): R = field(name, inParent) as R
+
+@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
+inline fun Any.field(name: String, inParent: Boolean = true): Any {
+    val clazz = when {
+        this is Class<*> -> this
+        this is KClass<*> -> this.java
+        else -> this::class.java
     }
-
-@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun <R : Any> Any.getField(name: String, type: KClass<R>, searchParent: Boolean = true): R =
-        getField(name, searchParent) as R
-
-@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun Any.getField(name: String, searchParent: Boolean = true): Any = field(name, searchParent).get(this)
+    val fieldR = clazz.fieldR(name, inParent)
+    return fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this]
+}
 
 @Throws(NoSuchFieldException::class)
-inline fun Any.field(name: String, searchParent: Boolean = true): Field {
-    var clazz = this.kClass.javaObjectType as Class<*>
+inline fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
+    if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
+    var clazz = this
     var firstError: Throwable? = null
     while (true)
         try {
@@ -60,25 +74,49 @@ inline fun Any.field(name: String, searchParent: Boolean = true): Field {
             field.isAccessible = true
             return field
         } catch (e: NoSuchFieldException) {
-            if (!searchParent) throw e
+            if (!inParent) throw e
             if (firstError == null) firstError = e
             clazz = clazz.superclass ?: throw firstError
         }
 }
 
+/** --------  VARIABLES  -------- **/
+val MODIFIERS = object : LateInitVal<Field>() {
+    override fun initialize() = kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull()
+}
+inline var Field.isFinal: Boolean
+    get() = Modifier.isFinal(modifiers)
+    set(value) {
+        val accessFlags = MODIFIERS.get()
+        if (accessFlags != null && Modifier.isFinal(modifiers) != value) kotlin.runCatching {
+            accessFlags[this] = modifiers and if (value) Modifier.FINAL else Modifier.FINAL.inv()
+        }
+    }
+
+/************************************************************\
+ ** ---------------------  METHODS  ---------------------- **
+\************************************************************/
+/** --------  FUNCTIONS  -------- **/
 @Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
-inline fun <R : Any> Any.invokeMethod(type: KClass<R>, name: String, vararg params: Any) =
-        invokeMethod(name, *params) as R
+inline fun <R : Any> Any.invokeMethod(type: Class<R>, name: String, vararg params: Any) = invokeMethod(name, *params) as R?
 
 @Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
-inline fun Any.invokeMethod(name: String, vararg params: Any?): Any {
-    var clazz = this.kClass.javaObjectType as Class<*>
+inline fun <R : Any> Any.invokeMethod(type: KClass<R>, name: String, vararg params: Any) = invokeMethod(name, *params) as R?
+
+@Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
+inline fun Any.invokeMethod(name: String, vararg params: Any?): Any? {
+    var clazz = when {
+        this is Class<*> -> this
+        this is KClass<*> -> this.java
+        else -> this::class.java
+    }
+    if (clazz.isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
     var firstError: Throwable? = null
     while (true)
         try {
-            val method = guessMethod(clazz, name, params)
+            val method = guessFromParameters(clazz.name, clazz.declaredMethods, name, params)
             method.isAccessible = true
-            return method.invoke(this, *params)
+            return method.invoke(if (Modifier.isStatic(method.modifiers)) null else this, *params)
         } catch (e: NoSuchMethodException) {
             if (firstError == null) firstError = e
             clazz = clazz.superclass ?: throw firstError
@@ -86,18 +124,20 @@ inline fun Any.invokeMethod(name: String, vararg params: Any?): Any {
 }
 
 @Throws(NoSuchMethodException::class)
-inline fun Any.declaredMethod(name: String, vararg params: KClass<*>) = method(name, false, *params)
+inline fun Class<*>.method(name: String, vararg paramsTypes: KClass<*>) = methodX(name, true, *paramsTypes)
 
 @Throws(NoSuchMethodException::class)
-inline fun Any.absoluteMethod(name: String, vararg params: KClass<*>) = method(name, true, *params)
+inline fun Class<*>.method(name: String, vararg paramsTypes: Class<*>) = methodX(name, true, *paramsTypes)
 
 @Throws(NoSuchMethodException::class)
-inline fun Any.method(name: String, searchParent: Boolean, vararg params: KClass<*>): Method {
-    var clazz = this.kClass.javaObjectType as Class<*>
-    val unWrappedParams = Array(params.size) { i -> params[i].java }
+inline fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: KClass<*>): Method = methodX(name, searchParent, *Array(paramsTypes.size) { i -> paramsTypes[i].java })
+
+@Throws(NoSuchMethodException::class)
+inline fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: Class<*>): Method {
+    var clazz = this
     while (true)
         try {
-            val method = clazz.getDeclaredMethod(name, *unWrappedParams)
+            val method = clazz.getDeclaredMethod(name, *paramsTypes)
             method.isAccessible = true
             return method
         } catch (e: Throwable) {
@@ -106,19 +146,47 @@ inline fun Any.method(name: String, searchParent: Boolean, vararg params: KClass
         }
 }
 
-@Throws(UnsupportedOperationException::class)
-fun <T> Class<T>.newUnsafeInstance(): T {
-    if (!canAllocate) throw UnsupportedOperationException("Cannot allocate abstract class!")
-    for (allocation in AllocationMethod.values()) {
-        try {
-            return allocation.newInstance(this)
-        } catch (e: Throwable) {
-        }
+@Throws(NoSuchMethodException::class)
+fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String, params: Array<out Any?>): M {
+    bob@ for (method in members) {
+        if (method.name != name) continue
+        val types = method.parameterTypes
+        if (types.size != params.size) continue
+        for (i in types.indices)
+            if (params[i] != null && !types[i].kotlin.javaObjectType.isAssignableFrom(params[i]!!::class.javaObjectType)) continue@bob
+        method.isAccessible = true
+        return method
     }
-    throw UnsupportedOperationException("Cannot allocate instance of type: $name")
+    throw NoSuchMethodException(methodToString(clazzName, name, Array(params.size) { i -> params[i]?.javaClass }))
 }
 
-@Suppress("UNCHECKED_CAST")
+fun methodToString(className: String, name: String, argTypes: Array<out Class<*>?>): String {
+    val joiner = StringJoiner(", ", "$className.$name(", ")")
+    for (i in argTypes.indices) joiner.add(argTypes[i]?.name)
+    return joiner.toString()
+}
+
+/** --------  VARIABLES  -------- **/
+inline val Executable.signature
+    get() = methodToString(declaringClass.name, name, parameterTypes)
+
+/************************************************************\
+ ** ---------------------  CLASSES  ---------------------- **
+\************************************************************/
+/** --------  VARIABLES  -------- **/
+inline val Class<*>.unwrappedClass: Class<*> get() = kotlin.unwrappedClass
+inline val Class<*>.wrappedClass: Class<*> get() = kotlin.wrappedClass
+inline val Class<*>.isTypePrimitive: Boolean get() = kotlin.isTypePrimitive
+inline val Any.clazz: Class<*>
+    get() = when {
+        this is Class<*> -> this
+        this is KClass<*> -> this.java
+        else -> this::class.java
+    }
+
+/************************************************************\
+ ** ---------------------  UTILITY  ---------------------- **
+\************************************************************/
 enum class AllocationMethod {
     NATIVE_NEW_INSTANCE {
         override fun <T> newInstance(c: Class<T>): T {
@@ -137,26 +205,17 @@ enum class AllocationMethod {
     },
     OBJ_INPUT_STREAM {
         override fun <T> newInstance(c: Class<T>): T {
-            val newInstance = ObjectInputStream::class.java.getDeclaredMethod(
-                    "newInstance",
-                    Class::class.java,
-                    Class::class.java
-            )
+            val newInstance = ObjectInputStream::class.java.getDeclaredMethod("newInstance", Class::class.java, Class::class.java)
             newInstance.isAccessible = true
             return newInstance.invoke(null, c, Object::class.java) as T
         }
     },
     CONSTRUCTOR_ID {
         override fun <T> newInstance(c: Class<T>): T {
-            val getConstructorId =
-                    ObjectStreamClass::class.java.getDeclaredMethod("getConstructorId", Class::class.java)
+            val getConstructorId = ObjectStreamClass::class.java.getDeclaredMethod("getConstructorId", Class::class.java)
             getConstructorId.isAccessible = true
             val constructorId = getConstructorId.invoke(null, Object::class.java) as Int
-            val newInstance = ObjectStreamClass::class.java.getDeclaredMethod(
-                    "newInstance",
-                    Class::class.java,
-                    Int::class.javaPrimitiveType
-            )
+            val newInstance = ObjectStreamClass::class.java.getDeclaredMethod("newInstance", Class::class.java, Int::class.javaPrimitiveType)
             newInstance.isAccessible = true
             return newInstance.invoke(null, c, constructorId) as T
         }
@@ -165,31 +224,3 @@ enum class AllocationMethod {
     @Throws(Exception::class)
     abstract fun <T> newInstance(c: Class<T>): T
 }
-
-@Throws(NoSuchMethodException::class)
-fun guessMethod(clazz: Class<*>, name: String, params: Array<out Any?>): Method {
-    bob@ for (method in clazz.declaredMethods) {
-        if (method.name != name || method.parameterTypes.size != params.size) continue
-        for (i in method.parameterTypes.indices)
-            if (params[i] != null && !method.parameterTypes[i].kotlin.javaObjectType.isAssignableFrom(params[i]!!::class.javaObjectType)) continue@bob
-        method.isAccessible = true
-        return method
-    }
-    throw NoSuchMethodException(
-            "Can't find method ${signature(
-                    name,
-                    Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class.java })} in $clazz"
-    )
-}
-
-fun signature(method: Method) = signature(method.name, method.parameterTypes)
-
-fun signature(name: String, args: Array<out Class<*>?>) =
-        if (args.isEmpty())
-            "$name()"
-        else {
-            val builder = StringBuilder()
-            for (arg in args) builder.append(arg?.name).append(", ")
-            builder.delete(builder.length - 2, builder.length)
-            "$name($builder)"
-        }
