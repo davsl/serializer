@@ -47,10 +47,10 @@ val Class<*>.canAllocate: Boolean
 \************************************************************/
 /** --------  FUNCTIONS  -------- **/
 @Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun <R : Any> Any.field(name: String, type: KClass<R>, inParent: Boolean = true): R = field(name, inParent) as R
+inline fun <R : Any> Any.field(name: String, type: KClass<R>, inParent: Boolean = true) = field(name, inParent) as R?
 
 @Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun <R : Any> Any.field(name: String, type: Class<R>, inParent: Boolean = true): R = field(name, inParent) as R
+inline fun <R : Any> Any.field(name: String, type: Class<R>, inParent: Boolean = true) = field(name, inParent) as R?
 
 @Throws(NoSuchFieldException::class, IllegalArgumentException::class)
 inline fun Any.field(name: String, inParent: Boolean = true): Any {
@@ -78,6 +78,17 @@ inline fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
             if (firstError == null) firstError = e
             clazz = clazz.superclass ?: throw firstError
         }
+}
+
+@Throws(NoSuchFieldException::class)
+inline fun <R : Any> Any.callGetter(type: KClass<R>, fieldName: String) = invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R?
+
+@Throws(NoSuchFieldException::class)
+inline fun <R : Any> Any.callGetter(type: Class<R>, fieldName: String) = invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R?
+
+@Throws(NoSuchFieldException::class)
+inline fun Any.callSetter(fieldName: String, value: Any?) {
+    invokeMethod("set${fieldName[0].toUpperCase()}${fieldName.substring(1)}", value)
 }
 
 /** --------  VARIABLES  -------- **/
