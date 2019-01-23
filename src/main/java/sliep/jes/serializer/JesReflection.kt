@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 /** --------  FUNCTIONS  -------- **/
 inline fun <T> Class<T>.newInstance(vararg params: Any?): T {
     if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
-    val constructor = guessFromParameters(name, declaredConstructors, name, params)
+    val constructor = guessFromParameters(name, declaredConstructors, null, params)
     constructor.isAccessible = true
     return constructor.newInstance(*params) as T
 }
@@ -188,9 +188,9 @@ inline fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Arra
 }
 
 @Throws(NoSuchMethodException::class)
-fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String, params: Array<out Any?>): M {
+fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String?, params: Array<out Any?>): M {
     bob@ for (method in members) {
-        if (method.name != name) continue
+        if (name != null && method.name != name) continue
         val types = method.parameterTypes
         if (types.size != params.size) continue
         for (i in types.indices)
@@ -198,7 +198,8 @@ fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M
         method.isAccessible = true
         return method
     }
-    throw NoSuchMethodException(methodToString(clazzName, name, Array(params.size) { i -> params[i]?.javaClass }))
+    throw NoSuchMethodException(methodToString(clazzName, name
+            ?: "<init>", Array(params.size) { i -> params[i]?.javaClass }))
 }
 
 fun methodToString(className: String, name: String, argTypes: Array<out Class<*>?>): String {
