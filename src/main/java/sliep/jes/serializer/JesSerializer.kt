@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 object JesSerializer : Loggable {
     override var depth = 0
-    override var LOG = false
+    var LOG: Boolean = false
 
     fun resolvePrimitive(type: Class<*>, value: String): Any = when {
         Boolean::class.java.isAssignableFrom(type) -> try {

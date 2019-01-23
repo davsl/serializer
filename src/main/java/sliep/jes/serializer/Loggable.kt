@@ -1,9 +1,14 @@
 package sliep.jes.serializer
 
-@Suppress("PropertyName")
 interface Loggable {
-    var LOG: Boolean
-    var depth: Int
+    private val log: Boolean
+        get() = try {
+            this::class.field("LOG")
+        } catch (e: Throwable) {
+            throw IllegalStateException("Classes that implements Loggable must define a STATIC variable named LOG")
+        }
+    val depth: Int
+        get() = 0
     val spaces: String
         get() {
             val indent = StringBuilder()
@@ -13,7 +18,7 @@ interface Loggable {
         }
 
     fun log(message: () -> Any?) {
-        if (LOG) logger(this::class.java.simpleName, spaces + (message()?.toString() ?: return))
+        if (log) logger(this::class.java.simpleName, spaces + (message()?.toString() ?: return))
     }
 
     companion object {
@@ -24,7 +29,7 @@ interface Loggable {
 
         @JvmStatic
         fun <L : Loggable> setLog(vararg classes: L) {
-            for (clazz in classes) clazz.LOG = true
+            for (clazz in classes) clazz::class.fieldR("LOG")[null] = true
         }
     }
 }

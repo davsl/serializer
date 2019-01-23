@@ -55,20 +55,14 @@ val Class<*>.canAllocate: Boolean
 \************************************************************/
 /** --------  FUNCTIONS  -------- **/
 @Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun <R : Any> Any.field(name: String, type: KClass<R>, inParent: Boolean = true) = field(name, inParent) as R?
-
-@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun <R : Any> Any.field(name: String, type: Class<R>, inParent: Boolean = true) = field(name, inParent) as R?
-
-@Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun Any.field(name: String, inParent: Boolean = true): Any {
+inline fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
     val clazz = when {
         this is Class<*> -> this
         this is KClass<*> -> this.java
         else -> this::class.java
     }
     val fieldR = clazz.fieldR(name, inParent)
-    return fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this]
+    return fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this] as R
 }
 
 @Throws(NoSuchFieldException::class)
@@ -100,14 +94,11 @@ inline fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array
 }
 
 @Throws(NoSuchFieldException::class)
-inline fun <R : Any> Any.callGetter(type: KClass<R>, fieldName: String) = invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R?
-
-@Throws(NoSuchFieldException::class)
-inline fun <R : Any> Any.callGetter(type: Class<R>, fieldName: String) = invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R?
+inline fun <R : Any?> Any.callGetter(fieldName: String) = invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
 
 @Throws(NoSuchFieldException::class)
 inline fun Any.callSetter(fieldName: String, value: Any?) {
-    invokeMethod("set${fieldName[0].toUpperCase()}${fieldName.substring(1)}", value)
+    invokeMethod<Any?>("set${fieldName[0].toUpperCase()}${fieldName.substring(1)}", value)
 }
 
 /** --------  VARIABLES  -------- **/
@@ -127,14 +118,9 @@ inline var Field.isFinal: Boolean
  ** ---------------------  METHODS  ---------------------- **
 \************************************************************/
 /** --------  FUNCTIONS  -------- **/
-@Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
-inline fun <R : Any> Any.invokeMethod(type: Class<R>, name: String, vararg params: Any) = invokeMethod(name, *params) as R?
 
 @Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
-inline fun <R : Any> Any.invokeMethod(type: KClass<R>, name: String, vararg params: Any) = invokeMethod(name, *params) as R?
-
-@Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
-inline fun Any.invokeMethod(name: String, vararg params: Any?): Any? {
+inline fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
     var clazz = when {
         this is Class<*> -> this
         this is KClass<*> -> this.java
@@ -146,7 +132,7 @@ inline fun Any.invokeMethod(name: String, vararg params: Any?): Any? {
         try {
             val method = guessFromParameters(clazz.name, clazz.declaredMethods, name, params)
             method.isAccessible = true
-            return method.invoke(if (Modifier.isStatic(method.modifiers)) null else this, *params)
+            return method.invoke(if (Modifier.isStatic(method.modifiers)) null else this, *params) as R
         } catch (e: NoSuchMethodException) {
             if (firstError == null) firstError = e
             clazz = clazz.superclass ?: throw firstError
