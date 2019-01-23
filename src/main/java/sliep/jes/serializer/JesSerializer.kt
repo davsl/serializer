@@ -3,11 +3,12 @@ package sliep.jes.serializer
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Array
-import java.lang.reflect.Field
 import java.lang.reflect.Modifier
+import kotlin.reflect.KClass
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-object JesSerializer {
+object JesSerializer : Loggable() {
+    private var depth: Int = 0
 
     fun resolvePrimitive(type: Class<*>, value: String): Any = when {
         Boolean::class.java.isAssignableFrom(type) -> try {
@@ -25,83 +26,119 @@ object JesSerializer {
         else -> throw java.lang.UnsupportedOperationException("UNKNOWN PRIMITIVE TYPE: $type")
     }
 
-    fun toJson(instance: Any): JSONObject {
+    fun toJson(instance: JesObject): JSONObject {
+        depth = 0
+        log { "Serializing object $instance {" }
         when {
             instance::class.isTypePrimitive -> throw IllegalArgumentException("Can't convert primitive value to json!")
-            instance.javaClass.isArray -> throw IllegalArgumentException("Can't convert array to json object!")
-            instance.javaClass.isEnum -> throw IllegalArgumentException("Can't convert enum to json object!")
-            !JesObject::class.java.isAssignableFrom(instance.javaClass) -> throw IllegalArgumentException("Can't serialize non JesObject instance!")
-            else -> return jsonValue(instance) as JSONObject
+            instance::class.java.isArray -> throw IllegalArgumentException("Can't convert array to json object!")
+            instance::class.java.isEnum -> throw IllegalArgumentException("Can't convert enum to json object!")
+            else -> {
+                val response = jsonValue(instance) as JSONObject
+                log { "}" }
+                return response
+            }
         }
     }
 
-    fun arrayToJson(instance: Any): JSONArray = when {
-        !instance.javaClass.isArray -> throw IllegalArgumentException("Instance is not array instance")
-        else -> jsonValue(instance) as JSONArray
+    fun arrayToJson(instance: kotlin.Array<out JesObject>): JSONArray {
+        depth = 0
+        log {
+            val builder = StringBuilder()
+            var baseClass = instance::class.java as Class<*>
+            while (baseClass.componentType != null) {
+                builder.append("[]")
+                baseClass = baseClass.componentType
+            }
+            "Serializing array ${baseClass.name}$builder ["
+        }
+        val response = when {
+            !instance::class.java.isArray -> throw IllegalArgumentException("Instance is not array instance")
+            else -> jsonValue(instance) as JSONArray
+        }
+        log { "]" }
+        return response
     }
 
-    fun <T : Any> fromJson(jes: JSONObject, type: Class<T>): T = when {
-        type.isTypePrimitive -> throw IllegalArgumentException("Can't convert json object to primitive value!")
-        type.isArray -> throw IllegalArgumentException("Can't convert json object to array!")
-        type.isEnum -> throw IllegalArgumentException("Can't convert json object to enum!")
-        else -> objectValue(jes, type) as T
-    }
-
-    fun <T : Any> fromJsonArray(jes: JSONArray, componentType: Class<T>): kotlin.Array<T> =
-            objectValue(jes, componentType) as kotlin.Array<T>
-
-    fun getInstanceFields(clazz: Class<*>): ArrayList<Field> {
-        val response = ArrayList<Field>()
-        var workingClass = clazz
-        while (true) {
-            for (field in workingClass.declaredFields)
-                if (!Modifier.isTransient(field.modifiers) &&
-                        !Modifier.isStatic(field.modifiers) &&
-                        !response.contains(field)
-                ) response.add(field)
-            if (workingClass.superclass == null) return response
-            workingClass = workingClass.superclass as Class<*>
+    fun <T : Any> fromJson(jes: JSONObject, type: KClass<T>): T = fromJson(jes, type.java)
+    fun <T : Any> fromJson(jes: JSONObject, type: Class<T>): T {
+        depth = 0
+        log { "Deserializing JSONObject to ${type.name} <- $jes" }
+        return when {
+            type.isTypePrimitive -> throw IllegalArgumentException("Can't convert json object to primitive value!")
+            type.isArray -> throw IllegalArgumentException("Can't convert json object to array!")
+            type.isEnum -> throw IllegalArgumentException("Can't convert json object to enum!")
+            else -> objectValue(jes, type) as T
         }
     }
+
+    fun <T : Any> fromJsonArray(jes: JSONArray, componentType: KClass<T>): kotlin.Array<T> = fromJsonArray(jes, componentType.java)
+    fun <T : Any> fromJsonArray(jes: JSONArray, componentType: Class<T>): kotlin.Array<T> {
+        depth = 0
+        log { "Deserializing JSONArray to ${componentType.name}[] <- $jes" }
+        return objectValue(jes, componentType) as kotlin.Array<T>
+    }
+
+    private val spaces: String
+        get() {
+            val indent = StringBuilder()
+            for (i in 0 until depth)
+                indent.append("    ")
+            return indent.toString()
+        }
 
     private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): Any = when {
-        instance.javaClass.isArray -> {
+        instance::class.java.isArray -> {
             val response = JSONArray()
-            for (i in 0 until Array.getLength(instance)) response.put(
-                    jsonValue(
-                            Array.get(
-                                    instance,
-                                    i
-                            ), blackList
-                    )
-            )
+            val logArray = LOG && !instance::class.java.componentType.isTypePrimitive
+            depth++
+            for (i in 0 until Array.getLength(instance)) {
+                if (logArray) log { "$spaces$i ->" }
+                response.put(jsonValue(Array.get(instance, i), blackList))
+            }
+            depth--
             response
         }
-        instance.javaClass.isEnum -> (instance as Enum<*>).name
-        instance::class.isTypePrimitive || !JesObject::class.java.isAssignableFrom(instance.javaClass) -> instance
+        instance::class.java.isEnum -> (instance as Enum<*>).name
+        instance::class.isTypePrimitive || !JesObject::class.java.isAssignableFrom(instance::class.java) -> instance
         else -> {
             val hashCode = System.identityHashCode(instance)
-            if (blackList.contains(hashCode)) throw IllegalStateException()
+            if (blackList.contains(hashCode)) throw IllegalStateException("Infinite json object parameter: $instance")
             blackList.add(hashCode)
             val response = JSONObject()
-            for (field in getInstanceFields(instance.javaClass)) {
+            for (field in instance::class.java.fields(0, Modifier.STATIC or Modifier.TRANSIENT)) {
                 field.isAccessible = true
-                val fieldInstance = field.get(instance) ?: continue
-                response.put(
-                        field.name,
-                        jsonValue(fieldInstance, blackList)
-                )
+                val fieldInstance = field[instance] ?: continue
+                val logArray = LOG && fieldInstance::class.java.isArray
+                depth++
+                log { if (logArray) "$spaces\"${field.name}\": [" else "$spaces\"${field.name}\": $fieldInstance" }
+                if (logArray && fieldInstance::class.java.componentType.isTypePrimitive) {
+                    depth++
+                    for (i in 0 until Array.getLength(fieldInstance))
+                        log { "$spaces ${Array.get(fieldInstance, i)}" }
+                    depth--
+                }
+                response.put(field.name, jsonValue(fieldInstance, blackList))
+                if (logArray) log { "$spaces]" }
+                depth--
             }
             response
         }
     }
 
     private fun objectValue(jes: Any, type: Class<*>): Any = when {
-        jes.javaClass.isAssignableFrom(type) -> jes
+        jes::class.java.isAssignableFrom(type) -> jes
         jes is JSONArray -> {
             val response = Array.newInstance(type, jes.length())
-            for (i in 0 until jes.length())
+            val logArray = LOG && !type.isTypePrimitive
+            if (logArray) log { "$spaces [" }
+            depth++
+            for (i in 0 until jes.length()) {
+                if (logArray) log { "$spaces$i ->" }
                 Array.set(response, i, objectValue(jes.opt(i), type))
+            }
+            depth--
+            if (logArray) log { "$spaces ]" }
             response
         }
         type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
@@ -111,15 +148,17 @@ object JesSerializer {
             while (keys.hasNext()) {
                 val name = keys.next()
                 val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
+                depth++
+                log { "$spaces ${field.name} <- ${jes[name]}" }
                 field.isAccessible = true
                 val value =
-                        if (field.type.isArray) objectValue(
-                                jes.optJSONArray(name),
-                                field.type.componentType
-                        )
-                        else objectValue(jes.get(name), field.type)
+                        if (field.type.isArray)
+                            objectValue(jes.optJSONArray(name), field.type.componentType)
+                        else
+                            objectValue(jes[name], field.type)
                 field.isFinal = false
-                field.set(response, value)
+                field[response] = value
+                depth--
             }
             response
         }

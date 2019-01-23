@@ -17,6 +17,8 @@ inline fun <T : Any> KClass<T>.constructor(vararg paramsTypes: Class<*>) = java.
 @Throws(UnsupportedOperationException::class)
 inline fun <T : Any> KClass<T>.newUnsafeInstance() = java.newUnsafeInstance()
 
+inline fun KClass<*>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0) = java.constructors(modifiers, excludeModifiers)
+
 /** --------  VARIABLES  -------- **/
 inline val KClass<*>.canAllocate: Boolean
     get() = java.canAllocate
@@ -27,6 +29,8 @@ inline val KClass<*>.canAllocate: Boolean
 /** --------  FUNCTIONS  -------- **/
 @Throws(NoSuchFieldException::class)
 inline fun KClass<*>.fieldR(name: String, inParent: Boolean = false) = java.fieldR(name, inParent)
+
+inline fun KClass<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0) = java.fields(modifiers, excludeModifiers)
 /************************************************************\
  ** ---------------------  METHODS  ---------------------- **
 \************************************************************/
@@ -43,6 +47,8 @@ inline fun KClass<*>.methodX(name: String, searchParent: Boolean, vararg paramsT
 @Throws(NoSuchMethodException::class)
 inline fun KClass<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: Class<*>) = java.methodX(name, searchParent, *paramsTypes)
 
+inline fun KClass<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0) = java.methods(modifiers, excludeModifiers)
+
 /************************************************************\
  ** ---------------------  CLASSES  ---------------------- **
 \************************************************************/
@@ -50,9 +56,4 @@ inline fun KClass<*>.methodX(name: String, searchParent: Boolean, vararg paramsT
 inline val KClass<*>.unwrappedClass: Class<*> get() = javaPrimitiveType ?: java
 inline val KClass<*>.wrappedClass: Class<*> get() = javaObjectType
 inline val KClass<*>.isTypePrimitive: Boolean get() = javaPrimitiveType != null
-inline val Any.kClazz: KClass<*>
-    get() = when {
-        this is Class<*> -> this.kotlin
-        this is KClass<*> -> this
-        else -> this::class
-    }
+inline val KClass<*>.dimensions: Int get() = java.dimensions

@@ -38,6 +38,14 @@ inline fun <T> Class<T>.newUnsafeInstance(): T {
     throw UnsupportedOperationException("Cannot allocate instance of type: $name")
 }
 
+inline fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Constructor<out T>> {
+    val response = ArrayList<Constructor<out T>>()
+    for (constructor in declaredConstructors)
+        if ((modifiers == 0 || constructor.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || constructor.modifiers and excludeModifiers == 0) && !response.contains(constructor))
+            response.add(constructor as Constructor<out T>)
+    return response.toArray(arrayOf())
+}
+
 /** --------  VARIABLES  -------- **/
 val Class<*>.canAllocate: Boolean
     get() = !Modifier.isAbstract(modifiers)
@@ -78,6 +86,17 @@ inline fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
             if (firstError == null) firstError = e
             clazz = clazz.superclass ?: throw firstError
         }
+}
+
+inline fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field> {
+    val response = ArrayList<Field>()
+    var clazz = this
+    while (true) {
+        for (field in clazz.declaredFields)
+            if ((modifiers == 0 || field.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || field.modifiers and excludeModifiers == 0) && !response.contains(field))
+                response.add(field)
+        clazz = clazz.superclass ?: return response.toArray(arrayOf())
+    }
 }
 
 @Throws(NoSuchFieldException::class)
@@ -157,6 +176,17 @@ inline fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTy
         }
 }
 
+inline fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Method> {
+    val response = ArrayList<Method>()
+    var clazz = this
+    while (true) {
+        for (method in clazz.declaredMethods)
+            if ((modifiers == 0 || method.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || method.modifiers and excludeModifiers == 0) && !response.contains(method))
+                response.add(method)
+        clazz = clazz.superclass ?: return response.toArray(arrayOf())
+    }
+}
+
 @Throws(NoSuchMethodException::class)
 fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String, params: Array<out Any?>): M {
     bob@ for (method in members) {
@@ -188,13 +218,8 @@ inline val Executable.signature
 inline val Class<*>.unwrappedClass: Class<*> get() = kotlin.unwrappedClass
 inline val Class<*>.wrappedClass: Class<*> get() = kotlin.wrappedClass
 inline val Class<*>.isTypePrimitive: Boolean get() = kotlin.isTypePrimitive
-inline val Any.clazz: Class<*>
-    get() = when {
-        this is Class<*> -> this
-        this is KClass<*> -> this.java
-        else -> this::class.java
-    }
-
+inline val Class<*>.dimensions
+    get() = name.lastIndexOf('[') + 1
 /************************************************************\
  ** ---------------------  UTILITY  ---------------------- **
 \************************************************************/
