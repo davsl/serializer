@@ -111,7 +111,7 @@ inline fun Any.callSetter(fieldName: String, value: Any?) {
 }
 
 /** --------  VARIABLES  -------- **/
-val MODIFIERS = object : LateInitVal<Field>() {
+val MODIFIERS = object : LateInitVal<Field?>() {
     override fun initialize() = kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull()
 }
 inline var Field.isFinal: Boolean

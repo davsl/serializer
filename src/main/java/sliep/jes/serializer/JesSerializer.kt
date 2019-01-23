@@ -8,7 +8,6 @@ import kotlin.reflect.KClass
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 object JesSerializer : Loggable() {
-    private var depth: Int = 0
 
     fun resolvePrimitive(type: Class<*>, value: String): Any = when {
         Boolean::class.java.isAssignableFrom(type) -> try {
@@ -79,21 +78,13 @@ object JesSerializer : Loggable() {
         return objectValue(jes, componentType) as kotlin.Array<T>
     }
 
-    private val spaces: String
-        get() {
-            val indent = StringBuilder()
-            for (i in 0 until depth)
-                indent.append("    ")
-            return indent.toString()
-        }
-
     private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): Any = when {
         instance::class.java.isArray -> {
             val response = JSONArray()
             val logArray = LOG && !instance::class.java.componentType.isTypePrimitive
             depth++
             for (i in 0 until Array.getLength(instance)) {
-                if (logArray) log { "$spaces$i ->" }
+                if (logArray) log { "$i ->" }
                 response.put(jsonValue(Array.get(instance, i), blackList))
             }
             depth--
@@ -111,15 +102,15 @@ object JesSerializer : Loggable() {
                 val fieldInstance = field[instance] ?: continue
                 val logArray = LOG && fieldInstance::class.java.isArray
                 depth++
-                log { if (logArray) "$spaces\"${field.name}\": [" else "$spaces\"${field.name}\": $fieldInstance" }
+                log { if (logArray) "\"${field.name}\": [" else "\"${field.name}\": $fieldInstance" }
                 if (logArray && fieldInstance::class.java.componentType.isTypePrimitive) {
                     depth++
                     for (i in 0 until Array.getLength(fieldInstance))
-                        log { "$spaces ${Array.get(fieldInstance, i)}" }
+                        log { " ${Array.get(fieldInstance, i)}" }
                     depth--
                 }
                 response.put(field.name, jsonValue(fieldInstance, blackList))
-                if (logArray) log { "$spaces]" }
+                if (logArray) log { "]" }
                 depth--
             }
             response
@@ -131,14 +122,14 @@ object JesSerializer : Loggable() {
         jes is JSONArray -> {
             val response = Array.newInstance(type, jes.length())
             val logArray = LOG && !type.isTypePrimitive
-            if (logArray) log { "$spaces [" }
+            if (logArray) log { " [" }
             depth++
             for (i in 0 until jes.length()) {
-                if (logArray) log { "$spaces$i ->" }
+                if (logArray) log { "$i ->" }
                 Array.set(response, i, objectValue(jes.opt(i), type))
             }
             depth--
-            if (logArray) log { "$spaces ]" }
+            if (logArray) log { " ]" }
             response
         }
         type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
@@ -149,7 +140,7 @@ object JesSerializer : Loggable() {
                 val name = keys.next()
                 val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
                 depth++
-                log { "$spaces ${field.name} <- ${jes[name]}" }
+                log { " ${field.name} <- ${jes[name]}" }
                 field.isAccessible = true
                 val value =
                         if (field.type.isArray)
