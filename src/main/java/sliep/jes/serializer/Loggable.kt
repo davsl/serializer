@@ -1,10 +1,10 @@
 package sliep.jes.serializer
 
 @Suppress("PropertyName")
-open class Loggable {
-    var LOG: Boolean = false
-    protected var depth: Int = 0
-    protected val spaces: String
+interface Loggable {
+    var LOG: Boolean
+    var depth: Int
+    val spaces: String
         get() {
             val indent = StringBuilder()
             for (i in 0 until JesSerializer.depth)

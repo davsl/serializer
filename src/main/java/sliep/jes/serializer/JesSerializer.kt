@@ -7,7 +7,9 @@ import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-object JesSerializer : Loggable() {
+object JesSerializer : Loggable {
+    override var depth = 0
+    override var LOG = false
 
     fun resolvePrimitive(type: Class<*>, value: String): Any = when {
         Boolean::class.java.isAssignableFrom(type) -> try {
@@ -22,7 +24,7 @@ object JesSerializer : Loggable() {
         Int::class.java.isAssignableFrom(type) -> value.toInt()
         Long::class.java.isAssignableFrom(type) -> value.toLong()
         Short::class.java.isAssignableFrom(type) -> value.toShort()
-        else -> throw java.lang.UnsupportedOperationException("UNKNOWN PRIMITIVE TYPE: $type")
+        else -> throw UnsupportedOperationException("UNKNOWN PRIMITIVE TYPE: $type")
     }
 
     fun toJson(instance: JesObject): JSONObject {
