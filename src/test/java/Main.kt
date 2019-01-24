@@ -1,16 +1,19 @@
 import sliep.jes.serializer.JesObject
-import sliep.jes.serializer.JesSerializer
 import sliep.jes.serializer.LateInitVal
 import sliep.jes.serializer.Loggable
+import sliep.jes.serializer.log
 
 fun main() {
-    Loggable.setLog(JesSerializer)
+    Loggable.setLog(Dooo::class)
 //    JesSerializer.LOG = true
-    val toJson = JesSerializer.toJson(Dooo())
-    val arrayToJson = JesSerializer.arrayToJson(arrayOf(Dooo(), Dooo()))
-    JesSerializer.fromJson(toJson, Dooo::class)
-    JesSerializer.fromJsonArray(arrayToJson, Dooo::class)
-    System.err.println(String::class.java.constructors[0].name)
+    Dooo::class.log {
+        "WEDFGHJI"
+    }
+//    val toJson = JesSerializer.toJson(Dooo())
+//    val arrayToJson = JesSerializer.arrayToJson(arrayOf(Dooo(), Dooo()))
+//    JesSerializer.fromJson(toJson, Dooo::class)
+//    JesSerializer.fromJsonArray(arrayToJson, Dooo::class)
+//    System.err.println(String::class.java.constructors[0].name)
 }
 
 class Dooo : JesObject, Loggable {

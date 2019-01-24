@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 object JesSerializer : Loggable {
-    override var depth = 0
+    var depth = 0
     var LOG: Boolean = false
 
     fun resolvePrimitive(type: Class<*>, value: String): Any = when {
