@@ -29,14 +29,14 @@ object JesSerializer : Loggable {
 
     fun toJson(instance: JesObject): JSONObject {
         depth = 0
-        log { "Serializing object $instance {" }
+        log(depth) { "Serializing object $instance {" }
         when {
             instance::class.isTypePrimitive -> throw IllegalArgumentException("Can't convert primitive value to json!")
             instance::class.java.isArray -> throw IllegalArgumentException("Can't convert array to json object!")
             instance::class.java.isEnum -> throw IllegalArgumentException("Can't convert enum to json object!")
             else -> {
                 val response = jsonValue(instance) as JSONObject
-                log { "}" }
+                log(depth) { "}" }
                 return response
             }
         }
@@ -44,7 +44,7 @@ object JesSerializer : Loggable {
 
     fun arrayToJson(instance: kotlin.Array<out JesObject>): JSONArray {
         depth = 0
-        log {
+        log(depth) {
             val builder = StringBuilder()
             var baseClass = instance::class.java as Class<*>
             while (baseClass.componentType != null) {
@@ -57,14 +57,14 @@ object JesSerializer : Loggable {
             !instance::class.java.isArray -> throw IllegalArgumentException("Instance is not array instance")
             else -> jsonValue(instance) as JSONArray
         }
-        log { "]" }
+        log(depth) { "]" }
         return response
     }
 
     fun <T : Any> fromJson(jes: JSONObject, type: KClass<T>): T = fromJson(jes, type.java)
     fun <T : Any> fromJson(jes: JSONObject, type: Class<T>): T {
         depth = 0
-        log { "Deserializing JSONObject to ${type.name} <- $jes" }
+        log(depth) { "Deserializing JSONObject to ${type.name} <- $jes" }
         return when {
             type.isTypePrimitive -> throw IllegalArgumentException("Can't convert json object to primitive value!")
             type.isArray -> throw IllegalArgumentException("Can't convert json object to array!")
@@ -76,7 +76,7 @@ object JesSerializer : Loggable {
     fun <T : Any> fromJsonArray(jes: JSONArray, componentType: KClass<T>): kotlin.Array<T> = fromJsonArray(jes, componentType.java)
     fun <T : Any> fromJsonArray(jes: JSONArray, componentType: Class<T>): kotlin.Array<T> {
         depth = 0
-        log { "Deserializing JSONArray to ${componentType.name}[] <- $jes" }
+        log(depth) { "Deserializing JSONArray to ${componentType.name}[] <- $jes" }
         return objectValue(jes, componentType) as kotlin.Array<T>
     }
 
@@ -86,7 +86,7 @@ object JesSerializer : Loggable {
             val logArray = LOG && !instance::class.java.componentType.isTypePrimitive
             depth++
             for (i in 0 until Array.getLength(instance)) {
-                if (logArray) log { "$i ->" }
+                if (logArray) log(depth) { "$i ->" }
                 response.put(jsonValue(Array.get(instance, i), blackList))
             }
             depth--
@@ -104,15 +104,15 @@ object JesSerializer : Loggable {
                 val fieldInstance = field[instance] ?: continue
                 val logArray = LOG && fieldInstance::class.java.isArray
                 depth++
-                log { if (logArray) "\"${field.name}\": [" else "\"${field.name}\": $fieldInstance" }
+                log(depth) { if (logArray) "\"${field.name}\": [" else "\"${field.name}\": $fieldInstance" }
                 if (logArray && fieldInstance::class.java.componentType.isTypePrimitive) {
                     depth++
                     for (i in 0 until Array.getLength(fieldInstance))
-                        log { " ${Array.get(fieldInstance, i)}" }
+                        log(depth) { " ${Array.get(fieldInstance, i)}" }
                     depth--
                 }
                 response.put(field.name, jsonValue(fieldInstance, blackList))
-                if (logArray) log { "]" }
+                if (logArray) log(depth) { "]" }
                 depth--
             }
             response
@@ -124,14 +124,14 @@ object JesSerializer : Loggable {
         jes is JSONArray -> {
             val response = Array.newInstance(type, jes.length())
             val logArray = LOG && !type.isTypePrimitive
-            if (logArray) log { " [" }
+            if (logArray) log(depth) { " [" }
             depth++
             for (i in 0 until jes.length()) {
-                if (logArray) log { "$i ->" }
+                if (logArray) log(depth) { "$i ->" }
                 Array.set(response, i, objectValue(jes.opt(i), type))
             }
             depth--
-            if (logArray) log { " ]" }
+            if (logArray) log(depth) { " ]" }
             response
         }
         type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
@@ -142,7 +142,7 @@ object JesSerializer : Loggable {
                 val name = keys.next()
                 val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
                 depth++
-                log { " ${field.name} <- ${jes[name]}" }
+                log(depth) { " ${field.name} <- ${jes[name]}" }
                 field.isAccessible = true
                 val value =
                         if (field.type.isArray)
