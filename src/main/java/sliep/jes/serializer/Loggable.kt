@@ -1,7 +1,6 @@
 package sliep.jes.serializer
 
 import sliep.jes.serializer.Loggable.Companion.logger
-import sliep.jes.serializer.Loggable.Companion.spaces
 import kotlin.reflect.KClass
 
 interface Loggable {
@@ -24,13 +23,6 @@ interface Loggable {
             for (clazz in classes) clazz.fieldR("LOG")[null] = true
         }
 
-        fun spaces(depth: Int): String {
-            val indent = StringBuilder()
-            for (i in 0 until depth)
-                indent.append("    ")
-            return indent.toString()
-        }
-
         interface Logger {
             fun log(tag: String, message: Any)
         }
@@ -49,17 +41,27 @@ interface Loggable {
     }
 }
 
-inline fun Loggable.log(depth: Int = 0, message: () -> Any?) {
-    if (this::class.field("LOG")) logger.log(this::class.java.simpleName, spaces(depth) + (message()?.toString()
+inline fun Loggable.log(depth: Int = -1, message: () -> Any?) {
+    if (this::class.field("LOG")) logger.log(this::class.java.simpleName, spaces(this::class.java, depth) + (message()?.toString()
             ?: return))
 }
 
-inline fun KClass<out Loggable>.log(depth: Int = 0, message: () -> Any?) {
-    if (this.field("LOG")) logger.log(this.java.simpleName, spaces(depth) + (message()?.toString()
+inline fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
+    if (this.field("LOG")) logger.log(this.java.simpleName, spaces(java, depth) + (message()?.toString()
             ?: return))
 }
 
-inline fun Class<out Loggable>.log(depth: Int = 0, message: () -> Any?) {
-    if (this.field("LOG")) logger.log(this.simpleName, spaces(depth) + (message()?.toString()
+inline fun Class<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
+    if (this.field("LOG")) logger.log(this.simpleName, spaces(this, depth) + (message()?.toString()
             ?: return))
+}
+
+fun spaces(clazz: Class<*>, depth: Int): String {
+    val finalDepth = if (depth == -1) {
+        kotlin.runCatching { clazz.field<Int>("depth") }.getOrDefault(0)
+    } else depth
+    val indent = StringBuilder()
+    for (i in 0 until finalDepth)
+        indent.append("    ")
+    return indent.toString()
 }
