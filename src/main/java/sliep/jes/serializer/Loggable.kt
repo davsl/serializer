@@ -18,18 +18,32 @@ interface Loggable {
         }
 
     fun log(message: () -> Any?) {
-        if (log) logger(this::class.java.simpleName, spaces + (message()?.toString() ?: return))
+        if (log) logger.log(this::class.java.simpleName, spaces + (message()?.toString() ?: return))
     }
 
     companion object {
         @JvmStatic
-        var logger: (String, String) -> Unit = { tag, message ->
-            System.err.println("$tag: $message")
-        }
+        var logger: Logger = if (AndroidLogger.isAvailable) AndroidLogger else SysErrLogger
 
         @JvmStatic
         fun <L : Loggable> setLog(vararg classes: L) {
             for (clazz in classes) clazz::class.fieldR("LOG")[null] = true
+        }
+
+        interface Logger {
+            fun log(tag: String, message: Any)
+        }
+
+        object SysErrLogger : Logger {
+            override fun log(tag: String, message: Any) = System.err.println("$tag: $message")
+        }
+
+        object AndroidLogger : Logger {
+            private val Log = kotlin.runCatching { Class.forName("android.util.Log") }.getOrNull()
+            val isAvailable: Boolean
+                get() = Log != null
+
+            override fun log(tag: String, message: Any) = Log!!.invokeMethod<Unit>("e", tag, message)
         }
     }
 }

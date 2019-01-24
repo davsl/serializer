@@ -93,10 +93,19 @@ inline fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array
     }
 }
 
-@Throws(NoSuchFieldException::class)
-inline fun <R : Any?> Any.callGetter(fieldName: String) = invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
 
-@Throws(NoSuchFieldException::class)
+@Throws(NoSuchMethodException::class)
+inline fun <R : Any?> Any.callGetter(fieldName: String) = try {
+    invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
+} catch (e: NoSuchMethodException) {
+    try {
+        invokeMethod("is${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
+    } catch (ignore: NoSuchMethodException) {
+        throw e
+    }
+}
+
+@Throws(NoSuchMethodException::class)
 inline fun Any.callSetter(fieldName: String, value: Any?) {
     invokeMethod<Any?>("set${fieldName[0].toUpperCase()}${fieldName.substring(1)}", value)
 }
@@ -174,18 +183,21 @@ inline fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Arra
 }
 
 @Throws(NoSuchMethodException::class)
-fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String?, params: Array<out Any?>): M {
+fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String?, params: Array<out Any?>) = guessFromParametersTypes(clazzName, members, name, kotlin.Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class })
+
+@Throws(NoSuchMethodException::class)
+fun <M : Executable> guessFromParametersTypes(clazzName: String, members: Array<out M>, name: String?, params: Array<out KClass<*>?>): M {
     bob@ for (method in members) {
         if (name != null && method.name != name) continue
         val types = method.parameterTypes
         if (types.size != params.size) continue
         for (i in types.indices)
-            if (params[i] != null && !types[i].kotlin.javaObjectType.isAssignableFrom(params[i]!!::class.javaObjectType)) continue@bob
+            if (params[i] != null && !types[i].kotlin.javaObjectType.isAssignableFrom(params[i]!!.javaObjectType)) continue@bob
         method.isAccessible = true
         return method
     }
     throw NoSuchMethodException(methodToString(clazzName, name
-            ?: "<init>", Array(params.size) { i -> params[i]?.javaClass }))
+            ?: "<init>", Array(params.size) { i -> params[i]?.java }))
 }
 
 fun methodToString(className: String, name: String, argTypes: Array<out Class<*>?>): String {

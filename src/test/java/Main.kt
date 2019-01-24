@@ -10,7 +10,6 @@ fun main() {
     val arrayToJson = JesSerializer.arrayToJson(arrayOf(Dooo(), Dooo()))
     JesSerializer.fromJson(toJson, Dooo::class)
     JesSerializer.fromJsonArray(arrayToJson, Dooo::class)
-    val substring = Dooo().hh.get()?.substring(1)
     System.err.println(String::class.java.constructors[0].name)
 }
 
