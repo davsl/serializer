@@ -1,28 +1,42 @@
+import org.json.JSONObject
 import sliep.jes.serializer.*
 
 fun main() {
-    Loggable.setLog(JesSerializer)
-    val toJson = JesSerializer.toJson(Dooo())
-    val arrayToJson = JesSerializer.arrayToJson(arrayOf(Dooo(), Dooo()))
-    JesSerializer.fromJson(toJson, Dooo::class)
-    JesSerializer.fromJsonArray(arrayToJson, Dooo::class)
-    System.err.println(String::class.java.constructors[0].name)
+//    Loggable.setLog(JesSerializer as Loggable)
+
+    val dooo = Dooo()
+    dooo.zozo["adcfsafc"] = "edfg"
+    dooo.zozo["aa"] = "ss"
+    dooo.zuzu.add("asdfg")
+    val toJson = JSONObject(JesSerializer.toJson(dooo).toString())
+    System.err.println(toJson.toString(2))
+
+//    val arrayToJson = JesSerializer.arrayToJson(arrayOf(Dooo(), Dooo()))
+    val fromJson = JesSerializer.fromJson(toJson, Dooo::class)
+    System.err.println(fromJson.zozo["adcfsafc"])
+    System.err.println(fromJson.zozo["aa"])
+    System.err.println(fromJson.zuzu[0])
+//    JesSerializer.fromJsonArray(arrayToJson, Dooo::class)
 }
 
 class Dooo : JesObject, Loggable {
     @Transient
-    val dddd = "WSDFG"
+    private val dddd = "WSDFG"
+    val zozo = HashMap<String, String>()
+    val zuzu = ArrayList<String>()
     val hero = "WSDFG"
     var soooooca = Dooo3()
     var aaaa = arrayOf(Aro(), Aro())
     var fghj = arrayOf(1, 2, 3)
     var hddg = 344
 
+    @Transient
     val hh = object : LateInitVal<String?>() {
         override fun initialize(): String? {
             return null
         }
     }
+
     fun rrr() {
         System.out.println(!LOG)
         log { "it  was true" }

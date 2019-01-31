@@ -1,6 +1,7 @@
 package sliep.jes.serializer
 
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.lang.reflect.Array
 import java.lang.reflect.Modifier
@@ -144,13 +145,18 @@ object JesSerializer : Loggable {
                 depth++
                 log { " ${field.name} <- ${jes[name]}" }
                 field.isAccessible = true
-                val value =
-                        if (field.type.isArray)
-                            objectValue(jes.optJSONArray(name), field.type.componentType)
-                        else
-                            objectValue(jes[name], field.type)
-                field.isFinal = false
-                field[response] = value
+                try {
+                    val value = when {
+                        field.type.isArray -> objectValue(jes.optJSONArray(name), field.type.componentType)
+                        List::class.java.isAssignableFrom(field.type) -> jes.getJSONArray(name).toList()
+                        Map::class.java.isAssignableFrom(field.type) -> jes.getJSONObject(name).toMap()
+                        else -> objectValue(jes[name], field.type)
+                    }
+                    field.isFinal = false
+                    field[response] = value
+                } catch (e: Throwable) {
+                    throw JSONException("Unable to deserialize field $name", e)
+                }
                 depth--
             }
             response

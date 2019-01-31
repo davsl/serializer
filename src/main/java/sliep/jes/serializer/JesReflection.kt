@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST", "UNUSED_PARAMETER", "unused")
+@file:Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER", "unused")
 
 package sliep.jes.serializer
 
@@ -6,6 +6,7 @@ import sun.misc.Unsafe
 import java.io.ObjectInputStream
 import java.io.ObjectStreamClass
 import java.lang.reflect.*
+import java.net.http.HttpHeaders
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -13,15 +14,15 @@ import kotlin.reflect.KClass
  ** -------------------  CONSTRUCTORS  ------------------- **
 \************************************************************/
 /** --------  FUNCTIONS  -------- **/
-inline fun <T> Class<T>.newInstance(vararg params: Any?): T {
+fun <T> Class<T>.newInstance(vararg params: Any?): T {
     if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
     val constructor = guessFromParameters(name, declaredConstructors, null, params)
     constructor.isAccessible = true
     return constructor.newInstance(*params) as T
 }
 
-inline fun <T> Class<T>.constructor(vararg paramsTypes: KClass<*>): Constructor<out T> = constructor(*Array(paramsTypes.size) { i -> paramsTypes[i].java })
-inline fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
+fun <T> Class<T>.constructor(vararg paramsTypes: KClass<*>): Constructor<out T> = constructor(*Array(paramsTypes.size) { i -> paramsTypes[i].java })
+fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
     if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
     val constructor = getDeclaredConstructor(*paramsTypes)
     constructor.isAccessible = true
@@ -29,7 +30,7 @@ inline fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<o
 }
 
 @Throws(UnsupportedOperationException::class)
-inline fun <T> Class<T>.newUnsafeInstance(): T {
+fun <T> Class<T>.newUnsafeInstance(): T {
     if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
     if (!canAllocate) throw UnsupportedOperationException("Cannot allocate abstract class!")
     val clazz = this
@@ -38,7 +39,7 @@ inline fun <T> Class<T>.newUnsafeInstance(): T {
     throw UnsupportedOperationException("Cannot allocate instance of type: $name")
 }
 
-inline fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Constructor<out T>> {
+fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Constructor<out T>> {
     val response = ArrayList<Constructor<out T>>()
     for (constructor in declaredConstructors)
         if ((modifiers == 0 || constructor.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || constructor.modifiers and excludeModifiers == 0) && !response.contains(constructor))
@@ -55,7 +56,7 @@ val Class<*>.canAllocate: Boolean
 \************************************************************/
 /** --------  FUNCTIONS  -------- **/
 @Throws(NoSuchFieldException::class, IllegalArgumentException::class)
-inline fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
+fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
     val clazz = when {
         this is Class<*> -> this
         this is KClass<*> -> this.java
@@ -66,7 +67,7 @@ inline fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
 }
 
 @Throws(NoSuchFieldException::class)
-inline fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
+fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
     if (isPrimitive) throw UnsupportedOperationException("Can't use reflection on primitive types")
     var clazz = this
     var firstError: Throwable? = null
@@ -82,7 +83,7 @@ inline fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
         }
 }
 
-inline fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field> {
+fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field> {
     val response = ArrayList<Field>()
     var clazz = this
     while (true) {
@@ -95,7 +96,7 @@ inline fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array
 
 
 @Throws(NoSuchMethodException::class)
-inline fun <R : Any?> Any.callGetter(fieldName: String) = try {
+fun <R : Any?> Any.callGetter(fieldName: String) = try {
     invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
 } catch (e: NoSuchMethodException) {
     try {
@@ -106,7 +107,7 @@ inline fun <R : Any?> Any.callGetter(fieldName: String) = try {
 }
 
 @Throws(NoSuchMethodException::class)
-inline fun Any.callSetter(fieldName: String, value: Any?) {
+fun Any.callSetter(fieldName: String, value: Any?) {
     invokeMethod<Any?>("set${fieldName[0].toUpperCase()}${fieldName.substring(1)}", value)
 }
 
@@ -114,6 +115,11 @@ inline fun Any.callSetter(fieldName: String, value: Any?) {
 val MODIFIERS = object : LateInitVal<Field?>() {
     override fun initialize() = kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull()
 }
+inline val Class<*>.CONSTANTS: Array<Any?>
+    get() {
+        val fields = HttpHeaders::class.fields(Modifier.PUBLIC or Modifier.STATIC or Modifier.FINAL)
+        return Array(fields.size) { i -> fields[i][null] }
+    }
 inline var Field.isFinal: Boolean
     get() = Modifier.isFinal(modifiers)
     set(value) {
@@ -129,7 +135,7 @@ inline var Field.isFinal: Boolean
 /** --------  FUNCTIONS  -------- **/
 
 @Throws(NoSuchMethodException::class, IllegalArgumentException::class, InvocationTargetException::class)
-inline fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
+fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
     var clazz = when {
         this is Class<*> -> this
         this is KClass<*> -> this.java
@@ -149,16 +155,16 @@ inline fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
 }
 
 @Throws(NoSuchMethodException::class)
-inline fun Class<*>.method(name: String, vararg paramsTypes: KClass<*>) = methodX(name, true, *paramsTypes)
+fun Class<*>.method(name: String, vararg paramsTypes: KClass<*>) = methodX(name, true, *paramsTypes)
 
 @Throws(NoSuchMethodException::class)
-inline fun Class<*>.method(name: String, vararg paramsTypes: Class<*>) = methodX(name, true, *paramsTypes)
+fun Class<*>.method(name: String, vararg paramsTypes: Class<*>) = methodX(name, true, *paramsTypes)
 
 @Throws(NoSuchMethodException::class)
-inline fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: KClass<*>): Method = methodX(name, searchParent, *Array(paramsTypes.size) { i -> paramsTypes[i].java })
+fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: KClass<*>): Method = methodX(name, searchParent, *Array(paramsTypes.size) { i -> paramsTypes[i].java })
 
 @Throws(NoSuchMethodException::class)
-inline fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: Class<*>): Method {
+fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: Class<*>): Method {
     var clazz = this
     while (true)
         try {
@@ -171,7 +177,7 @@ inline fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTy
         }
 }
 
-inline fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Method> {
+fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Method> {
     val response = ArrayList<Method>()
     var clazz = this
     while (true) {
