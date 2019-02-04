@@ -5,28 +5,11 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.lang.reflect.Array
 import java.lang.reflect.Modifier
-import kotlin.reflect.KClass
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 object JesSerializer : Loggable {
     var depth = 0
     var LOG: Boolean = false
-
-    fun resolvePrimitive(type: Class<*>, value: String): Any = when {
-        Boolean::class.java.isAssignableFrom(type) -> try {
-            value.toBoolean()
-        } catch (e: Throwable) {
-            value.toInt() > 0
-        }
-        Byte::class.java.isAssignableFrom(type) -> value.toByte()
-        Char::class.java.isAssignableFrom(type) -> value[0]
-        Double::class.java.isAssignableFrom(type) -> value.toDouble()
-        Float::class.java.isAssignableFrom(type) -> value.toFloat()
-        Int::class.java.isAssignableFrom(type) -> value.toInt()
-        Long::class.java.isAssignableFrom(type) -> value.toLong()
-        Short::class.java.isAssignableFrom(type) -> value.toShort()
-        else -> throw UnsupportedOperationException("UNKNOWN PRIMITIVE TYPE: $type")
-    }
 
     fun toJson(instance: JesObject): JSONObject {
         depth = 0
@@ -62,7 +45,6 @@ object JesSerializer : Loggable {
         return response
     }
 
-    fun <T : Any> fromJson(jes: JSONObject, type: KClass<T>): T = fromJson(jes, type.java)
     fun <T : Any> fromJson(jes: JSONObject, type: Class<T>): T {
         depth = 0
         log { "Deserializing JSONObject to ${type.name} <- $jes" }
@@ -74,7 +56,6 @@ object JesSerializer : Loggable {
         }
     }
 
-    fun <T : Any> fromJsonArray(jes: JSONArray, componentType: KClass<T>): kotlin.Array<T> = fromJsonArray(jes, componentType.java)
     fun <T : Any> fromJsonArray(jes: JSONArray, componentType: Class<T>): kotlin.Array<T> {
         depth = 0
         log { "Deserializing JSONArray to ${componentType.name}[] <- $jes" }
@@ -148,8 +129,10 @@ object JesSerializer : Loggable {
                 try {
                     val value = when {
                         field.type.isArray -> objectValue(jes.optJSONArray(name), field.type.componentType)
-                        List::class.java.isAssignableFrom(field.type) -> jes.getJSONArray(name).toList()
-                        Map::class.java.isAssignableFrom(field.type) -> jes.getJSONObject(name).toMap()
+                        List::class.java.isAssignableFrom(field.type) ->
+                            if (jes[name] is List<*>) jes[name] else jes.getJSONArray(name).toList()
+                        Map::class.java.isAssignableFrom(field.type) ->
+                            if (jes[name] is Map<*, *>) jes[name] else jes.getJSONObject(name).toMap()
                         else -> objectValue(jes[name], field.type)
                     }
                     field.isFinal = false
@@ -164,3 +147,9 @@ object JesSerializer : Loggable {
         else -> jes
     }
 }
+
+fun JesObject.toJson(): JSONObject = JesSerializer.toJson(this)
+fun kotlin.Array<out JesObject>.toJson(): JSONArray = JesSerializer.arrayToJson(this)
+
+inline fun <reified T : Any> JSONObject.fromJson() = JesSerializer.fromJson(this, T::class.java)
+inline fun <reified T : Any> JSONArray.fromJson() = JesSerializer.fromJsonArray(this, T::class.java)

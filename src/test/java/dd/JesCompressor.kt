@@ -1,21 +1,17 @@
-package sliep.jes.serializer
+package dd
 
-import org.json.JSONArray
-import org.json.JSONObject
-import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
+/*
+fun JSONObject.dd.compress() = compressInternal().toByteArray()
+fun JSONArray.dd.compress() = compressInternal().toByteArray()
 
-fun JSONObject.compress() = compressInternal().toByteArray()
-fun JSONArray.compress() = compressInternal().toByteArray()
-
-fun ByteArray.decompress(): Any {
+fun ByteArray.dd.decompress(): Any {
     val buffer = ByteBuffer.wrap(this)
     if (buffer.get() == TYPE_ARRAY) {
         val elements = JSONArray()
         while (buffer.remaining() > 0) {
             val type = buffer.get()
             val value = when (type) {
-                TYPE_OBJECT, TYPE_ARRAY -> buffer.data.decompress()
+                TYPE_OBJECT, TYPE_ARRAY -> dd.getData.dd.decompress()
                 TYPE_LONG -> buffer.long
                 TYPE_DOUBLE -> buffer.double
                 TYPE_FLOAT -> buffer.float
@@ -23,7 +19,7 @@ fun ByteArray.decompress(): Any {
                 TYPE_SHORT -> buffer.short
                 TYPE_BYTE -> buffer.get()
                 TYPE_BOOLEAN -> buffer.get() == 1.toByte()
-                TYPE_STRING -> buffer.string
+                TYPE_STRING -> dd.getString
                 else -> throw UnsupportedOperationException(type.toString())
             }
             elements.put(value)
@@ -33,9 +29,9 @@ fun ByteArray.decompress(): Any {
         val element = JSONObject()
         while (buffer.remaining() > 0) {
             val type = buffer.get()
-            val name = buffer.string
+            val name = dd.getString
             val value = when (type) {
-                TYPE_OBJECT, TYPE_ARRAY -> buffer.data.decompress()
+                TYPE_OBJECT, TYPE_ARRAY -> dd.getData.dd.decompress()
                 TYPE_LONG -> buffer.long
                 TYPE_DOUBLE -> buffer.double
                 TYPE_FLOAT -> buffer.float
@@ -43,7 +39,7 @@ fun ByteArray.decompress(): Any {
                 TYPE_SHORT -> buffer.short
                 TYPE_BYTE -> buffer.get()
                 TYPE_BOOLEAN -> buffer.get() == 1.toByte()
-                TYPE_STRING -> buffer.string
+                TYPE_STRING -> dd.getString
                 else -> throw UnsupportedOperationException(type.toString())
             }
             element.put(name, value)
@@ -52,8 +48,8 @@ fun ByteArray.decompress(): Any {
     }
 }
 
-private fun JSONObject.compressInternal(): BinaryElement {
-    val element = BinaryElement(TYPE_OBJECT)
+private fun JSONObject.compressInternal(): dd.BinaryElement {
+    val element = dd.BinaryElement(TYPE_OBJECT)
     for (key in keys()) {
         val value = this[key]
         when (value) {
@@ -65,8 +61,8 @@ private fun JSONObject.compressInternal(): BinaryElement {
     return element
 }
 
-private fun JSONArray.compressInternal(): BinaryElement {
-    val element = BinaryElement(TYPE_ARRAY)
+private fun JSONArray.compressInternal(): dd.BinaryElement {
+    val element = dd.BinaryElement(TYPE_ARRAY)
     for (i in 0 until length()) {
         val value = this[i]
         when (value) {
@@ -89,15 +85,15 @@ private const val TYPE_BYTE: Byte = 7
 private const val TYPE_BOOLEAN: Byte = 8
 private const val TYPE_STRING: Byte = 9
 
-private class BinaryElement(private val type: Byte) {
+private class dd.BinaryElement(private val type: Byte) {
     private var length = 0
     private val queue = HashMap<String, Any>()
 
-    fun put(name: String, value: BinaryElement) = putElement(name, value)
+    fun put(name: String, value: dd.BinaryElement) = putElement(name, value)
 
     fun putPrimitive(name: String, value: Any) {
         when (value) {
-            is Number -> putElement(name, value.reduceSize)
+            is Number -> putElement(name, dd.getReduceSize)
             is Boolean, is String -> putElement(name, value)
             else -> throw UnsupportedOperationException(value.toString())
         }
@@ -120,13 +116,13 @@ private class BinaryElement(private val type: Byte) {
         /**TYPE**/
         length += Byte.SIZE_BYTES
         /**NAME**/
-        if (type != TYPE_ARRAY) length += Int.SIZE_BYTES + name.bytes.size
+        if (type != TYPE_ARRAY) length += Int.SIZE_BYTES + name.bytes.dd.getSize
         /**DATA**/
         length += when (value) {
-            is Number -> value.size
+            is Number -> dd.getSize
             is Boolean -> Byte.SIZE_BYTES
-            is String -> Int.SIZE_BYTES + value.bytes.size
-            is BinaryElement -> Byte.SIZE_BYTES + Int.SIZE_BYTES + value.length
+            is String -> Int.SIZE_BYTES + value.bytes.dd.getSize
+            is dd.BinaryElement -> Byte.SIZE_BYTES + Int.SIZE_BYTES + value.length
             else -> throw UnsupportedOperationException(value.toString())
         }
     }
@@ -140,10 +136,10 @@ private class BinaryElement(private val type: Byte) {
             when (value) {
                 is Number -> {
                     /**TYPE**/
-                    buffer.put(value.type)
+                    buffer.put(type)
                     /**NAME**/
                     if (type != TYPE_ARRAY)
-                        buffer.putString(key)
+                        dd.putString(key)
                     /**DATA**/
                     when (value) {
                         is Long -> buffer.putLong(value)
@@ -159,7 +155,7 @@ private class BinaryElement(private val type: Byte) {
                     buffer.put(TYPE_BOOLEAN)
                     /**NAME**/
                     if (type != TYPE_ARRAY)
-                        buffer.putString(key)
+                        dd.putString(key)
                     /**DATA**/
                     buffer.put(if (value) 1.toByte() else 0.toByte())
                 }
@@ -168,18 +164,18 @@ private class BinaryElement(private val type: Byte) {
                     buffer.put(TYPE_STRING)
                     /**NAME**/
                     if (type != TYPE_ARRAY)
-                        buffer.putString(key)
+                        dd.putString(key)
                     /**SIZE**/
-                    buffer.putInt(value.bytes.size)
+                    buffer.putInt(value.bytes.dd.getSize)
                     /**DATA**/
                     buffer.put(value.bytes)
                 }
-                is BinaryElement -> {
+                is dd.BinaryElement -> {
                     /**TYPE**/
                     buffer.put(value.type)
                     /**NAME**/
                     if (type != TYPE_ARRAY)
-                        buffer.putString(key)
+                        dd.putString(key)
                     /**SIZE/LENGTH**/
                     buffer.putInt(Byte.SIZE_BYTES + value.length)
                     /**DATA**/
@@ -193,23 +189,23 @@ private class BinaryElement(private val type: Byte) {
 
 private val String.bytes: ByteArray
     get() = toByteArray(StandardCharsets.UTF_8)
-val ByteBuffer.string: String
-    get() = String(data, StandardCharsets.UTF_8)
-val ByteBuffer.data: ByteArray
+val ByteBuffer.dd.getString: String
+    get() = String(dd.getData, StandardCharsets.UTF_8)
+val ByteBuffer.dd.getData: ByteArray
     get() {
         val bytes = ByteArray(int)
         get(bytes)
         return bytes
     }
 
-fun ByteBuffer.putData(data: ByteArray) {
-    putInt(data.size)
-    put(data)
+fun ByteBuffer.dd.putData(dd.getData: ByteArray) {
+    putInt(dd.getData.dd.getSize)
+    put(dd.getData)
 }
 
-fun ByteBuffer.putString(data: String) = putData(data.bytes)
+fun ByteBuffer.dd.putString(dd.getData: String) = dd.putData(dd.getData.bytes)
 
-val Number.size: Int
+val Number.dd.getSize: Int
     get() = when (this) {
         is Long -> Long.SIZE_BYTES
         is Double -> java.lang.Double.BYTES
@@ -217,7 +213,7 @@ val Number.size: Int
         is Int -> Int.SIZE_BYTES
         is Short -> Short.SIZE_BYTES
         is Byte -> Byte.SIZE_BYTES
-        else -> throw UnsupportedOperationException("not a number")
+        else -> throw UnsupportedOperationException("not a dd.getNumber")
     }
 val Number.type: Byte
     get() = when (this) {
@@ -227,13 +223,13 @@ val Number.type: Byte
         is Int -> TYPE_INT
         is Short -> TYPE_SHORT
         is Byte -> TYPE_BYTE
-        else -> throw UnsupportedOperationException("not a number")
+        else -> throw UnsupportedOperationException("not a dd.getNumber")
     }
-val Number.reduceSize: Number
+val Number.dd.getReduceSize: Number
     get() = when (this) {
-        is Double -> kotlin.runCatching { toBigDecimal().longValueExact().reduceSize }
+        is Double -> kotlin.runCatching { dd.getReduceSize }
                 .getOrElse { if (toString() == toFloat().toString()) toFloat() else this }
-        is Float -> kotlin.runCatching { toBigDecimal().longValueExact().reduceSize }
+        is Float -> kotlin.runCatching { dd.getReduceSize }
                 .getOrDefault(this)
         is Long -> when {
             this > Byte.MIN_VALUE && this < Byte.MAX_VALUE -> toByte()
@@ -248,5 +244,6 @@ val Number.reduceSize: Number
         }
         is Short -> if (this > Byte.MIN_VALUE && this < Byte.MAX_VALUE) toByte() else this
         is Byte -> this
-        else -> throw UnsupportedOperationException("not a number")
+        else -> throw UnsupportedOperationException("not a dd.getNumber")
     }
+*/
