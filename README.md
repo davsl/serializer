@@ -1,7 +1,7 @@
 # Wellcome to Jes Serializer
 **Jes Serializer** is a [kotlin](https://kotlinlang.org/) native framework which gives you 
 simple utility functions for
-- Reflection [Inline functions](https://kotlinlang.org/docs/reference/inline-functions.html)
+- Reflection extensions
 - [Json](https://www.json.org/) Serialization & Deserialization
 
 Kotlin code is compiled using the **same bytecode** of java
@@ -47,7 +47,7 @@ Studied to be light, powerful and performing,
 **Jes Serializer** the most optimized serialization library 
 in the world
 
-## How to use
+## Code implementation
 ###### Serializer
 The Serializer is very easy to use: just call one of the 
 functions from the singleton
@@ -85,13 +85,29 @@ Reflection extension is very powerful, be careful `:)`
 ```kotlin
 fun main(vararg args: String) {
     val hello = "*****Hello*****"
-    System.out.println(hello.invokeMethod("substring", 5, 10)) //Hello
+    System.out.println(hello.invokeMethod<String>("substring", 5, 10)) //Hello
     val myObj = MyObj()
-    if (myObj.var1 == myObj.getField("var1", Int::class))
+    if (myObj.var1 == myObj.field<Int>("var1"))
         System.out.println("Jes Serializer is cool!")
     else
         System.err.println("Jes Serializer is shit!")
 }
 ```
-
+Another example:
+```kotlin
+val trueField = java.lang.Boolean::class.fieldR("TRUE")
+trueField.isFinal = false
+trueField[null] = false
+System.err.println("value: ${java.lang.Boolean.TRUE}") //will print false
+```
+###### Helpful utility
+Now you can make lateInit final variables that will be initialized only once 
+```kotlin
+private val myVal get() = lateInit { loadValue() }
+//...
+fun myFun(){
+System.err.println(myVal) //here loadValue() will be called
+System.err.println(myVal) //the value is loaded only once
+}
+```
 #### Enjoy! `:D`

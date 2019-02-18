@@ -112,9 +112,7 @@ fun Any.callSetter(fieldName: String, value: Any?) {
 }
 
 /** --------  VARIABLES  -------- **/
-val MODIFIERS = object : LateInitVal<Field?>() {
-    override fun initialize() = kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull()
-}
+val MODIFIERS get() = lateInit { kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull() }
 inline val Class<*>.CONSTANTS: Array<Any?>
     get() {
         val fields = HttpHeaders::class.fields(Modifier.PUBLIC or Modifier.STATIC or Modifier.FINAL)
@@ -123,7 +121,7 @@ inline val Class<*>.CONSTANTS: Array<Any?>
 inline var Field.isFinal: Boolean
     get() = Modifier.isFinal(modifiers)
     set(value) {
-        val accessFlags = MODIFIERS.get()
+        val accessFlags = MODIFIERS
         if (accessFlags != null && Modifier.isFinal(modifiers) != value) kotlin.runCatching {
             accessFlags[this] = modifiers and if (value) Modifier.FINAL else Modifier.FINAL.inv()
         }

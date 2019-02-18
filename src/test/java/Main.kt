@@ -2,8 +2,34 @@ import org.json.JSONObject
 import sliep.jes.serializer.*
 import java.util.*
 
+private val myVal: String
+    get() = lateInit {
+        gg()
+        "d"
+    }
+
+private val myVal2: String
+    get() = lateInit {
+        gg()
+        "d"
+    }
+var i = 0
+fun gg() {
+    System.err.println("DDDDDDDDDDDD" + i++)
+}
 fun main() {
 //    Loggable.setLog(JesSerializer as Loggable)
+    val trueField = java.lang.Boolean::class.fieldR("TRUE")
+    trueField.isFinal = false
+    trueField[null] = false
+    System.err.println("value: ${java.lang.Boolean.TRUE}")
+    System.err.println("value: $myVal")
+    System.err.println("value: $myVal")
+    System.err.println("value: $myVal2")
+    System.err.println("value: $myVal2")
+    System.err.println("value: $myVal")
+
+
 
     val dooo = Dooo()
     dooo.zozo["adcfsafc"] = "edfg"
@@ -31,12 +57,7 @@ class Dooo : JesObject, Loggable {
     var fghj = arrayOf(1, 2, 3)
     var hddg = 344
 
-    @Transient
-    val hh = object : LateInitVal<String?>() {
-        override fun initialize(): String? {
-            return null
-        }
-    }
+    val hh: String? get() = lateInit { null }
 
     fun rrr() {
         System.out.println(!LOG)

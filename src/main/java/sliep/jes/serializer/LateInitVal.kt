@@ -1,16 +1,18 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package sliep.jes.serializer
 
-abstract class LateInitVal<R : Any?> {
-    private var initialized = false
-    private var instance: R? = null
-    @Suppress("UNCHECKED_CAST")
-    fun get(): R {
-        if (!initialized) {
-            instance = initialize()
-            initialized = true
-        }
-        return instance as R
+private val instances = HashMap<() -> Any?, Any?>()
+private val (() -> Any?).isInitialized: Boolean
+    get() = instances.containsKey(this)
+private var <T> (() -> T).instance: T
+    get() = instances[this] as T
+    set(value) {
+        instances[this] = value
     }
 
-    abstract fun initialize(): R
+fun <T> lateInit(init: () -> T): T = if (init.isInitialized) init.instance else {
+    val instance = init()
+    init.instance = instance
+    instance
 }
