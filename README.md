@@ -80,6 +80,23 @@ constructor is `private`:
 **Jes Serializer** will always work! (except if flag 
 `--illegal-access=deny` is set)
 
+######Customize object serialization
+The default serializer implementation takes every field of the class and wrap the value into a json...
+But there is another way to serialize or deserialize an object by using `JesObjectImpl`<br>
+JesObjectImpl is an instance of JesObject which provides a function to let the developer manually convert the class into a json value.<br>
+For instance let's suppose we have a class model UsefulClassManager and we need the output json to have a different structure but we don't want to change the class
+Just implement JesObjectImpl and add a JesConstructor and it's done!
+```kotlin
+class MyClass(val classManager: UsefulClassManager) : JesObject
+
+class UsefulClassManager(val usefulClazz: Class<*>) : JesObjectImpl<String> {
+    constructor(jes: JesConstructor<String>) : this(Class.forName(jes.data)) //create the instance from JesSerializer 
+
+    override fun toJson() = usefulClazz.name //convert the field into a more simple value
+}
+```
+In this case the model instead of being serialized into a JsonObject will be serialized into a String
+You can use this mechanism with every type you want, but remember that a root object can be only a JSONObject or JSONArray 
 ###### Reflection
 Reflection extension is very powerful, be careful `:)`
 ```kotlin

@@ -4,7 +4,7 @@ plugins {
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
 }
-def VERSION = '2.6'
+def VERSION = '2.7'
 def ART_ID = 'serializer'
 
 group 'sliep.jes'
@@ -87,8 +87,8 @@ compileTestKotlin {
     }
 }
 bintray {
-    user = property('user')
-    key = property('key')
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
     publications = ['toJCenter']
     pkg {
         repo = 'jes'

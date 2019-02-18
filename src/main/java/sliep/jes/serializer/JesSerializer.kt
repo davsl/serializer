@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package sliep.jes.serializer
 
 import org.json.JSONArray
@@ -63,6 +65,7 @@ object JesSerializer : Loggable {
     }
 
     private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): Any = when {
+        instance is JesObjectImpl<*> -> instance.toJson()
         instance::class.java.isArray -> {
             val response = JSONArray()
             val logArray = LOG && !instance::class.java.componentType.isTypePrimitive
@@ -102,6 +105,9 @@ object JesSerializer : Loggable {
     }
 
     private fun objectValue(jes: Any, type: Class<*>): Any = when {
+        kotlin.runCatching { type.constructor(JesConstructor::class); true }.getOrDefault(false) -> type.constructor(JesConstructor::class).newInstance(object : JesConstructor<Any> {
+            override val data = jes
+        })
         jes::class.java.isAssignableFrom(type) -> jes
         jes is JSONArray -> {
             val response = Array.newInstance(type, jes.length())
