@@ -1,7 +1,8 @@
 package sliep.jes.serializer
 
 /**
- * Like Serializable interface,
- * Use JesObject interface to let JesSerializer know that a class should be serialized/deserialized
+ * @author sliep
+ * Implement [JesObject] interface from your model class to let [JesSerializer] know that the type can be serialized/deserialized
+ * @see JesSerializer
  */
 interface JesObject
