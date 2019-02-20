@@ -49,4 +49,5 @@ private val instances = HashMap<Int, Any?>()
  * @receiver declaring class instance or null for static properties
  * @return unique id of property getter
  */
-private fun Any?.getterId(init: Any): Int = if (this != null) System.identityHashCode(this) * System.identityHashCode(init) else System.identityHashCode(init)
+private fun Any?.getterId(init: Any): Int =
+    if (this != null) System.identityHashCode(this) * System.identityHashCode(init) else System.identityHashCode(init)

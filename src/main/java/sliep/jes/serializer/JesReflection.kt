@@ -87,8 +87,10 @@ fun <T> Class<T>.newUnsafeInstance(): T {
 fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Constructor<out T>> {
     val response = ArrayList<Constructor<out T>>()
     for (constructor in declaredConstructors)
-        if ((modifiers == 0 || constructor.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || constructor.modifiers and excludeModifiers == 0) && !response.contains(constructor))
-            response.add(constructor as Constructor<out T>)
+        if ((modifiers == 0 || constructor.modifiers and modifiers == modifiers) &&
+            (excludeModifiers == 0 || constructor.modifiers and excludeModifiers == 0) &&
+            !response.contains(constructor)
+        ) response.add(constructor as Constructor<out T>)
     return response.toArray(arrayOf())
 }
 
@@ -172,8 +174,10 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
     var clazz = this
     while (true) {
         for (field in clazz.declaredFields)
-            if ((modifiers == 0 || field.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || field.modifiers and excludeModifiers == 0) && !response.contains(field))
-                response.add(field)
+            if ((modifiers == 0 || field.modifiers and modifiers == modifiers) &&
+                (excludeModifiers == 0 || field.modifiers and excludeModifiers == 0) &&
+                !response.contains(field)
+            ) response.add(field)
         clazz = clazz.superclass ?: return response.toArray(arrayOf())
     }
 }
@@ -226,7 +230,13 @@ fun Any.callSetter(fieldName: String, value: Any?) {
  * Modifier modifiers
  * @author sliep
  */
-private val MODIFIERS get() = lateInit { kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull() }
+private val MODIFIERS
+    get() = lateInit {
+        kotlin.runCatching {
+            kotlin.runCatching { Field::class.java.fieldR("accessFlags") }
+                .getOrDefault(Field::class.java.fieldR("modifiers"))
+        }.getOrNull()
+    }
 
 /**
  * Get constant fields of a given class (all public static final fields) as Array
@@ -341,8 +351,10 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
     var clazz = this
     while (true) {
         for (method in clazz.declaredMethods)
-            if ((modifiers == 0 || method.modifiers and modifiers == modifiers) && (excludeModifiers == 0 || method.modifiers and excludeModifiers == 0) && !response.contains(method))
-                response.add(method)
+            if ((modifiers == 0 || method.modifiers and modifiers == modifiers) &&
+                (excludeModifiers == 0 || method.modifiers and excludeModifiers == 0) &&
+                !response.contains(method)
+            ) response.add(method)
         clazz = clazz.superclass ?: return response.toArray(arrayOf())
     }
 }
@@ -358,7 +370,17 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
  * @throws NoSuchMethodException if a matching method is not found.
  */
 @Throws(NoSuchMethodException::class)
-fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String?, params: Array<out Any?>) = guessFromParametersTypes(clazzName, members, name, kotlin.Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class })
+fun <M : Executable> guessFromParameters(
+    clazzName: String,
+    members: Array<out M>,
+    name: String?,
+    params: Array<out Any?>
+) = guessFromParametersTypes(
+    clazzName,
+    members,
+    name,
+    kotlin.Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class }
+)
 
 /**
  * Makes possible to find a compatible method having only it's parameter types (or sub types) and the name
@@ -371,7 +393,12 @@ fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M
  * @throws NoSuchMethodException if a matching method is not found.
  */
 @Throws(NoSuchMethodException::class)
-fun <M : Executable> guessFromParametersTypes(clazzName: String, members: Array<out M>, name: String?, params: Array<out KClass<*>?>): M {
+fun <M : Executable> guessFromParametersTypes(
+    clazzName: String,
+    members: Array<out M>,
+    name: String?,
+    params: Array<out KClass<*>?>
+): M {
     bob@ for (method in members) {
         if (name != null && method.name != name) continue
         val types = method.parameterTypes
@@ -381,8 +408,9 @@ fun <M : Executable> guessFromParametersTypes(clazzName: String, members: Array<
         method.isAccessible = true
         return method
     }
-    throw NoSuchMethodException(methodToString(clazzName, name
-            ?: "<init>", Array(params.size) { i -> params[i]?.java }))
+    throw NoSuchMethodException(
+        methodToString(clazzName, name ?: "<init>", Array(params.size) { i -> params[i]?.java })
+    )
 }
 
 /**
@@ -409,6 +437,48 @@ val Executable.signature get() = methodToString(declaringClass.name, name, param
 /* ********************************************************** *\
  ** ---------------------  CLASSES  ---------------------- **
 \* ********************************************************** */
+
+fun <T> Class<T>.implement(functionImplementer: T.(name: String, args: Array<out Any>) -> Any?) =
+    implement(object : FunctionImplementer<T> {
+        override fun T.memberFunction(name: String, args: Array<out Any>) = functionImplementer(name, args)
+    })
+
+fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
+    Proxy.newProxyInstance(classLoader, arrayOf(this)) { proxy, method, args ->
+        val methodName = method.name
+        val argsCount = args?.size ?: 0
+        proxy as T
+        when {
+            implementer is PropertyImplementer<T> && argsCount == 0 && methodName.startsWith("get") && methodName[3].isUpperCase() ->
+                implementer.apply {
+                    return@newProxyInstance proxy.get(
+                        methodName[3].toLowerCase() + methodName.substring(
+                            4
+                        )
+                    )
+                }
+            implementer is PropertyImplementer<T> && argsCount == 0 && methodName.startsWith("is") && methodName[2].isUpperCase() ->
+                implementer.apply {
+                    return@newProxyInstance proxy.get(
+                        methodName[2].toLowerCase() + methodName.substring(
+                            3
+                        )
+                    )
+                }
+            implementer is PropertyImplementer<T> && argsCount == 1 && methodName.startsWith("set") && methodName[3].isUpperCase() ->
+                implementer.apply {
+                    return@newProxyInstance proxy.set(
+                        methodName[3].toLowerCase() + methodName.substring(
+                            4
+                        ), args[0]
+                    )
+                }
+            implementer is FunctionImplementer<T> ->
+                implementer.apply { return@newProxyInstance proxy.memberFunction(methodName, args ?: arrayOf()) }
+            else -> throw UnsupportedOperationException("Not implemented: $methodName")
+        }
+    } as T
+
 /**
  * Get the java primitive type of a class (e.g. [java.lang.Integer] -> [kotlin.Int])
  *
@@ -449,3 +519,16 @@ enum class AllocationMethod {
     @Throws(Throwable::class)
     abstract fun <T> newInstance(c: Class<T>): T
 }
+
+interface InterfaceImplementer<T> : PropertyImplementer<T>, FunctionImplementer<T>
+
+interface PropertyImplementer<T> : JesImplementer<T> {
+    fun T.get(property: String): Any?
+    fun T.set(property: String, value: Any?)
+}
+
+interface FunctionImplementer<T> : JesImplementer<T> {
+    fun T.memberFunction(name: String, args: Array<out Any>): Any?
+}
+
+interface JesImplementer<T>

@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 interface Loggable {
     private val log get() = lateInit { this::class.field<Boolean>("LOG") }
     private val tag get() = lateInit { this::class.java.simpleName }
-    private val depthField get() = lateInit { kotlin.runCatching { this::class.fieldR("depth") }.getOrNull() }
+    private val depthField get() = lateInit { kotlin.runCatching { this::class.java.fieldR("depth") }.getOrNull() }
 
     /**
      * Log a message
@@ -79,7 +79,7 @@ interface Loggable {
 fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
     if (field("LOG")) {
         val theMessage = message()?.toString() ?: return
-        val depthField = kotlin.runCatching { fieldR("depth") }.getOrNull()
+        val depthField = kotlin.runCatching { java.fieldR("depth") }.getOrNull()
         logger.log(this.java.simpleName, spaces(depthField, depth) + theMessage)
     }
 }
