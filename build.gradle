@@ -95,16 +95,16 @@ bintray {
         repo = 'jes'
         name = ART_ID
         userOrg = 'sliep'
-        desc = 'Amazing serialization/deserialization library'
+        desc = 'Amazing serialization/deserialization library details on https://davsl.github.io/' + ART_ID + '/'
         licenses = ['Apache-2.0']
-        websiteUrl = 'https://github.com/davsl/' + ART_ID
+        websiteUrl = 'https://davsl.github.io/' + ART_ID + '/'
         issueTrackerUrl = 'https://github.com/davsl/' + ART_ID + '/issues'
         vcsUrl = 'https://github.com/davsl/' + ART_ID + '.git'
         labels = ['beta', 'developing']
         publicDownloadNumbers = true
         version {
             name = VERSION
-            desc = 'https://davsl.github.io/serializer/'
+            desc = 'Added fix'
             released = new Date()
         }
     }

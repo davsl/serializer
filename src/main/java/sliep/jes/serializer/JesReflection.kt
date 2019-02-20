@@ -475,7 +475,7 @@ fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
                 }
             implementer is FunctionImplementer<T> ->
                 implementer.apply { return@newProxyInstance proxy.memberFunction(methodName, args ?: arrayOf()) }
-            else -> throw UnsupportedOperationException("Not implemented: $methodName")
+            else -> throw UnsupportedOperationException("Incompatible implementer: method=$methodName implementer=$implementer")
         }
     } as T
 
@@ -507,7 +507,7 @@ val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
-enum class AllocationMethod {
+internal enum class AllocationMethod {
     NATIVE_NEW_INSTANCE {
         @Suppress("RemoveRedundantSpreadOperator")
         override fun <T> newInstance(c: Class<T>) = c.constructor(*arrayOf<Class<*>>()).newInstance()!!
