@@ -1,4 +1,4 @@
-Jes Serializer [ ![Download](https://img.shields.io/badge/Latest%20Version-2.8-orange.svg) ](https://bintray.com/sliep/jes/serializer/_latestVersion)
+Jes Serializer [ ![BinTray](https://img.shields.io/badge/Bintray-v2.8-7cb342.svg) ](https://bintray.com/sliep/jes/serializer/_latestVersion) [ ![Javadoc](https://img.shields.io/badge/API%20Documentation-GutHub-212121.svg) ](https://davsl.github.io/serializer/docs/serializer/) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-d84315.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 ====
 
 **Jes Serializer** is a [kotlin](https://kotlinlang.org/) native framework which gives you 
@@ -13,7 +13,6 @@ except in syntax! <br>
 Anyway i suggest you to forget java and start using kotlin
 for everything! `:)`
 
-Here you can find the [API Documentation](https://davsl.github.io/serializer/docs/serializer/)
 ## Simplicity
 The strength of my library is the simplicity of implementation
 ```groovy
