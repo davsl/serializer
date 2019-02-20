@@ -10,7 +10,6 @@ import java.lang.reflect.Array
 import java.lang.reflect.Modifier
 
 /**
- * @author sliep
  * Welcome to JesSerializer
  * This class does only two operations, but it does it really well :)
  *  - Serialize a JVM instance into a json object
@@ -18,6 +17,7 @@ import java.lang.reflect.Modifier
  * use [JesObject.toJson] to serialize an object
  * use [JSONObject.fromJson] to deserialize a json
  * For java boyz instead of method extensions you can call [JesSerializer.toJson], [JesSerializer.arrayToJson], [JesSerializer.fromJson], [JesSerializer.fromJsonArray],
+ * @author sliep
  */
 object JesSerializer : Loggable {
     /**
@@ -32,11 +32,11 @@ object JesSerializer : Loggable {
     var LOG: Boolean = false
 
     /**
-     * @author sliep
      * Serialize an object instance into a json object
      * No matter if fields are not accessible
      * A field to be serialized must be a [JesObject] or a primitive type or a String.
      * If you want to exclude some field, annotate it as [Transient]
+     * @author sliep
      * @param instance to be serialized
      * @return json object representing serialized class
      * @throws IllegalArgumentException if the instance is a primitive type/array/enum
@@ -58,8 +58,8 @@ object JesSerializer : Loggable {
     }
 
     /**
-     * @author sliep
      * Serialize an array instance into a json array
+     * @author sliep
      * @throws IllegalArgumentException if the instance is not an array
      * @see toJson
      */
@@ -85,10 +85,10 @@ object JesSerializer : Loggable {
 
 
     /**
-     * @author sliep
      * Deserialize a json object into a JVM instance
      * No matter if fields are not accessible
      * Every field present in json object will be loaded into the new instance field (if exists, else will be ignored)
+     * @author sliep
      * @param jes json object input
      * @param type type of instance
      * @return a new instance of [type] built from [jes]
@@ -107,8 +107,8 @@ object JesSerializer : Loggable {
     }
 
     /**
-     * @author sliep
      * Deserialize a json array into an array object of [componentType]
+     * @author sliep
      * @see fromJson
      */
     @JvmStatic
@@ -119,7 +119,6 @@ object JesSerializer : Loggable {
     }
 
     /**
-     * @author sliep
      * Here happens the magic
      * @param instance in input can be
      * - [JesObjectImpl]
@@ -127,6 +126,7 @@ object JesSerializer : Loggable {
      * - [Enum]
      * - Primitive type
      * - [Any]
+     * @author sliep
      * @param blackList is a list of unique identifier of a JVM instance from [System.identityHashCode] is necessary to keep track of already serialized instances to avoid infinite loop if an object field references itself
      * @return the json value ([JSONObject] or [JSONArray] or [String] or Primitive type)
      */
@@ -172,8 +172,8 @@ object JesSerializer : Loggable {
     }
 
     /**
-     * @author sliep
      * Here happens the magic
+     * @author sliep
      * @param jes input json value can be
      * - [JSONArray]
      * - [JSONObject]
@@ -239,8 +239,8 @@ object JesSerializer : Loggable {
 }
 
 /**
- * @author sliep
  * Convert a [JesObject] into a [JSONObject]
+ * @author sliep
  * @receiver instance to be serialized
  * @return json object representing serialized class
  * @see JesSerializer.toJson
@@ -248,8 +248,8 @@ object JesSerializer : Loggable {
 fun JesObject.toJson(): JSONObject = JesSerializer.toJson(this)
 
 /**
- * @author sliep
  * Convert an [Array] of [JesObject] into a [JSONArray]
+ * @author sliep
  * @receiver instance to be serialized
  * @return json object representing serialized class
  * @see JesSerializer.arrayToJson
@@ -257,8 +257,8 @@ fun JesObject.toJson(): JSONObject = JesSerializer.toJson(this)
 fun kotlin.Array<out JesObject>.toJson(): JSONArray = JesSerializer.arrayToJson(this)
 
 /**
- * @author sliep
  * Convert a [JSONObject] into an instance of [T]
+ * @author sliep
  * @receiver object to be deserialized
  * @param T type of instance
  * @return a new instance of [T] built from json object
@@ -267,8 +267,8 @@ fun kotlin.Array<out JesObject>.toJson(): JSONArray = JesSerializer.arrayToJson(
 inline fun <reified T : Any> JSONObject.fromJson() = JesSerializer.fromJson(this, T::class.java)
 
 /**
- * @author sliep
  * Convert a [JSONArray] into an [Array] of [T]
+ * @author sliep
  * @receiver object to be deserialized
  * @param T type of instance component
  * @return a new instance of [T] built from json object

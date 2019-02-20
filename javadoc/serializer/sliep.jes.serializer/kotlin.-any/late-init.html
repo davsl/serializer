@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>lateInit - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="index.html">kotlin.Any</a>&nbsp;/&nbsp;<a href="./late-init.html">lateInit</a><br/>
+<br/>
+<h1>lateInit</h1>
+<a name="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.Function0((sliep.jes.serializer.lateInit.T)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span
+        class="symbol">&gt;</span> <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
+        class="identifier">Any</span></a><span class="symbol">.</span><span class="identifier">lateInit</span><span
+        class="symbol">(</span><span class="identifier"
+                                     id="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
+        class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
+        class="symbol">-&gt;</span>&nbsp;<a href="late-init.html#T"><span class="identifier">T</span></a><span
+        class="symbol">)</span><span class="symbol">: </span><a href="late-init.html#T"><span
+        class="identifier">T</span></a></code>
+<p>Allows you to define a final variable (val) that wont be initialized until you access it
+    e.g. val myVariable get() = lateInit { System.currentTimeMillis() }
+    This variable will be initialized the first time that you access it using your defined initializer, than the value
+    will remain constant for all receiver instance lifeCycle</p>
+<h3>Parameters</h3>
+<p><a name="T"></a>
+    <code>T</code> - type of the variable</p>
+<p><a name="init"></a>
+    <code>init</code> - initializer of the variable will be called only once</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>Receiver</strong><br/>
+    the declaring class instance to prevent the value to be static</p>
+<p><strong>Return</strong><br/>
+    result of initializer</p>
+</BODY>
+</HTML>

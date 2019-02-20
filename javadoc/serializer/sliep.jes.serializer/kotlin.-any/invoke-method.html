@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>invokeMethod - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="index.html">kotlin.Any</a>&nbsp;/&nbsp;<a href="./invoke-method.html">invokeMethod</a><br/>
+<br/>
+<h1>invokeMethod</h1>
+<a name="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span
+        class="symbol">&gt;</span> <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
+        class="identifier">Any</span></a><span class="symbol">.</span><span class="identifier">invokeMethod</span><span
+        class="symbol">(</span><span class="identifier"
+                                     id="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))/name">name</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+        class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span
+        class="identifier"
+        id="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))/params">params</span><span
+        class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
+        class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
+        href="invoke-method.html#R"><span class="identifier">R</span></a></code>
+<p>Invoke a specific method (not only declared) of an object through reflection
+    No matter if it's not accessible</p>
+<h3>Parameters</h3>
+<p><a name="R"></a>
+    <code>R</code> - return type of the method</p>
+<p><a name="name"></a>
+    <code>name</code> - of the method</p>
+<p><a name="params"></a>
+    <code>params</code> - arguments of the method (must be compatible with the length and the types of the method)</p>
+<h3>Exceptions</h3>
+<p><a name="NoSuchMethodException"></a>
+    <code>NoSuchMethodException</code> - if a matching method is not found.</p>
+<p><a name="InvocationTargetException"></a>
+    <code>InvocationTargetException</code> - if the underlying method throws an exception.</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>Receiver</strong><br/>
+    the instance that provide the method or it's declaring class to invoke a static method</p>
+<p><strong>Return</strong><br/>
+    the result of method</p>
+<p><strong>See Also</strong><br/>
+<p>
+    <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Method.html#invoke(java.lang.Object, java.lang.Object...)">Method.invoke</a>
+</p>
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,176 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>JesObjectImpl - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="./index.html">JesObjectImpl</a><br/>
+<br/>
+<h1>JesObjectImpl</h1>
+<code><span class="keyword">interface </span><span class="identifier">JesObjectImpl</span><span
+        class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
+        class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+        href="../-jes-object.html"><span class="identifier">JesObject</span></a></code>
+<p>Let your class implement <a href="./index.html">JesObjectImpl</a> instead of <a
+        href="../-jes-object.html">JesObject</a> to control it's serialization
+    Implementing the method <a href="to-json.html">toJson</a> you convert the instance into a value of type <a
+            href="index.html#T">T</a>
+    A <a href="./index.html">JesObjectImpl</a> instance must provide a constructor having <a
+            href="../-jes-constructor/index.html">JesConstructor</a>&lt;<a href="index.html#T">T</a>&gt; as only
+    parameter to be deserialized as well</p>
+<h3>Parameters</h3>
+<p><a name="T"></a>
+    <code>T</code> - type of Json field in which the object will be serialized</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>See Also</strong><br/>
+<p><a href="../-jes-object.html">JesObject</a></p>
+<p><a href="../-jes-constructor/index.html">JesConstructor</a></p>
+</p>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="to-json.html">toJson</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span
+                    class="identifier">toJson</span><span class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a href="index.html#T"><span class="identifier">T</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/call-getter.html">callGetter</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">R</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">callGetter</span><span class="symbol">(</span><span
+                    class="identifier" id="sliep.jes.serializer$callGetter(kotlin.Any, kotlin.String)/fieldName">fieldName</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="../kotlin.-any/call-getter.html#R"><span class="identifier">R</span></a></code>
+            <p>Call kotlin (or java) property getters of a receiver object through reflection
+                No matter if it's not accessible
+                If the property name is 'foo', 'getFoo()' or 'isFoo()' method will be called (if exists)</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/call-setter.html">callSetter</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">callSetter</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$callSetter(kotlin.Any, kotlin.String, kotlin.Any)/fieldName">fieldName</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
+                                                                                            id="sliep.jes.serializer$callSetter(kotlin.Any, kotlin.String, kotlin.Any)/value">value</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code>
+            <p>Call kotlin (or java) property setters of a receiver object through reflection
+                No matter if it's not accessible
+                If the property name is 'foo', 'setFoo()' method will be called (if exists)</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/field.html">field</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">R</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">field</span><span class="symbol">(</span><span
+                    class="identifier" id="sliep.jes.serializer$field(kotlin.Any, kotlin.String, kotlin.Boolean)/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
+                                                                                            id="sliep.jes.serializer$field(kotlin.Any, kotlin.String, kotlin.Boolean)/inParent">inParent</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/field.html#R"><span
+                    class="identifier">R</span></a></code>
+            <p>Fetch the property value of a receiver object through reflection
+                No matter if it's not accessible</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/invoke-method.html">invokeMethod</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">R</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">invokeMethod</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span
+                    class="keyword">vararg</span> <span class="identifier"
+                                                        id="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))/params">params</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="../kotlin.-any/invoke-method.html#R"><span class="identifier">R</span></a></code>
+            <p>Invoke a specific method (not only declared) of an object through reflection
+                No matter if it's not accessible</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/late-init.html">lateInit</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">T</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">lateInit</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
+                    class="symbol">-&gt;</span>&nbsp;<a href="../kotlin.-any/late-init.html#T"><span class="identifier">T</span></a><span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/late-init.html#T"><span
+                    class="identifier">T</span></a></code>
+            <p>Allows you to define a final variable (val) that wont be initialized until you access it
+                e.g. val myVariable get() = lateInit { System.currentTimeMillis() }
+                This variable will be initialized the first time that you access it using your defined initializer, than
+                the value will remain constant for all receiver instance lifeCycle</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../to-json.html">toJson</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><a href="../-jes-object.html"><span
+                    class="identifier">JesObject</span></a><span class="symbol">.</span><span
+                    class="identifier">toJson</span><span class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><span class="identifier">JSONObject</span></code>
+            <p>Convert a <a href="../-jes-object.html">JesObject</a> into a <a href="#">JSONObject</a></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

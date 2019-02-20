@@ -8,17 +8,17 @@ import java.util.*
 import kotlin.reflect.KClass
 
 /**
- * @author sliep
  * Reflective operation core
+ * @author sliep
  */
 
-/************************************************************\
+/* ********************************************************** *\
  ** -------------------  CONSTRUCTORS  ------------------- **
-\************************************************************/
+\* ********************************************************** */
 /**
- * @author sliep
  * Instantiate a class using reflection like calling it's constructor
  * No matter if it's not accessible
+ * @author sliep
  * @receiver the [Class] to be instantiated
  * @param T Type of new instance
  * @param params constructor arguments
@@ -38,8 +38,8 @@ fun <T> Class<T>.newInstance(vararg params: Any?): T {
 }
 
 /**
- * @author sliep
  * Get the constructor of a specific class
+ * @author sliep
  * @receiver the declaring [Class] of the constructor
  * @param T Type of the class
  * @param paramsTypes constructor arguments types
@@ -55,8 +55,8 @@ fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
 }
 
 /**
- * @author sliep
  * Create an instance of a given class if possible using it's constructor, otherwise through [Unsafe] bypassing the constructor
+ * @author sliep
  * @receiver the [Class] to be instantiated
  * @param T Type of new instance
  * @return the newly created instance
@@ -75,8 +75,8 @@ fun <T> Class<T>.newUnsafeInstance(): T {
 }
 
 /**
- * @author sliep
  * Get all declared constructor of the receiver class matching given parameters
+ * @author sliep
  * @receiver the declaring [Class] of the constructors
  * @param T Type of the class
  * @param modifiers modifiers that a constructor should have to be included or 0 to include all except excluded. default is include all
@@ -92,8 +92,8 @@ fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Ar
 }
 
 /**
- * @author sliep
  * If your QI is very low and you're trying to instantiate a primitive type or an abstract class or a enum class, this method will tell you 'Hey man, you can't!' :)
+ * @author sliep
  * @throws UnsupportedOperationException if you're trying to instantiate a non-instantiable class
  * @receiver the [Class] to check
  */
@@ -102,14 +102,14 @@ fun Class<*>.checkAllocatePossible() {
     if (Modifier.isAbstract(modifiers)) throw UnsupportedOperationException("Cannot allocate abstract class!")
     if (isEnum) throw UnsupportedOperationException("Cannot allocate enum class!")
 }
-/************************************************************\
+/* ********************************************************** *\
  ** ----------------------  FIELDS  ---------------------- **
-\************************************************************/
+\* ********************************************************** */
 
 /**
- * @author sliep
  * Fetch the property value of a receiver object through reflection
  * No matter if it's not accessible
+ * @author sliep
  * @receiver the instance having the magic property or the property declaring class to fetch a static value
  * @param R Type of return field
  * @param name of the property
@@ -130,9 +130,9 @@ fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
 }
 
 /**
- * @author sliep
  * Fetch the field of a receiver object through reflection
  * No matter if it's not accessible
+ * @author sliep
  * @receiver the declaring class of the magic property
  * @param name of the property
  * @param inParent tell the function to search the field not only in the declaring class, but even in it's superclasses. default is false
@@ -157,8 +157,8 @@ fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
 }
 
 /**
- * @author sliep
  * Get all fields (not only declared) of the receiver class matching given parameters
+ * @author sliep
  * @receiver the declaring [Class] of the fields
  * @param modifiers modifiers that a field should have to be included or 0 to include all except excluded. default is include all
  * @param excludeModifiers modifiers that a field should not have to be included or 0 to exclude none. default is exclude none
@@ -176,10 +176,10 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
 }
 
 /**
- * @author sliep
  * Call kotlin (or java) property getters of a receiver object through reflection
  * No matter if it's not accessible
  * If the property name is 'foo', 'getFoo()' or 'isFoo()' method will be called (if exists)
+ * @author sliep
  * @receiver the instance having the magic property
  * @param R Type of return value
  * @param fieldName of the property
@@ -199,10 +199,10 @@ fun <R : Any?> Any.callGetter(fieldName: String) = try {
 }
 
 /**
- * @author sliep
  * Call kotlin (or java) property setters of a receiver object through reflection
  * No matter if it's not accessible
  * If the property name is 'foo', 'setFoo()' method will be called (if exists)
+ * @author sliep
  * @receiver the instance having the magic property
  * @param fieldName of the property
  * @param value new value for the property
@@ -216,14 +216,14 @@ fun Any.callSetter(fieldName: String, value: Any?) {
 }
 
 /**
- * @author sliep
  * Modifier modifiers
+ * @author sliep
  */
 private val MODIFIERS get() = lateInit { kotlin.runCatching { kotlin.runCatching { Field::class.java.fieldR("accessFlags") }.getOrDefault(Field::class.java.fieldR("modifiers")) }.getOrNull() }
 
 /**
- * @author sliep
  * Get constant fields of a given class (all public static final fields) as Array
+ * @author sliep
  */
 val Class<*>.CONSTANTS: HashMap<String, Any?>
     get() {
@@ -232,9 +232,9 @@ val Class<*>.CONSTANTS: HashMap<String, Any?>
         return constants
     }
 /**
- * @author sliep
  * Allows you to change the final modifier of a field at runtime
  * After setting field.[isFinal] = false you are free to edit it's value
+ * @author sliep
  */
 var Field.isFinal: Boolean
     get() = Modifier.isFinal(modifiers)
@@ -245,14 +245,14 @@ var Field.isFinal: Boolean
         }
     }
 
-/************************************************************\
+/* ********************************************************** *\
  ** ---------------------  METHODS  ---------------------- **
-\************************************************************/
+\* ********************************************************** */
 
 /**
- * @author sliep
  * Invoke a specific method (not only declared) of an object through reflection
  * No matter if it's not accessible
+ * @author sliep
  * @receiver the instance that provide the method or it's declaring class to invoke a static method
  * @param R return type of the method
  * @param name of the method
@@ -282,8 +282,8 @@ fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
 }
 
 /**
- * @author sliep
  * Get a method (not only declared) of a class from given name
+ * @author sliep
  * @receiver the declaring class of the method
  * @param name of the method
  * @param paramsTypes method arguments types
@@ -295,8 +295,8 @@ fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
 fun Class<*>.method(name: String, vararg paramsTypes: Class<*>) = methodX(name, true, *paramsTypes)
 
 /**
- * @author sliep
  * Get a method of a class from given name
+ * @author sliep
  * @receiver the declaring class of the method
  * @param name of the method
  * @param searchParent tell the function to search the method not only in the declaring class, but even in it's superclasses.
@@ -320,8 +320,8 @@ fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: Cl
 }
 
 /**
- * @author sliep
  * Get all methods (not only declared) of the receiver class matching given parameters
+ * @author sliep
  * @receiver the declaring [Class] of the methods
  * @param modifiers modifiers that a method should have to be included or 0 to include all except excluded. default is include all
  * @param excludeModifiers modifiers that a method should not have to be included or 0 to exclude none. default is exclude none
@@ -339,8 +339,8 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
 }
 
 /**
- * @author sliep
  * Makes possible to find a compatible method having only it's parameter values and the name
+ * @author sliep
  * @param clazzName only for debug: the name of declaring class
  * @param members all methods in that class
  * @param name of the method
@@ -352,8 +352,8 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
 fun <M : Executable> guessFromParameters(clazzName: String, members: Array<out M>, name: String?, params: Array<out Any?>) = guessFromParametersTypes(clazzName, members, name, kotlin.Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class })
 
 /**
- * @author sliep
  * Makes possible to find a compatible method having only it's parameter types (or sub types) and the name
+ * @author sliep
  * @param clazzName only for debug: the name of declaring class
  * @param members all methods in that class
  * @param name of the method
@@ -377,8 +377,8 @@ fun <M : Executable> guessFromParametersTypes(clazzName: String, members: Array<
 }
 
 /**
- * @author sliep
  * For debug create a signature descriptor of a method
+ * @author sliep
  * @param className the name of declaring class
  * @param name of the method
  * @param argTypes method arguments types
@@ -391,40 +391,41 @@ fun methodToString(className: String, name: String, argTypes: Array<out Class<*>
 }
 
 /**
- * @author sliep
  * signature descriptor of a method/constructor
+ * @author sliep
  * @see methodToString
  */
 val Executable.signature get() = methodToString(declaringClass.name, name, parameterTypes)
 
-/************************************************************\
+/* ********************************************************** *\
  ** ---------------------  CLASSES  ---------------------- **
-\************************************************************/
+\* ********************************************************** */
 /**
- * @author sliep
  * Get the java primitive type of a class (e.g. [java.lang.Integer] -> [kotlin.Int])
  * an [unwrappedClass] of a non primitive class is equal to the receiver object
+ * @author sliep
  */
 val Class<*>.unwrappedClass: Class<*> get() = kotlin.unwrappedClass
 /**
- * @author sliep
  * Get the java object type of a class (e.g. [kotlin.Int] -> [java.lang.Integer])
  * a [wrappedClass] of a non primitive class is equal to the receiver object
+ * @author sliep
  */
 val Class<*>.wrappedClass: Class<*> get() = kotlin.wrappedClass
 /**
- * @author sliep
  * Unlike [Class.isPrimitive] this value result true even for wrapper types
+ * @author sliep
  */
 val Class<*>.isTypePrimitive: Boolean get() = kotlin.isTypePrimitive
 /**
- * @author sliep
  * Dimensions of an array type (zero for non array types)
+ * @author sliep
  */
 val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
-/************************************************************\
+
+/* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
-\************************************************************/
+\* ********************************************************** */
 enum class AllocationMethod {
     NATIVE_NEW_INSTANCE {
         @Suppress("RemoveRedundantSpreadOperator")
