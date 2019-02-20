@@ -9,7 +9,7 @@ plugins {
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
 }
-def VERSION = '2.7'
+def VERSION = '2.8'
 def ART_ID = 'serializer'
 
 group 'sliep.jes'
@@ -104,7 +104,7 @@ bintray {
         publicDownloadNumbers = true
         version {
             name = VERSION
-            desc = 'Very good lib'
+            desc = 'https://davsl.github.io/serializer/'
             released = new Date()
         }
     }

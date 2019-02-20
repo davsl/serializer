@@ -1,4 +1,6 @@
-# Wellcome to Jes Serializer
+Jes Serializer [ ![Download](https://img.shields.io/badge/Latest%20Version-2.8-orange.svg) ](https://bintray.com/sliep/jes/serializer/_latestVersion)
+====
+
 **Jes Serializer** is a [kotlin](https://kotlinlang.org/) native framework which gives you 
 simple utility functions for
 - Reflection extensions
@@ -21,7 +23,7 @@ repositories {
     }
 }
 dependencies {
-    implementation 'sliep.jes:serializer:1.0'
+    implementation 'sliep.jes:serializer:xyz'
 }
 ```
 And that's all `:)`
