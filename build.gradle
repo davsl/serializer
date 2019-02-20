@@ -121,5 +121,5 @@ dokka {
     reportUndocumented = false
     skipEmptyPackages = true
     outputFormat = 'html'
-    outputDirectory = "$projectDir/javadoc"
+    outputDirectory = "$projectDir/docs"
 }
