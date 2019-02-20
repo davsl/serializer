@@ -11,7 +11,7 @@ except in syntax! <br>
 Anyway i suggest you to forget java and start using kotlin
 for everything! `:)`
 
-Here you can find the [API Documentation](https://davsl.github.io/serializer/serializer/)
+Here you can find the [API Documentation](https://davsl.github.io/serializer/docs/serializer/)
 ## Simplicity
 The strength of my library is the simplicity of implementation
 ```groovy
