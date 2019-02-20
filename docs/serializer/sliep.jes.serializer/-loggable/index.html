@@ -1,0 +1,226 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Loggable - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="./index.html">Loggable</a><br/>
+<br/>
+<h1>Loggable</h1>
+<code><span class="keyword">interface </span><span class="identifier">Loggable</span></code>
+<p>Logging utility</p>
+<ol>
+    <li>Implement <a href="./index.html">Loggable</a></li>
+    <li>Define a static <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>
+        named 'LOG'
+    </li>
+    <li>(optional) Define a static <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>
+        named 'depth'
+    </li>
+    <li>in your Loggable class just call <a href="log.html">log</a></li>
+</ol>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<h3>Types</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="-android-logger/index.html">AndroidLogger</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">object </span><span class="identifier">AndroidLogger</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a href="-logger/index.html"><span class="identifier">Logger</span></a></code>
+            <p>Default android implementation of <a href="-logger/index.html">Logger</a></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="-logger/index.html">Logger</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">interface </span><span class="identifier">Logger</span></code>
+            <p>Simple interface for logging</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="-sys-err-logger/index.html">SysErrLogger</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">object </span><span class="identifier">SysErrLogger</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a href="-logger/index.html"><span class="identifier">Logger</span></a></code>
+            <p>Default java implementation of <a href="-logger/index.html">Logger</a></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="log.html">log</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">log</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/depth">depth</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span
+                    class="symbol">=</span>&nbsp;-1<span class="symbol">, </span><span class="identifier"
+                                                                                       id="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/message">message</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
+                    class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code>
+            <p>Log a message</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="logger.html">logger</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">var </span><span class="identifier">logger</span><span
+                    class="symbol">: </span><a href="-logger/index.html"><span
+                    class="identifier">Logger</span></a></code>
+            <p>Edit this variable to define a custom <a href="-logger/index.html">Logger</a> for your application</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/call-getter.html">callGetter</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">R</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">callGetter</span><span class="symbol">(</span><span
+                    class="identifier" id="sliep.jes.serializer$callGetter(kotlin.Any, kotlin.String)/fieldName">fieldName</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="../kotlin.-any/call-getter.html#R"><span class="identifier">R</span></a></code>
+            <p>Call kotlin (or java) property getters of a receiver object through reflection</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/call-setter.html">callSetter</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">callSetter</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$callSetter(kotlin.Any, kotlin.String, kotlin.Any)/fieldName">fieldName</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
+                                                                                            id="sliep.jes.serializer$callSetter(kotlin.Any, kotlin.String, kotlin.Any)/value">value</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code>
+            <p>Call kotlin (or java) property setters of a receiver object through reflection</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/field.html">field</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">R</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">field</span><span class="symbol">(</span><span
+                    class="identifier" id="sliep.jes.serializer$field(kotlin.Any, kotlin.String, kotlin.Boolean)/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
+                                                                                            id="sliep.jes.serializer$field(kotlin.Any, kotlin.String, kotlin.Boolean)/inParent">inParent</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/field.html#R"><span
+                    class="identifier">R</span></a></code>
+            <p>Fetch the property value of a receiver object through reflection</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/invoke-method.html">invokeMethod</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">R</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">invokeMethod</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span
+                    class="keyword">vararg</span> <span class="identifier"
+                                                        id="sliep.jes.serializer$invokeMethod(kotlin.Any, kotlin.String, kotlin.Array((kotlin.Any)))/params">params</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="../kotlin.-any/invoke-method.html#R"><span class="identifier">R</span></a></code>
+            <p>Invoke a specific method (not only declared) of an object through reflection</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/late-init.html">lateInit</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">T</span><span class="symbol">&gt;</span> <a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">lateInit</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
+                    class="symbol">-&gt;</span>&nbsp;<a href="../kotlin.-any/late-init.html#T"><span class="identifier">T</span></a><span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/late-init.html#T"><span
+                    class="identifier">T</span></a></code>
+            <p>Allows you to define a final variable (val) that wont be initialized until you access it</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="../-jes-serializer/index.html">JesSerializer</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">object </span><span class="identifier">JesSerializer</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a href="./index.html"><span
+                    class="identifier">Loggable</span></a></code>
+            <p>Welcome to JesSerializer</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>callGetter - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="index.html">kotlin.Any</a>&nbsp;/&nbsp;<a href="./call-getter.html">callGetter</a><br/>
+<br/>
+<h1>callGetter</h1>
+<a name="sliep.jes.serializer$callGetter(kotlin.Any, kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span
+        class="symbol">&gt;</span> <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
+        class="identifier">Any</span></a><span class="symbol">.</span><span class="identifier">callGetter</span><span
+        class="symbol">(</span><span class="identifier"
+                                     id="sliep.jes.serializer$callGetter(kotlin.Any, kotlin.String)/fieldName">fieldName</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+        class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
+        href="call-getter.html#R"><span class="identifier">R</span></a></code>
+<p>Call kotlin (or java) property getters of a receiver object through reflection</p>
+<p>No matter if it's not accessible</p>
+<p>If the property name is 'foo', 'getFoo()' or 'isFoo()' method will be called (if exists)</p>
+<h3>Parameters</h3>
+<p><a name="R"></a>
+    <code>R</code> - Type of return value</p>
+<p><a name="fieldName"></a>
+    <code>fieldName</code> - of the property</p>
+<h3>Exceptions</h3>
+<p><a name="NoSuchMethodException"></a>
+    <code>NoSuchMethodException</code> - if a matching method is not found.</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>Receiver</strong><br/>
+    the instance having the magic property</p>
+<p><strong>Return</strong><br/>
+    the value of the wanted property</p>
+<p><strong>See Also</strong><br/>
+<p><a href="invoke-method.html">invokeMethod</a></p>
+</p>
+</BODY>
+</HTML>

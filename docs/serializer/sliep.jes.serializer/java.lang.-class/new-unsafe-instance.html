@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>newUnsafeInstance - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="index.html">java.lang.Class</a>&nbsp;/&nbsp;<a
+        href="./new-unsafe-instance.html">newUnsafeInstance</a><br/>
+<br/>
+<h1>newUnsafeInstance</h1>
+<a name="sliep.jes.serializer$newUnsafeInstance(java.lang.Class((sliep.jes.serializer.newUnsafeInstance.T)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span
+        class="symbol">&gt;</span> <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
+        class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="new-unsafe-instance.html#T"><span
+        class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span
+        class="identifier">newUnsafeInstance</span><span class="symbol">(</span><span class="symbol">)</span><span
+        class="symbol">: </span><a href="new-unsafe-instance.html#T"><span class="identifier">T</span></a></code>
+<p>Create an instance of a given class if possible using it's constructor, otherwise through <a href="#">Unsafe</a>
+    bypassing the constructor</p>
+<h3>Parameters</h3>
+<p><a name="T"></a>
+    <code>T</code> - Type of new instance</p>
+<h3>Exceptions</h3>
+<p><a name="NoSuchMethodException"></a>
+    <code>NoSuchMethodException</code> - if a matching method is not found.</p>
+<p><a name="UnsupportedOperationException"></a>
+    <code>UnsupportedOperationException</code> - if you're trying to instantiate a non-instantiable class</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>Receiver</strong><br/>
+    the <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html">Class</a> to be instantiated</p>
+<p><strong>Return</strong><br/>
+    the newly created instance</p>
+<p><strong>See Also</strong><br/>
+<p><a href="check-allocate-possible.html">checkAllocatePossible</a></p>
+<p><a href="#">Unsafe.allocateInstance</a></p>
+</p>
+</BODY>
+</HTML>

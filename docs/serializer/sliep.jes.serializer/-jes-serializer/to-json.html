@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>JesSerializer.toJson - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="index.html">JesSerializer</a>&nbsp;/&nbsp;<a href="./to-json.html">toJson</a><br/>
+<br/>
+<h1>toJson</h1>
+<a name="sliep.jes.serializer.JesSerializer$toJson(sliep.jes.serializer.JesObject)"></a>
+<code><span class="identifier">@JvmStatic</span> <span class="keyword">fun </span><span class="identifier">toJson</span><span
+        class="symbol">(</span><span class="identifier"
+                                     id="sliep.jes.serializer.JesSerializer$toJson(sliep.jes.serializer.JesObject)/instance">instance</span><span
+        class="symbol">:</span>&nbsp;<a href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
+        class="symbol">)</span><span class="symbol">: </span><span class="identifier">JSONObject</span></code>
+<p>Serialize an object instance into a json object</p>
+<p>No matter if fields are not accessible</p>
+<p>A field to be serialized must be a <a href="../-jes-object.html">JesObject</a> or a primitive type or a String.</p>
+<p>If you want to exclude some field, annotate it as <a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-transient/index.html">Transient</a></p>
+<h3>Parameters</h3>
+<p><a name="instance"></a>
+    <code>instance</code> - to be serialized</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+    <code>IllegalArgumentException</code> - if the instance is a primitive type/array/enum</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>Return</strong><br/>
+    json object representing serialized class</p>
+</BODY>
+</HTML>

@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>checkAllocatePossible - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="index.html">java.lang.Class</a>&nbsp;/&nbsp;<a
+        href="./check-allocate-possible.html">checkAllocatePossible</a><br/>
+<br/>
+<h1>checkAllocatePossible</h1>
+<a name="sliep.jes.serializer$checkAllocatePossible(java.lang.Class((kotlin.Any)))"></a>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
+        class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
+        class="symbol">&gt;</span><span class="symbol">.</span><span
+        class="identifier">checkAllocatePossible</span><span class="symbol">(</span><span class="symbol">)</span><span
+        class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+        class="identifier">Unit</span></a></code>
+<p>If your QI is very low and you're trying to instantiate a primitive type or an abstract class or a enum class, this
+    method will tell you 'Hey man, you can't!' :)</p>
+<h3>Exceptions</h3>
+<p><a name="UnsupportedOperationException"></a>
+    <code>UnsupportedOperationException</code> - if you're trying to instantiate a non-instantiable class</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>Receiver</strong><br/>
+    the <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html">Class</a> to check</p>
+</BODY>
+</HTML>
