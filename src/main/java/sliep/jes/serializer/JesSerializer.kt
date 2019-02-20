@@ -11,11 +11,15 @@ import java.lang.reflect.Modifier
 
 /**
  * Welcome to JesSerializer
+ *
  * This class does only two operations, but it does it really well :)
  *  - Serialize a JVM instance into a json object
  *  - Deserialize a json object to a JVM instance
+ *
  * use [JesObject.toJson] to serialize an object
+ *
  * use [JSONObject.fromJson] to deserialize a json
+ *
  * For java boyz instead of method extensions you can call [JesSerializer.toJson], [JesSerializer.arrayToJson], [JesSerializer.fromJson], [JesSerializer.fromJsonArray],
  * @author sliep
  */
@@ -33,8 +37,11 @@ object JesSerializer : Loggable {
 
     /**
      * Serialize an object instance into a json object
+     *
      * No matter if fields are not accessible
+     *
      * A field to be serialized must be a [JesObject] or a primitive type or a String.
+     *
      * If you want to exclude some field, annotate it as [Transient]
      * @author sliep
      * @param instance to be serialized
@@ -86,7 +93,9 @@ object JesSerializer : Loggable {
 
     /**
      * Deserialize a json object into a JVM instance
+     *
      * No matter if fields are not accessible
+     *
      * Every field present in json object will be loaded into the new instance field (if exists, else will be ignored)
      * @author sliep
      * @param jes json object input

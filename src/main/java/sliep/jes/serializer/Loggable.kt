@@ -49,6 +49,7 @@ interface Loggable {
 
     /**
      * Default java implementation of [Logger]
+     *
      * Print the log to the System.err stream
      * @author sliep
      */
@@ -58,6 +59,7 @@ interface Loggable {
 
     /**
      * Default android implementation of [Logger]
+     *
      * Print the log to the Android error log stream
      * @author sliep
      */

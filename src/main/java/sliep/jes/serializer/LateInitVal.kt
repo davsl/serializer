@@ -4,7 +4,9 @@ package sliep.jes.serializer
 
 /**
  * Allows you to define a final variable (val) that wont be initialized until you access it
+ *
  * e.g. val myVariable get() = lateInit { System.currentTimeMillis() }
+ *
  * This variable will be initialized the first time that you access it using your defined initializer, than the value will remain constant for all receiver instance lifeCycle
  * @author sliep
  * @receiver the declaring class instance to prevent the value to be static
@@ -23,6 +25,7 @@ fun <T> Any.lateInit(init: () -> T): T {
 
 /**
  * Allows you to define a final variable (val) that wont be initialized until you access it
+ *
  * For static properties
  * @author sliep
  * @see [Any.lateInit]

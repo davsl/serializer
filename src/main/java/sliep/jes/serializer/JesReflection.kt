@@ -17,6 +17,7 @@ import kotlin.reflect.KClass
 \* ********************************************************** */
 /**
  * Instantiate a class using reflection like calling it's constructor
+ *
  * No matter if it's not accessible
  * @author sliep
  * @receiver the [Class] to be instantiated
@@ -108,6 +109,7 @@ fun Class<*>.checkAllocatePossible() {
 
 /**
  * Fetch the property value of a receiver object through reflection
+ *
  * No matter if it's not accessible
  * @author sliep
  * @receiver the instance having the magic property or the property declaring class to fetch a static value
@@ -131,6 +133,7 @@ fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
 
 /**
  * Fetch the field of a receiver object through reflection
+ *
  * No matter if it's not accessible
  * @author sliep
  * @receiver the declaring class of the magic property
@@ -177,7 +180,9 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
 
 /**
  * Call kotlin (or java) property getters of a receiver object through reflection
+ *
  * No matter if it's not accessible
+ *
  * If the property name is 'foo', 'getFoo()' or 'isFoo()' method will be called (if exists)
  * @author sliep
  * @receiver the instance having the magic property
@@ -200,7 +205,9 @@ fun <R : Any?> Any.callGetter(fieldName: String) = try {
 
 /**
  * Call kotlin (or java) property setters of a receiver object through reflection
+ *
  * No matter if it's not accessible
+ *
  * If the property name is 'foo', 'setFoo()' method will be called (if exists)
  * @author sliep
  * @receiver the instance having the magic property
@@ -233,6 +240,7 @@ val Class<*>.CONSTANTS: HashMap<String, Any?>
     }
 /**
  * Allows you to change the final modifier of a field at runtime
+ *
  * After setting field.[isFinal] = false you are free to edit it's value
  * @author sliep
  */
@@ -251,6 +259,7 @@ var Field.isFinal: Boolean
 
 /**
  * Invoke a specific method (not only declared) of an object through reflection
+ *
  * No matter if it's not accessible
  * @author sliep
  * @receiver the instance that provide the method or it's declaring class to invoke a static method
@@ -402,12 +411,14 @@ val Executable.signature get() = methodToString(declaringClass.name, name, param
 \* ********************************************************** */
 /**
  * Get the java primitive type of a class (e.g. [java.lang.Integer] -> [kotlin.Int])
+ *
  * an [unwrappedClass] of a non primitive class is equal to the receiver object
  * @author sliep
  */
 val Class<*>.unwrappedClass: Class<*> get() = kotlin.unwrappedClass
 /**
  * Get the java object type of a class (e.g. [kotlin.Int] -> [java.lang.Integer])
+ *
  * a [wrappedClass] of a non primitive class is equal to the receiver object
  * @author sliep
  */

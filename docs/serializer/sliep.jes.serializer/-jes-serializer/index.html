@@ -12,18 +12,17 @@
 <code><span class="keyword">object </span><span class="identifier">JesSerializer</span>&nbsp;<span
         class="symbol">:</span>&nbsp;<a href="../-loggable/index.html"><span
         class="identifier">Loggable</span></a></code>
-<p>Welcome to JesSerializer
-    This class does only two operations, but it does it really well :)</p>
+<p>Welcome to JesSerializer</p>
+<p>This class does only two operations, but it does it really well :)</p>
 <ul>
     <li>Serialize a JVM instance into a json object</li>
-    <li>Deserialize a json object to a JVM instance
-        use <a href="../to-json.html">JesObject.toJson</a> to serialize an object
-        use <a href="../org.json.-j-s-o-n-object/from-json.html">JSONObject.fromJson</a> to deserialize a json
-        For java boyz instead of method extensions you can call <a href="to-json.html">JesSerializer.toJson</a>, <a
-                href="array-to-json.html">JesSerializer.arrayToJson</a>, <a
-                href="from-json.html">JesSerializer.fromJson</a>, <a href="from-json-array.html">JesSerializer.fromJsonArray</a>,
-    </li>
+    <li>Deserialize a json object to a JVM instance</li>
 </ul>
+<p>use <a href="../to-json.html">JesObject.toJson</a> to serialize an object</p>
+<p>use <a href="../org.json.-j-s-o-n-object/from-json.html">JSONObject.fromJson</a> to deserialize a json</p>
+<p>For java boyz instead of method extensions you can call <a href="to-json.html">JesSerializer.toJson</a>, <a
+        href="array-to-json.html">JesSerializer.arrayToJson</a>, <a href="from-json.html">JesSerializer.fromJson</a>, <a
+        href="from-json-array.html">JesSerializer.fromJsonArray</a>,</p>
 <p><strong>Author</strong><br/>
     sliep</p>
 <h3>Properties</h3>
@@ -81,10 +80,7 @@
                     class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="from-json.html#T"><span
                     class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span
                     class="symbol">: </span><a href="from-json.html#T"><span class="identifier">T</span></a></code>
-            <p>Deserialize a json object into a JVM instance
-                No matter if fields are not accessible
-                Every field present in json object will be loaded into the new instance field (if exists, else will be
-                ignored)</p>
+            <p>Deserialize a json object into a JVM instance</p>
         </td>
     </tr>
     <tr>
@@ -125,13 +121,7 @@
                     class="symbol">:</span>&nbsp;<a href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
                     class="symbol">)</span><span class="symbol">: </span><span
                     class="identifier">JSONObject</span></code>
-            <p>Serialize an object instance into a json object
-                No matter if fields are not accessible
-                A field to be serialized must be a <a href="../-jes-object.html">JesObject</a> or a primitive type or a
-                String.
-                If you want to exclude some field, annotate it as <a
-                        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-transient/index.html">Transient</a>
-            </p>
+            <p>Serialize an object instance into a json object</p>
         </td>
     </tr>
     </tbody>
@@ -179,9 +169,7 @@
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
                     class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
                     href="../kotlin.-any/call-getter.html#R"><span class="identifier">R</span></a></code>
-            <p>Call kotlin (or java) property getters of a receiver object through reflection
-                No matter if it's not accessible
-                If the property name is 'foo', 'getFoo()' or 'isFoo()' method will be called (if exists)</p>
+            <p>Call kotlin (or java) property getters of a receiver object through reflection</p>
         </td>
     </tr>
     <tr>
@@ -203,9 +191,7 @@
                     class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
                     class="identifier">Unit</span></a></code>
-            <p>Call kotlin (or java) property setters of a receiver object through reflection
-                No matter if it's not accessible
-                If the property name is 'foo', 'setFoo()' method will be called (if exists)</p>
+            <p>Call kotlin (or java) property setters of a receiver object through reflection</p>
         </td>
     </tr>
     <tr>
@@ -227,8 +213,7 @@
                     class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
                     class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/field.html#R"><span
                     class="identifier">R</span></a></code>
-            <p>Fetch the property value of a receiver object through reflection
-                No matter if it's not accessible</p>
+            <p>Fetch the property value of a receiver object through reflection</p>
         </td>
     </tr>
     <tr>
@@ -251,8 +236,7 @@
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
                     class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
                     href="../kotlin.-any/invoke-method.html#R"><span class="identifier">R</span></a></code>
-            <p>Invoke a specific method (not only declared) of an object through reflection
-                No matter if it's not accessible</p>
+            <p>Invoke a specific method (not only declared) of an object through reflection</p>
         </td>
     </tr>
     <tr>
@@ -270,10 +254,7 @@
                     class="symbol">-&gt;</span>&nbsp;<a href="../kotlin.-any/late-init.html#T"><span class="identifier">T</span></a><span
                     class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/late-init.html#T"><span
                     class="identifier">T</span></a></code>
-            <p>Allows you to define a final variable (val) that wont be initialized until you access it
-                e.g. val myVariable get() = lateInit { System.currentTimeMillis() }
-                This variable will be initialized the first time that you access it using your defined initializer, than
-                the value will remain constant for all receiver instance lifeCycle</p>
+            <p>Allows you to define a final variable (val) that wont be initialized until you access it</p>
         </td>
     </tr>
     </tbody>
