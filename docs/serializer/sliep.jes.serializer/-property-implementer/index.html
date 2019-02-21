@@ -14,6 +14,41 @@
         href="../-jes-implementer.html"><span class="identifier">JesImplementer</span></a><span
         class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span
         class="symbol">&gt;</span></code>
+<p>Handle every property access of the proxy interface
+    This implementer is great when you want to define an interface without methods but only properties (only in
+    kotlin)</p>
+<p>Example of usage:</p>
+<pre><code class="lang-kotlin">interface MyInterface {
+    var setting: String
+    val name: String
+    var something: Int
+}
+
+fun main() {
+    implement(object : PropertyImplementer&lt;MyInterface&gt; {
+        override fun MyInterface.get(property: String): Any? = when (property) {
+            "setting" -&gt; mySettings
+            "name" -&gt; "Gian Paolo"
+            "something" -&gt; 1234
+            else -&gt; throw UnsupportedOperationException("UNIMPLEMENTED")
+        }
+
+        override fun MyInterface.set(property: String, value: Any?) = when (property) {
+            "setting" -&gt; mySettings = value as String
+            "something" -&gt; setSomething(value as Int)
+            else -&gt; throw UnsupportedOperationException("UNIMPLEMENTED")
+        }
+    })
+}
+</code></pre>
+<h3>Parameters</h3>
+<p><a name="T"></a>
+    <code>T</code> - proxy type</p>
+<p><strong>Author</strong><br/>
+    sliep</p>
+<p><strong>See Also</strong><br/>
+<p><a href="../-jes-implementer.html">JesImplementer</a></p>
+</p>
 <h3>Functions</h3>
 <table>
     <tbody>
@@ -30,7 +65,13 @@
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
                     class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
-                    class="symbol">?</span></code></td>
+                    class="symbol">?</span></code>
+            <p>A property getter is a empty-parameter function called get<a
+                    href="get.html#sliep.jes.serializer.PropertyImplementer$get(sliep.jes.serializer.PropertyImplementer.T, kotlin.String)/property">property</a>
+                or
+                is<a href="get.html#sliep.jes.serializer.PropertyImplementer$get(sliep.jes.serializer.PropertyImplementer.T, kotlin.String)/property">property</a>
+                where property is the name of the property having the first letter capitalized</p>
+        </td>
     </tr>
     <tr>
         <td>
@@ -49,7 +90,11 @@
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
                     class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
+                    class="identifier">Unit</span></a></code>
+            <p>A property setter is a function with 1 parameter called set<a
+                    href="set.html#sliep.jes.serializer.PropertyImplementer$set(sliep.jes.serializer.PropertyImplementer.T, kotlin.String, kotlin.Any)/property">property</a>
+                where property is the name of the property having the first letter capitalized</p>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -175,7 +220,9 @@
                     href="../-interface-implementer.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span
                     class="symbol">, </span><a href="../-function-implementer/index.html"><span class="identifier">FunctionImplementer</span></a><span
                     class="symbol">&lt;</span><a href="../-interface-implementer.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+                    class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+            <p>Handle simultaneously getters/setters and normal functions</p>
+        </td>
     </tr>
     </tbody>
 </table>

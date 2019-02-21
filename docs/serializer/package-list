@@ -4,9 +4,7 @@ $dokka.location:sliep.jes.serializer$CONSTANTS#java.lang.Class((kotlin.Any))sli
 $dokka.location:sliep.jes.serializer$CONSTANTS#kotlin.reflect.KClass((kotlin.Any))sliep.jes.serializer/kotlin.reflect.-k-class/-c-o-n-s-t-a-n-t-s.html
 $dokka.location:sliep.jes.serializer$callGetter(kotlin.Any, kotlin.String)sliep.jes.serializer/kotlin.-any/call-getter.html
 $dokka.location:sliep.jes.serializer$callSetter(kotlin.Any, kotlin.String, kotlin.Any)sliep.jes.serializer/kotlin.-any/call-setter.html
-$dokka.location:sliep.jes.serializer$checkAllocatePossible(java.lang.Class((kotlin.Any)))sliep.jes.serializer/java.lang.-class/check-allocate-possible.html
 $dokka.location:sliep.jes.serializer$constructor(java.lang.Class((sliep.jes.serializer.constructor.T)), kotlin.Array((java.lang.Class((kotlin.Any)))))sliep.jes.serializer/java.lang.-class/constructor.html
-$dokka.location:sliep.jes.serializer$constructor(java.lang.Class((sliep.jes.serializer.constructor.T)), kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))sliep.jes.serializer/java.lang.-class/constructor.html
 $dokka.location:sliep.jes.serializer$constructors(java.lang.Class((sliep.jes.serializer.constructors.T)), kotlin.Int, kotlin.Int)sliep.jes.serializer/java.lang.-class/constructors.html
 $dokka.location:sliep.jes.serializer$dimensions#java.lang.Class((kotlin.Any))sliep.jes.serializer/java.lang.-class/dimensions.html
 $dokka.location:sliep.jes.serializer$dimensions#kotlin.reflect.KClass((kotlin.Any))sliep.jes.serializer/kotlin.reflect.-k-class/dimensions.html
@@ -23,10 +21,7 @@ $dokka.location:sliep.jes.serializer$isTypePrimitive#java.lang.Class((kotlin.Any
 $dokka.location:sliep.jes.serializer$isTypePrimitive#kotlin.reflect.KClass((kotlin.Any))sliep.jes.serializer/kotlin.reflect.-k-class/is-type-primitive.html
 $dokka.location:sliep.jes.serializer$lateInit(kotlin.Any, kotlin.Function0((sliep.jes.serializer.lateInit.T)))sliep.jes.serializer/kotlin.-any/late-init.html
 $dokka.location:sliep.jes.serializer$log(kotlin.reflect.KClass((sliep.jes.serializer.Loggable)), kotlin.Int, kotlin.Function0((kotlin.Any)))sliep.jes.serializer/kotlin.reflect.-k-class/log.html
-$dokka.location:sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))))sliep.jes.serializer/java.lang.-class/method.html
-$dokka.location:sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))sliep.jes.serializer/java.lang.-class/method.html
-$dokka.location:sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((java.lang.Class((kotlin.Any)))))sliep.jes.serializer/java.lang.-class/method-x.html
-$dokka.location:sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))sliep.jes.serializer/java.lang.-class/method-x.html
+$dokka.location:sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))), kotlin.Boolean)sliep.jes.serializer/java.lang.-class/method.html
 $dokka.location:sliep.jes.serializer$methods(java.lang.Class((kotlin.Any)), kotlin.Int, kotlin.Int)sliep.jes.serializer/java.lang.-class/methods.html
 $dokka.location:sliep.jes.serializer$newInstance(java.lang.Class((sliep.jes.serializer.newInstance.T)), kotlin.Array((kotlin.Any)))sliep.jes.serializer/java.lang.-class/new-instance.html
 $dokka.location:sliep.jes.serializer$newUnsafeInstance(java.lang.Class((sliep.jes.serializer.newUnsafeInstance.T)))sliep.jes.serializer/java.lang.-class/new-unsafe-instance.html

@@ -32,22 +32,6 @@
     </tr>
     <tr>
         <td>
-            <p><a href="check-allocate-possible.html">checkAllocatePossible</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">checkAllocatePossible</span><span
-                    class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code>
-            <p>If your QI is very low and you're trying to instantiate a primitive type or an abstract class or a enum
-                class, this method will tell you 'Hey man, you can't!' :)</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><a href="constructor.html">constructor</a></p>
         </td>
         <td>
@@ -68,23 +52,7 @@
                     class="keyword">out</span>&nbsp;<a href="constructor.html#T"><span
                     class="identifier">T</span></a><span class="symbol">&gt;</span></code>
             <p>Get the constructor of a specific class</p>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
-                    class="identifier">T</span><span class="symbol">&gt;</span> <a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><a
-                    href="constructor.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span
-                    class="symbol">.</span><span class="identifier">constructor</span><span class="symbol">(</span><span
-                    class="keyword">vararg</span> <span class="identifier"
-                                                        id="sliep.jes.serializer$constructor(java.lang.Class((sliep.jes.serializer.constructor.T)), kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))/paramsTypes">paramsTypes</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html"><span
-                    class="identifier">KClass</span></a><span class="symbol">&lt;</span><span
-                    class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Constructor.html"><span
-                    class="identifier">Constructor</span></a><span class="symbol">&lt;</span><span
-                    class="keyword">out</span>&nbsp;<a href="constructor.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+        </td>
     </tr>
     <tr>
         <td>
@@ -190,6 +158,18 @@
                     class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="implement.html#T"><span
                     class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span
                     class="identifier">implement</span><span class="symbol">(</span><span class="identifier"
+                                                                                          id="sliep.jes.serializer$implement(java.lang.Class((sliep.jes.serializer.implement.T)), sliep.jes.serializer.JesImplementer((sliep.jes.serializer.implement.T)))/implementer">implementer</span><span
+                    class="symbol">:</span>&nbsp;<a href="../-jes-implementer.html"><span class="identifier">JesImplementer</span></a><span
+                    class="symbol">&lt;</span><a href="implement.html#T"><span class="identifier">T</span></a><span
+                    class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="implement.html#T"><span class="identifier">T</span></a></code>
+            <p>Implement an interface through reflection</p>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
+                    class="identifier">T</span><span class="symbol">&gt;</span> <a
+                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
+                    class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="implement.html#T"><span
+                    class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span
+                    class="identifier">implement</span><span class="symbol">(</span><span class="identifier"
                                                                                           id="sliep.jes.serializer$implement(java.lang.Class((sliep.jes.serializer.implement.T)), kotlin.Function3((sliep.jes.serializer.implement.T, kotlin.String, kotlin.Array((kotlin.Any)), kotlin.Any)))/functionImplementer">functionImplementer</span><span
                     class="symbol">:</span>&nbsp;<a href="implement.html#T"><span class="identifier">T</span></a><span
                     class="symbol">.</span><span class="symbol">(</span><span class="identifier">name</span><span
@@ -203,17 +183,6 @@
                     class="symbol">&gt;</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
                     class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="implement.html#T"><span class="identifier">T</span></a></code><br/>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
-                    class="identifier">T</span><span class="symbol">&gt;</span> <a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="implement.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span
-                    class="identifier">implement</span><span class="symbol">(</span><span class="identifier"
-                                                                                          id="sliep.jes.serializer$implement(java.lang.Class((sliep.jes.serializer.implement.T)), sliep.jes.serializer.JesImplementer((sliep.jes.serializer.implement.T)))/implementer">implementer</span><span
-                    class="symbol">:</span>&nbsp;<a href="../-jes-implementer.html"><span class="identifier">JesImplementer</span></a><span
-                    class="symbol">&lt;</span><a href="implement.html#T"><span class="identifier">T</span></a><span
-                    class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a
                     href="implement.html#T"><span class="identifier">T</span></a></code></td>
     </tr>
     <tr>
@@ -242,87 +211,25 @@
                     class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
                     class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">method</span><span
                     class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))))/name">name</span><span
+                                                 id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))), kotlin.Boolean)/name">name</span><span
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
                     class="identifier">String</span></a><span class="symbol">, </span><span
                     class="keyword">vararg</span> <span class="identifier"
-                                                        id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))))/paramsTypes">paramsTypes</span><span
+                                                        id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))), kotlin.Boolean)/paramsTypes">paramsTypes</span><span
                     class="symbol">:</span>&nbsp;<a
                     href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
                     class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Method.html"><span
-                    class="identifier">Method</span></a></code>
-            <p>Get a method (not only declared) of a class from given name</p>
-            <code><span class="keyword">fun </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">method</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))/name">name</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
-                    class="identifier">String</span></a><span class="symbol">, </span><span
-                    class="keyword">vararg</span> <span class="identifier"
-                                                        id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))/paramsTypes">paramsTypes</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html"><span
-                    class="identifier">KClass</span></a><span class="symbol">&lt;</span><span
-                    class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Method.html"><span
-                    class="identifier">Method</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="method-x.html">methodX</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">methodX</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((java.lang.Class((kotlin.Any)))))/name">name</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
-                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
-                                                                                            id="sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((java.lang.Class((kotlin.Any)))))/searchParent">searchParent</span><span
+                    class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier"
+                                                                                  id="sliep.jes.serializer$method(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Array((java.lang.Class((kotlin.Any)))), kotlin.Boolean)/searchParent">searchParent</span><span
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
-                    class="identifier">Boolean</span></a><span class="symbol">, </span><span
-                    class="keyword">vararg</span> <span class="identifier"
-                                                        id="sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((java.lang.Class((kotlin.Any)))))/paramsTypes">paramsTypes</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a
+                    class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
+                    class="symbol">)</span><span class="symbol">: </span><a
                     href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Method.html"><span
                     class="identifier">Method</span></a></code>
             <p>Get a method of a class from given name</p>
-            <code><span class="keyword">fun </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">methodX</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))/name">name</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
-                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
-                                                                                            id="sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))/searchParent">searchParent</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
-                    class="identifier">Boolean</span></a><span class="symbol">, </span><span
-                    class="keyword">vararg</span> <span class="identifier"
-                                                        id="sliep.jes.serializer$methodX(java.lang.Class((kotlin.Any)), kotlin.String, kotlin.Boolean, kotlin.Array((kotlin.reflect.KClass((kotlin.Any)))))/paramsTypes">paramsTypes</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html"><span
-                    class="identifier">KClass</span></a><span class="symbol">&lt;</span><span
-                    class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Method.html"><span
-                    class="identifier">Method</span></a></code></td>
+        </td>
     </tr>
     <tr>
         <td>
