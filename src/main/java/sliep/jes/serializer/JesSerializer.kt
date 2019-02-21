@@ -204,6 +204,8 @@ object JesSerializer : Loggable {
         jes is JSONArray -> objectValue(jes, type, Array.newInstance(type, jes.length()))
         type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
         jes is JSONObject -> JesSerializer.objectValue(jes, type, type.newUnsafeInstance())
+        jes is String && type.isAssignableFrom(Char::class.java) -> jes[0]
+        jes is Double && type.isAssignableFrom(Float::class.java) -> (jes as Number).toFloat()
         else -> jes
     }
 

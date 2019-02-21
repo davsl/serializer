@@ -9,7 +9,6 @@ fun main() {
     myClass.depth = 5
     myClass.depth3 = 5
     val fromJson = JSONObject("{\"depth\":3}").fromJson<MyClass>()
-//    val fromJson = JesSerializer.fromJson(JSONObject("{\"depth\":3}"), MyClass::class.java, myClass)
     System.out.println(fromJson.depth)
     System.out.println(fromJson.depth3)
 }
