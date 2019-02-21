@@ -56,14 +56,15 @@ functions from the singleton
 ```kotlin
 fun main(vararg args: String) {
     val myObj = MyObj()
-    val jsonObject = JesSerializer.toJson(myObj) //make the magic :)
-    val fromJson = JesSerializer.fromJson(jsonObject, MyObj::class.java) //another magic :)
+    val jsonObject = myObj.toJson() //make the magic :)
+    val fromJson: MyObj = jsonObject.fromJson() //another magic :)
     if (fromJson == myObj)
         System.out.println("Jes Serializer is cool!")
     else
         System.err.println("Jes Serializer is shit!")
 }
 
+@Suppress("EqualsOrHashCode")
 class MyObj : JesObject {
     val var1: Int = 3
     val var2: String = "Hello"
@@ -71,6 +72,7 @@ class MyObj : JesObject {
     override fun equals(other: Any?) = other is MyObj && var1 == other.var1 && var2 == other.var2 && var3 == other.var3
 }
 
+@Suppress("EqualsOrHashCode")
 class MyObj2 : JesObject {
     val var1: Int = 5
     val var2: String = "World"
@@ -82,7 +84,7 @@ constructor is `private`:
 **Jes Serializer** will always work! (except if flag 
 `--illegal-access=deny` is set)
 
-######Customize object serialization
+###### Customize object serialization
 The default serializer implementation takes every field of the class and wrap the value into a json...
 But there is another way to serialize or deserialize an object by using `JesObjectImpl`<br>
 JesObjectImpl is an instance of JesObject which provides a function to let the developer manually convert the class into a json value.<br>
@@ -106,7 +108,7 @@ fun main(vararg args: String) {
     val hello = "*****Hello*****"
     System.out.println(hello.invokeMethod<String>("substring", 5, 10)) //Hello
     val myObj = MyObj()
-    if (myObj.var1 == myObj.field<Int>("var1"))
+    if (myObj.var1 == myObj.field("var1"))
         System.out.println("Jes Serializer is cool!")
     else
         System.err.println("Jes Serializer is shit!")
@@ -127,6 +129,28 @@ private val myVal get() = lateInit { loadValue() }
 fun myFun(){
 System.err.println(myVal) //here loadValue() will be called
 System.err.println(myVal) //the value is loaded only once
+}
+```
+Logging utility
+```kotlin
+class MyClass : Loggable {
+    fun doTask() {
+        val hello = "world"
+        log { "Hello is $hello" } //will be executed ONLY if variable LOG is true
+        depth++
+        for (i in 0..10) {
+            System.out.println(i * 1234)
+            log { "Computing $i" }
+        }
+        depth--
+        log { "Fineeshhh" }
+    }
+
+    var depth = 0
+
+    companion object {
+        var LOG = true
+    }
 }
 ```
 #### Enjoy! `:D`

@@ -6,12 +6,6 @@ import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
 import kotlin.reflect.KClass
-
-/**
- * Reflective operation core
- * @author sliep
- */
-
 /* ********************************************************** *\
  ** -------------------  CONSTRUCTORS  ------------------- **
 \* ********************************************************** */
@@ -27,12 +21,12 @@ import kotlin.reflect.KClass
  * @throws NoSuchMethodException if a matching method is not found.
  * @throws UnsupportedOperationException if you're trying to instantiate a non-instantiable class
  * @throws InvocationTargetException if the underlying constructor throws an exception.
- * @see [checkAllocatePossible]
+ * @see [checkAllocationPossible]
  * @see [Constructor.newInstance]
  */
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class, InvocationTargetException::class)
 fun <T> Class<T>.newInstance(vararg params: Any?): T {
-    checkAllocatePossible()
+    checkAllocationPossible()
     val constructor = guessFromParameters(name, declaredConstructors, null, params)
     constructor.isAccessible = true
     return constructor.newInstance(*params) as T
@@ -63,12 +57,12 @@ fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
  * @return the newly created instance
  * @throws NoSuchMethodException if a matching method is not found.
  * @throws UnsupportedOperationException if you're trying to instantiate a non-instantiable class
- * @see [checkAllocatePossible]
+ * @see [checkAllocationPossible]
  * @see [Unsafe.allocateInstance]
  */
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class)
 fun <T> Class<T>.newUnsafeInstance(): T {
-    checkAllocatePossible()
+    checkAllocationPossible()
     val clazz = this
     for (allocation in AllocationMethod.values())
         allocation.runCatching { return newInstance(clazz) }
@@ -100,7 +94,7 @@ fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Ar
  * @throws UnsupportedOperationException if you're trying to instantiate a non-instantiable class
  * @receiver the [Class] to check
  */
-fun Class<*>.checkAllocatePossible() {
+internal fun Class<*>.checkAllocationPossible() {
     if (isPrimitive) throw UnsupportedOperationException("Cannot allocate primitive type!")
     if (Modifier.isAbstract(modifiers)) throw UnsupportedOperationException("Cannot allocate abstract class!")
     if (isEnum) throw UnsupportedOperationException("Cannot allocate enum class!")
@@ -301,31 +295,18 @@ fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
 }
 
 /**
- * Get a method (not only declared) of a class from given name
- * @author sliep
- * @receiver the declaring class of the method
- * @param name of the method
- * @param paramsTypes method arguments types
- * @return method object
- * @throws NoSuchMethodException if a matching method is not found.
- * @see [Class.getDeclaredMethod]
- */
-@Throws(NoSuchMethodException::class)
-fun Class<*>.method(name: String, vararg paramsTypes: Class<*>) = methodX(name, true, *paramsTypes)
-
-/**
  * Get a method of a class from given name
  * @author sliep
  * @receiver the declaring class of the method
  * @param name of the method
- * @param searchParent tell the function to search the method not only in the declaring class, but even in it's superclasses.
+ * @param searchParent tell the function to search the method not only in the declaring class, but even in it's superclasses. default true
  * @param paramsTypes method arguments types
  * @return method object
  * @throws NoSuchMethodException if a matching method is not found.
  * @see [Class.getDeclaredMethod]
  */
 @Throws(NoSuchMethodException::class)
-fun Class<*>.methodX(name: String, searchParent: Boolean, vararg paramsTypes: Class<*>): Method {
+fun Class<*>.method(name: String, vararg paramsTypes: Class<*>, searchParent: Boolean = true): Method {
     var clazz = this
     while (true)
         try {
@@ -437,12 +418,16 @@ val Executable.signature get() = methodToString(declaringClass.name, name, param
 /* ********************************************************** *\
  ** ---------------------  CLASSES  ---------------------- **
 \* ********************************************************** */
-
-fun <T> Class<T>.implement(functionImplementer: T.(name: String, args: Array<out Any>) -> Any?) =
-    implement(object : FunctionImplementer<T> {
-        override fun T.memberFunction(name: String, args: Array<out Any>) = functionImplementer(name, args)
-    })
-
+/**
+ * Implement an interface through reflection
+ * @author sliep
+ * @param T the class to be instantiated
+ * @param implementer invocation handler to dispatch method invocations to
+ * @return a new proxy instance of the given class
+ * @throws IllegalArgumentException if [T] is not an interface
+ * @see JesImplementer
+ */
+@Throws(IllegalArgumentException::class)
 fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
     Proxy.newProxyInstance(classLoader, arrayOf(this)) { proxy, method, args ->
         val methodName = method.name
@@ -480,6 +465,15 @@ fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
     } as T
 
 /**
+ * @author sliep
+ * @see implement
+ */
+fun <T> Class<T>.implement(functionImplementer: T.(name: String, args: Array<out Any>) -> Any?) =
+    implement(object : FunctionImplementer<T> {
+        override fun T.memberFunction(name: String, args: Array<out Any>) = functionImplementer(name, args)
+    })
+
+/**
  * Get the java primitive type of a class (e.g. [java.lang.Integer] -> [kotlin.Int])
  *
  * an [unwrappedClass] of a non primitive class is equal to the receiver object
@@ -507,10 +501,14 @@ val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
+/**
+ * Utility class to instantiate an object
+ * @author sliep
+ */
 internal enum class AllocationMethod {
     NATIVE_NEW_INSTANCE {
         @Suppress("RemoveRedundantSpreadOperator")
-        override fun <T> newInstance(c: Class<T>) = c.constructor(*arrayOf<Class<*>>()).newInstance()!!
+        override fun <T> newInstance(c: Class<T>) = c.constructor().newInstance()!!
     },
     UNSAFE {
         override fun <T> newInstance(c: Class<T>) = Unsafe::class.field<Unsafe>("theUnsafe").allocateInstance(c) as T
@@ -520,15 +518,116 @@ internal enum class AllocationMethod {
     abstract fun <T> newInstance(c: Class<T>): T
 }
 
+/**
+ * Handle simultaneously getters/setters and normal functions
+ *
+ * If the function name starts with get/is/set the invocation will be dispatched to [PropertyImplementer] else to [FunctionImplementer]
+ * @author sliep
+ * @param T proxy type
+ * @see JesImplementer
+ */
 interface InterfaceImplementer<T> : PropertyImplementer<T>, FunctionImplementer<T>
 
+/**
+ * Handle every property access of the proxy interface
+ * This implementer is great when you want to define an interface without methods but only properties (only in kotlin)
+ *
+ * Example of usage:
+ * ```kotlin
+ * interface MyInterface {
+ *     var setting: String
+ *     val name: String
+ *     var something: Int
+ * }
+ *
+ * fun main() {
+ *     implement(object : PropertyImplementer<MyInterface> {
+ *         override fun MyInterface.get(property: String): Any? = when (property) {
+ *             "setting" -> mySettings
+ *             "name" -> "Gian Paolo"
+ *             "something" -> 1234
+ *             else -> throw UnsupportedOperationException("UNIMPLEMENTED")
+ *         }
+ *
+ *         override fun MyInterface.set(property: String, value: Any?) = when (property) {
+ *             "setting" -> mySettings = value as String
+ *             "something" -> setSomething(value as Int)
+ *             else -> throw UnsupportedOperationException("UNIMPLEMENTED")
+ *         }
+ *     })
+ * }
+ * ```
+ * @author sliep
+ * @param T proxy type
+ * @see JesImplementer
+ */
 interface PropertyImplementer<T> : JesImplementer<T> {
+    /**
+     * A property getter is a empty-parameter function called get[property] or is[property] where property is the name of the property having the first letter capitalized
+     * @author sliep
+     * @receiver proxy instance
+     * @param property name
+     * @return property value
+     */
     fun T.get(property: String): Any?
+
+    /**
+     * A property setter is a function with 1 parameter called set[property] where property is the name of the property having the first letter capitalized
+     * @author sliep
+     * @receiver proxy instance
+     * @param property name
+     * @param value new value to be set to the property
+     */
     fun T.set(property: String, value: Any?)
 }
 
+/**
+ * Handle every function call of the proxy interface
+ *
+ * Example of usage:
+ * ```kotlin
+ * interface MyInterface {
+ *     fun doSomething(aNumber: Int, lol: Boolean): String
+ *     fun doSomethingElse(): FloatArray
+ * }
+ *
+ * fun main() {
+ *     implement<MyInterface> { name, args ->
+ *         when (name) {
+ *             "doSomething" -> if (args[1] as Boolean) "lol" else args[0].toString()
+ *             "doSomethingElse" -> throw IllegalStateException("Causal error just for fun")
+ *             else -> throw UnsupportedOperationException("UNIMPLEMENTED")
+ *         }
+ *     }
+ * }
+ * ```
+ * @author sliep
+ * @param T proxy type
+ * @see JesImplementer
+ */
 interface FunctionImplementer<T> : JesImplementer<T> {
+
+    /**
+     * Implement this method to handle a function call
+     * @author sliep
+     * @receiver proxy instance
+     * @param name the name of the invoked method
+     * @param args parameters passed to the method (can be empty but non null)
+     * @return function result or Unit for void functions
+     */
     fun T.memberFunction(name: String, args: Array<out Any>): Any?
 }
 
+/**
+ * When a method is invoked on a proxy instance created by [implement], the method invocation is encoded and dispatched to the [JesImplementer]
+ *
+ * Do not pass to implement method a direct instance of this interface, instead use it's subtypes
+ * - [FunctionImplementer] to handle any function call as a member function
+ * - [PropertyImplementer] to handle only getters and setters
+ * - [InterfaceImplementer] a mix of the previous implementers: perfect solution to handle getters setters and functions in a separate way
+ * @author sliep
+ * @param T proxy type
+ * @see implement
+ * @see InvocationHandler
+ */
 interface JesImplementer<T>

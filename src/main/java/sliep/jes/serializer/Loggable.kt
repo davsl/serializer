@@ -2,13 +2,14 @@ package sliep.jes.serializer
 
 import sliep.jes.serializer.Loggable.Companion.logger
 import java.lang.reflect.Field
+import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
 
 /**
  * Logging utility
  * 1. Implement [Loggable]
  * 2. Define a static [Boolean] named 'LOG'
- * 3. (optional) Define a static [Int] named 'depth'
+ * 3. (optional) Define an instance field [Int] named 'depth'
  * 4. in your Loggable class just call [log]
  * @author sliep
  */
@@ -80,19 +81,21 @@ fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
     if (field("LOG")) {
         val theMessage = message()?.toString() ?: return
         val depthField = kotlin.runCatching { java.fieldR("depth") }.getOrNull()
-        logger.log(this.java.simpleName, spaces(depthField, depth) + theMessage)
+        logger.log(this.java.simpleName, null.spaces(depthField, depth) + theMessage)
     }
 }
 
 /**
  * Create spaces to indent messages
  * @author sliep
+ * @receiver the loggable to get depth or null for singletons
  * @param depthField if exists
  * @param depth override value from call if not -1 (default)
  * @return spaces string
  */
-private fun spaces(depthField: Field?, depth: Int): String {
-    val finalDepth = if (depth == -1) depthField?.getInt(null) ?: 0 else depth
+private fun Loggable?.spaces(depthField: Field?, depth: Int): String {
+    if (depthField != null && this == null && !Modifier.isStatic(depthField.modifiers)) throw IllegalStateException("Can't get depth from outside the instance")
+    val finalDepth = if (depth == -1) depthField?.getInt(this) ?: 0 else depth
     val indent = StringBuilder()
     for (i in 0 until finalDepth) indent.append("    ")
     return indent.toString()

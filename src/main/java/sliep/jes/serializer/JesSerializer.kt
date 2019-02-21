@@ -198,8 +198,8 @@ object JesSerializer : Loggable {
      */
     @JvmStatic
     private fun objectValue(jes: Any, type: Class<*>): Any = when {
-        kotlin.runCatching { type.constructor(JesConstructor::class); true }.getOrDefault(false) ->
-            type.constructor(JesConstructor::class).newInstance(object : JesConstructor<Any> {
+        kotlin.runCatching { type.constructor(JesConstructor::class.java); true }.getOrDefault(false) ->
+            type.constructor(JesConstructor::class.java).newInstance(object : JesConstructor<Any> {
                 override val data = jes
             })
         jes::class.java.isAssignableFrom(type) -> jes
