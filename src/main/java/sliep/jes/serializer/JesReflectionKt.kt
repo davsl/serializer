@@ -3,6 +3,7 @@
 package sliep.jes.serializer
 
 import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
 /* ********************************************************** *\
@@ -88,7 +89,7 @@ inline fun <reified T : Any> methods(modifiers: Int = 0, excludeModifiers: Int =
  * @author sliep
  * @see Class.implement
  */
-inline fun <reified T : Any> implement(noinline functionImplementer: T.(name: String, args: Array<out Any>) -> Any?) =
+inline fun <reified T : Any> implement(noinline functionImplementer: T.(method: Method, args: Array<out Any>) -> Any?) =
     T::class.java.implement(functionImplementer)
 
 /**

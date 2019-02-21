@@ -139,7 +139,6 @@ object JesSerializer : Loggable {
      * @param blackList is a list of unique identifier of a JVM instance from [System.identityHashCode] is necessary to keep track of already serialized instances to avoid infinite loop if an object field references itself
      * @return the json value ([JSONObject] or [JSONArray] or [String] or Primitive type)
      */
-    @JvmStatic
     private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): Any = when {
         instance is JesObjectImpl<*> -> instance.toJson()
         instance::class.java.isArray -> {
@@ -196,55 +195,66 @@ object JesSerializer : Loggable {
      * - [Any]
      * @return the object value of [jes] (an instance of [type])
      */
-    @JvmStatic
     private fun objectValue(jes: Any, type: Class<*>): Any = when {
         kotlin.runCatching { type.constructor(JesConstructor::class.java); true }.getOrDefault(false) ->
             type.constructor(JesConstructor::class.java).newInstance(object : JesConstructor<Any> {
                 override val data = jes
             })
         jes::class.java.isAssignableFrom(type) -> jes
-        jes is JSONArray -> {
-            val response = Array.newInstance(type, jes.length())
-            val logArray = LOG && !type.isTypePrimitive
-            if (logArray) log { " [" }
+        jes is JSONArray -> objectValue(jes, type, Array.newInstance(type, jes.length()))
+        type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
+        jes is JSONObject -> JesSerializer.objectValue(jes, type, type.newUnsafeInstance())
+        else -> jes
+    }
+
+    /**
+     * Load json elements into array instance
+     * @author sliep
+     * @see objectValue
+     */
+    private fun <T> objectValue(jes: JSONArray, componentType: Class<*>, instance: T): T {
+        val logArray = LOG && !componentType.isTypePrimitive
+        if (logArray) log { " [" }
+        depth++
+        for (i in 0 until jes.length()) {
+            if (logArray) log { "$i ->" }
+            Array.set(instance, i, objectValue(jes.opt(i), componentType))
+        }
+        depth--
+        if (logArray) log { " ]" }
+        return instance
+    }
+
+    /**
+     * Load json elements into object instance
+     * @author sliep
+     * @see objectValue
+     */
+    private fun <T> objectValue(jes: JSONObject, type: Class<*>, instance: T): T {
+        val keys = jes.keys()
+        while (keys.hasNext()) {
+            val name = keys.next()
+            val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
             depth++
-            for (i in 0 until jes.length()) {
-                if (logArray) log { "$i ->" }
-                Array.set(response, i, objectValue(jes.opt(i), type))
+            log { " ${field.name} <- ${jes[name]}" }
+            field.isAccessible = true
+            try {
+                val value = when {
+                    field.type.isArray -> objectValue(jes.optJSONArray(name), field.type.componentType)
+                    List::class.java.isAssignableFrom(field.type) ->
+                        if (jes[name] is List<*>) jes[name] else jes.getJSONArray(name).toList()
+                    Map::class.java.isAssignableFrom(field.type) ->
+                        if (jes[name] is Map<*, *>) jes[name] else jes.getJSONObject(name).toMap()
+                    else -> objectValue(jes[name], field.type)
+                }
+                field.isFinal = false
+                field[instance] = value
+            } catch (e: Throwable) {
+                throw JSONException("Unable to deserialize field $name", e)
             }
             depth--
-            if (logArray) log { " ]" }
-            response
         }
-        type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
-        jes is JSONObject -> {
-            val keys = jes.keys()
-            val response = type.newUnsafeInstance()
-            while (keys.hasNext()) {
-                val name = keys.next()
-                val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
-                depth++
-                log { " ${field.name} <- ${jes[name]}" }
-                field.isAccessible = true
-                try {
-                    val value = when {
-                        field.type.isArray -> objectValue(jes.optJSONArray(name), field.type.componentType)
-                        List::class.java.isAssignableFrom(field.type) ->
-                            if (jes[name] is List<*>) jes[name] else jes.getJSONArray(name).toList()
-                        Map::class.java.isAssignableFrom(field.type) ->
-                            if (jes[name] is Map<*, *>) jes[name] else jes.getJSONObject(name).toMap()
-                        else -> objectValue(jes[name], field.type)
-                    }
-                    field.isFinal = false
-                    field[response] = value
-                } catch (e: Throwable) {
-                    throw JSONException("Unable to deserialize field $name", e)
-                }
-                depth--
-            }
-            response
-        }
-        else -> jes
+        return instance
     }
 }
 

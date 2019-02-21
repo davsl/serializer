@@ -1,15 +1,17 @@
 package test
 
+import org.json.JSONObject
 import sliep.jes.serializer.Loggable
-import sliep.jes.serializer.implement
+import sliep.jes.serializer.fromJson
 
 fun main() {
-    val daa = implement<DAA> { name, _ -> name }
-    System.err.println(daa.isis)
-    daa.isis = "refv"
-    daa.sdrogo()
-    MyClass().doTask()
-    MyClass.LOG = false
+    val myClass = MyClass()
+    myClass.depth = 5
+    myClass.depth3 = 5
+    val fromJson = JSONObject("{\"depth\":3}").fromJson<MyClass>()
+//    val fromJson = JesSerializer.fromJson(JSONObject("{\"depth\":3}"), MyClass::class.java, myClass)
+    System.out.println(fromJson.depth)
+    System.out.println(fromJson.depth3)
 }
 
 private interface DAA {
@@ -32,6 +34,7 @@ class MyClass : Loggable {
     }
 
     var depth = 0
+    var depth3 = 0
 
     companion object {
         var LOG = true
