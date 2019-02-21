@@ -437,29 +437,26 @@ fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
             implementer is PropertyImplementer<T> && argsCount == 0 && methodName.startsWith("get") && methodName[3].isUpperCase() ->
                 implementer.apply {
                     return@newProxyInstance proxy.get(
-                        methodName[3].toLowerCase() + methodName.substring(
-                            4
-                        )
+                        methodName[3].toLowerCase() + methodName.substring(4),
+                        method.returnType
                     )
                 }
             implementer is PropertyImplementer<T> && argsCount == 0 && methodName.startsWith("is") && methodName[2].isUpperCase() ->
                 implementer.apply {
                     return@newProxyInstance proxy.get(
-                        methodName[2].toLowerCase() + methodName.substring(
-                            3
-                        )
+                        methodName[2].toLowerCase() + methodName.substring(3),
+                        method.returnType
                     )
                 }
             implementer is PropertyImplementer<T> && argsCount == 1 && methodName.startsWith("set") && methodName[3].isUpperCase() ->
                 implementer.apply {
                     return@newProxyInstance proxy.set(
-                        methodName[3].toLowerCase() + methodName.substring(
-                            4
-                        ), args[0]
+                        methodName[3].toLowerCase() + methodName.substring(4), args[0],
+                        method.parameterTypes[0]
                     )
                 }
             implementer is FunctionImplementer<T> ->
-                implementer.apply { return@newProxyInstance proxy.memberFunction(methodName, args ?: arrayOf()) }
+                implementer.apply { return@newProxyInstance proxy.memberFunction(method, args ?: arrayOf()) }
             else -> throw UnsupportedOperationException("Incompatible implementer: method=$methodName implementer=$implementer")
         }
     } as T
@@ -468,9 +465,9 @@ fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
  * @author sliep
  * @see implement
  */
-fun <T> Class<T>.implement(functionImplementer: T.(name: String, args: Array<out Any>) -> Any?) =
+fun <T> Class<T>.implement(functionImplementer: T.(method: Method, args: Array<out Any>) -> Any?) =
     implement(object : FunctionImplementer<T> {
-        override fun T.memberFunction(name: String, args: Array<out Any>) = functionImplementer(name, args)
+        override fun T.memberFunction(method: Method, args: Array<out Any>) = functionImplementer(method, args)
     })
 
 /**
@@ -567,18 +564,20 @@ interface PropertyImplementer<T> : JesImplementer<T> {
      * @author sliep
      * @receiver proxy instance
      * @param property name
+     * @param propertyType return type of the method
      * @return property value
      */
-    fun T.get(property: String): Any?
+    fun T.get(property: String, propertyType: Class<*>): Any?
 
     /**
      * A property setter is a function with 1 parameter called set[property] where property is the name of the property having the first letter capitalized
      * @author sliep
      * @receiver proxy instance
      * @param property name
+     * @param valueType type of method parameter
      * @param value new value to be set to the property
      */
-    fun T.set(property: String, value: Any?)
+    fun T.set(property: String, value: Any?, valueType: Class<*>)
 }
 
 /**
@@ -611,11 +610,11 @@ interface FunctionImplementer<T> : JesImplementer<T> {
      * Implement this method to handle a function call
      * @author sliep
      * @receiver proxy instance
-     * @param name the name of the invoked method
+     * @param method invoked
      * @param args parameters passed to the method (can be empty but non null)
      * @return function result or Unit for void functions
      */
-    fun T.memberFunction(name: String, args: Array<out Any>): Any?
+    fun T.memberFunction(method: Method, args: Array<out Any>): Any?
 }
 
 /**
