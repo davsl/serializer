@@ -260,7 +260,12 @@ var Field.isFinal: Boolean
 /* ********************************************************** *\
  ** ---------------------  METHODS  ---------------------- **
 \* ********************************************************** */
+@Suppress("NOTHING_TO_INLINE")
+inline fun stackCallerName(depth: Int = 1): String = Thread.currentThread().stackTrace[depth + 1].methodName
 
+@Suppress("NOTHING_TO_INLINE")
+inline fun stackCallerClass(depth: Int = 1): Class<*> =
+    Class.forName(Thread.currentThread().stackTrace[depth + 1].className)
 /**
  * Invoke a specific method (not only declared) of an object through reflection
  *

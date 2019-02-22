@@ -11,6 +11,7 @@ fun main() {
     val fromJson = JSONObject("{\"depth\":3}").fromJson<MyClass>()
     System.out.println(fromJson.depth)
     System.out.println(fromJson.depth3)
+
 }
 
 private interface DAA {
