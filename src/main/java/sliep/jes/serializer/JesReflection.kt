@@ -225,7 +225,7 @@ fun Any.callSetter(fieldName: String, value: Any?) {
  * @author sliep
  */
 private val MODIFIERS
-    get() = lateInit {
+    get() = staticLateInit("sliep.jes.serializer.MODIFIERS".hashCode()) {
         kotlin.runCatching {
             kotlin.runCatching { Field::class.java.fieldR("accessFlags") }
                 .getOrDefault(Field::class.java.fieldR("modifiers"))

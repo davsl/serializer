@@ -14,9 +14,11 @@ import kotlin.reflect.KClass
  * @author sliep
  */
 interface Loggable {
-    private val log get() = lateInit { this::class.field<Boolean>("LOG") }
-    private val tag get() = lateInit { this::class.java.simpleName }
-    private val depthField get() = lateInit { kotlin.runCatching { this::class.java.fieldR("depth") }.getOrNull() }
+    private val log get() = lateInit("sliep.jes.serializer.Loggable.log".hashCode()) { this::class.field<Boolean>("LOG") }
+    private val tag get() = lateInit("sliep.jes.serializer.Loggable.tag".hashCode()) { this::class.java.simpleName }
+    private val depthField
+        get() = lateInit("sliep.jes.serializer.Loggable.depthField".hashCode())
+        { kotlin.runCatching { this::class.java.fieldR("depth") }.getOrNull() }
 
     /**
      * Log a message

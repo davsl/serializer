@@ -9,7 +9,7 @@ plugins {
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
 }
-def VERSION = '3.0.2'
+def VERSION = '3.0.4'
 def ART_ID = 'serializer'
 
 group 'sliep.jes'

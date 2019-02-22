@@ -37,6 +37,17 @@ class ReflectionTest {
         assertEquals(1, fields<ModelTest>(Modifier.PRIVATE).size)
     }
 
+    @Test
+    fun lateInitTest() {
+        assertEquals(1, jees)
+        assertEquals(1, jees)
+        assertEquals(1, jees)
+        assertEquals(2, i)
+    }
+
+    var i = 1
+    val jees get() = lateInit(235465765) { i++ }
+
     class ModelTest(@JvmField val i: Int) {
         @JvmField
         val susu = "Hello"
