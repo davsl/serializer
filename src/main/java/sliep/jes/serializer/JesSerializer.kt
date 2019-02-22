@@ -139,6 +139,7 @@ object JesSerializer : Loggable {
      * @param blackList is a list of unique identifier of a JVM instance from [System.identityHashCode] is necessary to keep track of already serialized instances to avoid infinite loop if an object field references itself
      * @return the json value ([JSONObject] or [JSONArray] or [String] or Primitive type)
      */
+    @JvmStatic
     private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): Any = when {
         instance is JesObjectImpl<*> -> instance.toJson()
         instance::class.java.isArray -> {
@@ -195,6 +196,7 @@ object JesSerializer : Loggable {
      * - [Any]
      * @return the object value of [jes] (an instance of [type])
      */
+    @JvmStatic
     private fun objectValue(jes: Any, type: Class<*>): Any = when {
         kotlin.runCatching { type.constructor(JesConstructor::class.java); true }.getOrDefault(false) ->
             type.constructor(JesConstructor::class.java).newInstance(object : JesConstructor<Any> {
@@ -214,7 +216,8 @@ object JesSerializer : Loggable {
      * @author sliep
      * @see objectValue
      */
-    private fun <T> objectValue(jes: JSONArray, componentType: Class<*>, instance: T): T {
+    @JvmStatic
+    fun <T> objectValue(jes: JSONArray, componentType: Class<*>, instance: T): T {
         val logArray = LOG && !componentType.isTypePrimitive
         if (logArray) log { " [" }
         depth++
@@ -232,7 +235,8 @@ object JesSerializer : Loggable {
      * @author sliep
      * @see objectValue
      */
-    private fun <T> objectValue(jes: JSONObject, type: Class<*>, instance: T): T {
+    @JvmStatic
+    fun <T> objectValue(jes: JSONObject, type: Class<*>, instance: T): T {
         val keys = jes.keys()
         while (keys.hasNext()) {
             val name = keys.next()
@@ -283,17 +287,23 @@ fun kotlin.Array<out JesObject>.toJson(): JSONArray = JesSerializer.arrayToJson(
  * @author sliep
  * @receiver object to be deserialized
  * @param T type of instance
+ * @param target to load json into or null to create a new instance
  * @return a new instance of [T] built from json object
  * @see JesSerializer.fromJson
  */
-inline fun <reified T : Any> JSONObject.fromJson() = JesSerializer.fromJson(this, T::class.java)
+inline fun <reified T : Any> JSONObject.fromJson(target: T? = null) =
+    if (target == null) JesSerializer.fromJson(this, T::class.java)
+    else JesSerializer.objectValue(this, T::class.java, target)
 
 /**
  * Convert a [JSONArray] into an [Array] of [T]
  * @author sliep
  * @receiver object to be deserialized
  * @param T type of instance component
+ * @param target to load json into or null to create a new instance
  * @return a new instance of [T] built from json object
  * @see JesSerializer.fromJsonArray
  */
-inline fun <reified T : Any> JSONArray.fromJson() = JesSerializer.fromJsonArray(this, T::class.java)
+inline fun <reified T : Any> JSONArray.fromJson(target: kotlin.Array<T>? = null) =
+    if (target == null) JesSerializer.fromJsonArray(this, T::class.java)
+    else JesSerializer.objectValue(this, T::class.java, target)

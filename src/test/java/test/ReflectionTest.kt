@@ -1,10 +1,9 @@
+@file:Suppress("unused", "UNUSED_PARAMETER", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
 package test
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import sliep.jes.serializer.constructor
-import sliep.jes.serializer.constructors
-import sliep.jes.serializer.newInstance
-import sliep.jes.serializer.newUnsafeInstance
+import sliep.jes.serializer.*
 import java.lang.reflect.Modifier
 
 class ReflectionTest {
@@ -12,27 +11,46 @@ class ReflectionTest {
     @Test
     fun constructorTest() {
         val newInstance = constructor<ModelTest>().newInstance()
-        assert(newInstance.susu == "Hello")
-        assert(constructors<ModelTest>().size == 4)
-        assert(constructors<ModelTest>(Modifier.PUBLIC).size == 3)
-        assert(constructors<ModelTest>(Modifier.PRIVATE).size == 1)
-        assert(newInstance<ModelTest>(5).i == 5)
-        assert(newInstance<ModelTest>().i == 3)
-        assert(newUnsafeInstance<ModelTest2>().i == 0)
+        assertEquals("Hello", newInstance.susu)
+        assertEquals(4, constructors<ModelTest>().size)
+        assertEquals(3, constructors<ModelTest>(Modifier.PUBLIC).size)
+        assertEquals(1, constructors<ModelTest>(Modifier.PRIVATE).size)
+        assertEquals(5, newInstance<ModelTest>(5).i)
+        assertEquals(3, newInstance<ModelTest>().i)
+        assertEquals(0, newUnsafeInstance<ModelTest2>().i)
     }
 
-    class ModelTest(val i: Int) {
+    @Test
+    fun fieldsTest() {
+        val instance = constructor<ModelTest>().newInstance()
+        assertEquals(instance.susu, instance.field<String>("susu"))
+        assertEquals(instance.susu, fieldR<ModelTest>("susu")[instance])
+        assertEquals(1, fields<ModelTest>(modifiers = Modifier.PRIVATE).size)
+        assertEquals(2, fields<ModelTest>(excludeModifiers = Modifier.PRIVATE).size)
+    }
+
+    @Test
+    fun methodsTest() {
+        val instance = constructor<ModelTest>().newInstance()
+        assertEquals(instance.susu, instance.field<String>("susu"))
+        assertEquals(instance.susu, fieldR<ModelTest>("susu")[instance])
+        assertEquals(1, fields<ModelTest>(Modifier.PRIVATE).size)
+    }
+
+    class ModelTest(@JvmField val i: Int) {
+        @JvmField
         val susu = "Hello"
+        private val private = 345
 
         constructor() : this(3)
         internal constructor(int: Int, float: Float) : this(int)
         private constructor(int: Int, double: Double) : this(int)
     }
 
-    class ModelTest2 {
+    class ModelTest2(s: String) {
         val i: Int
 
-        constructor(s: String) {
+        init {
             i = 43
         }
     }

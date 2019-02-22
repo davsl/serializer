@@ -1,6 +1,8 @@
+@file:Suppress("unused", "UNUSED_PARAMETER", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
 package test
 
 import org.json.JSONObject
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.*
 
@@ -8,22 +10,26 @@ class JesSerializerTest {
     @Test
     fun serializePrimitiveValues() {
         val modelTest = JSONObject(ModelTest.TEST_JSON).fromJson<ModelTest>()
-        assert(modelTest.s == "A B C D")
-        assert(modelTest.i == 123)
-        assert(modelTest.f == 45.6f)
-        assert(modelTest.d == 78.9)
-        assert(modelTest.b)
-        assert(modelTest.c == 'c')
-        assert(modelTest.l == 34567654345678)
-        assert(modelTest.o.s == "E F G")
+        assertEquals("A B C D", modelTest.s)
+        assertEquals(123, modelTest.i)
+        assertEquals(45.6f, modelTest.f)
+        assertEquals(78.9, modelTest.d, 0.0)
+        assertEquals(true, modelTest.b)
+        assertEquals('c', modelTest.c)
+        assertEquals(34567654345678, modelTest.l)
+        assertEquals("E F G", modelTest.o.s)
     }
 
     @Test
     fun serializeDeserialize() {
         val originalJson = JSONObject(ModelTest.TEST_JSON)
         val modelTest = originalJson.fromJson<ModelTest>().toJson()
-        assert(originalJson.toString() == modelTest.toString())
-        assert(modelTest.fromJson<ModelTest>().toJson().toString() == modelTest.toString())
+        assertEquals(modelTest.toString(), originalJson.toString())
+        assertEquals(modelTest.toString(), modelTest.fromJson<ModelTest>().toJson().toString())
+        val fromJson = modelTest.fromJson<ModelTest>()
+        fromJson.s = "ARRRRRRG"
+        modelTest.fromJson(fromJson)
+        assertEquals("A B C D", fromJson.s)
     }
 
     @Test
@@ -31,7 +37,7 @@ class JesSerializerTest {
         val modelTest = JSONObject(ModelTest.TEST_JSON).fromJson<ModelTest>()
         modelTest.impl = ModelImplTest("fversv", 24)
         val copy = modelTest.toJson().fromJson<ModelTest>().toJson().toString()
-        assert(modelTest.toJson().toString() == copy)
+        assertEquals(modelTest.toJson().toString(), copy)
     }
 
     class ModelImplTest(val a: String, val b: Int) : JesObjectImpl<String> {
@@ -44,7 +50,7 @@ class JesSerializerTest {
     }
 
     class ModelTest(
-        val s: String,
+        var s: String,
         val i: Int,
         val f: Float,
         val d: Double,
