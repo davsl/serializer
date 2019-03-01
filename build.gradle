@@ -114,7 +114,6 @@ dokka {
     moduleName = 'serializer'
     includeNonPublic = false
     skipDeprecated = false
-    reportUndocumented = false
     skipEmptyPackages = true
     outputFormat = 'html'
     outputDirectory = "$projectDir/docs"

@@ -12,7 +12,7 @@ package sliep.jes.serializer
  * @param init initializer of the variable will be called only once
  * @return result of initializer
  */
-fun <T> staticLateInit(id: Int, init: () -> T) = if (instances.containsKey(id)) instances[id] as T else {
+fun <T> lateInit(id: Int, init: () -> T) = if (instances.containsKey(id)) instances[id] as T else {
     val instance = init()
     instances[id] = instance
     instance
@@ -20,11 +20,25 @@ fun <T> staticLateInit(id: Int, init: () -> T) = if (instances.containsKey(id)) 
 
 /**
  * @author sliep
- * @receiver instance that contains the variable for non static variables
+ * @receiver instance that contains the variable for static variables
  * @see lateInit
  */
-fun <T> Any.lateInit(id: Int, init: () -> T) = staticLateInit(System.identityHashCode(this) * id, init)
+@Suppress("NOTHING_TO_INLINE")
+inline fun <T> lateInit(noinline init: () -> T): T {
+    val stack = stack()
+    return lateInit((stack.clazz.name + stack.lineNumber).hashCode(), init)
+}
 
+/**
+ * @author sliep
+ * @receiver instance that contains the variable for instance variables
+ * @see lateInit
+ */
+@Suppress("NOTHING_TO_INLINE")
+inline fun <T> Any.lateInit(noinline init: () -> T): T {
+    val stack = stack()
+    return lateInit((stack.clazz.name + stack.lineNumber).hashCode() * System.identityHashCode(this), init)
+}
 /**
  * All late-initialized instances
  */

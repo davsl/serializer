@@ -81,8 +81,8 @@ fun <T> Class<T>.newUnsafeInstance(): T {
 fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Constructor<out T>> {
     val response = ArrayList<Constructor<out T>>()
     for (constructor in declaredConstructors)
-        if ((modifiers == 0 || constructor.modifiers and modifiers == modifiers) &&
-            (excludeModifiers == 0 || constructor.modifiers and excludeModifiers == 0) &&
+        if ((modifiers == 0 || constructor.modifiers includes modifiers) &&
+            (excludeModifiers == 0 || constructor.modifiers excludes excludeModifiers) &&
             !response.contains(constructor)
         ) response.add(constructor as Constructor<out T>)
     return response.toArray(arrayOf())
@@ -168,8 +168,8 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
     var clazz = this
     while (true) {
         for (field in clazz.declaredFields)
-            if ((modifiers == 0 || field.modifiers and modifiers == modifiers) &&
-                (excludeModifiers == 0 || field.modifiers and excludeModifiers == 0) &&
+            if ((modifiers == 0 || field.modifiers includes modifiers) &&
+                (excludeModifiers == 0 || field.modifiers excludes excludeModifiers) &&
                 !response.contains(field)
             ) response.add(field)
         clazz = clazz.superclass ?: return response.toArray(arrayOf())
@@ -225,9 +225,9 @@ fun Any.callSetter(fieldName: String, value: Any?) {
  * @author sliep
  */
 private val MODIFIERS
-    get() = staticLateInit("sliep.jes.serializer.MODIFIERS".hashCode()) {
-        kotlin.runCatching {
-            kotlin.runCatching { Field::class.java.fieldR("accessFlags") }
+    get() = lateInit("sliep.jes.serializer.MODIFIERS".hashCode()) {
+        runCatching {
+            runCatching { Field::class.java.fieldR("accessFlags") }
                 .getOrDefault(Field::class.java.fieldR("modifiers"))
         }.getOrNull()
     }
@@ -260,12 +260,6 @@ var Field.isFinal: Boolean
 /* ********************************************************** *\
  ** ---------------------  METHODS  ---------------------- **
 \* ********************************************************** */
-@Suppress("NOTHING_TO_INLINE")
-inline fun stackCallerName(depth: Int = 1): String = Thread.currentThread().stackTrace[depth + 1].methodName
-
-@Suppress("NOTHING_TO_INLINE")
-inline fun stackCallerClass(depth: Int = 1): Class<*> =
-    Class.forName(Thread.currentThread().stackTrace[depth + 1].className)
 /**
  * Invoke a specific method (not only declared) of an object through reflection
  *
@@ -337,8 +331,8 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
     var clazz = this
     while (true) {
         for (method in clazz.declaredMethods)
-            if ((modifiers == 0 || method.modifiers and modifiers == modifiers) &&
-                (excludeModifiers == 0 || method.modifiers and excludeModifiers == 0) &&
+            if ((modifiers == 0 || method.modifiers includes modifiers) &&
+                (excludeModifiers == 0 || method.modifiers excludes excludeModifiers) &&
                 !response.contains(method)
             ) response.add(method)
         clazz = clazz.superclass ?: return response.toArray(arrayOf())
@@ -503,6 +497,38 @@ val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
+/**
+ * Get current thread stack trace
+ * @author sliep
+ * @param depth 0 for the current method, negative int for previous traces
+ * @return stack trace element
+ */
+@Suppress("NOTHING_TO_INLINE")
+inline fun stack(depth: Int = 0): StackTraceElement = Thread.currentThread().stackTrace[depth + 1]
+
+/**
+ * get class instance from [StackTraceElement]
+ * @author sliep
+ */
+val StackTraceElement.clazz: Class<*> get() = Class.forName(className)
+
+/**
+ * Check if flag is contained in int
+ * @author sliep
+ * @receiver flags
+ * @param flag to check
+ * @return if flag is contained
+ */
+infix fun Int.includes(flag: Int) = this and flag == flag
+
+/**
+ * Check if flag is not contained in int
+ * @author sliep
+ * @receiver flags
+ * @param flag to check
+ * @return if flag is not contained
+ */
+infix fun Int.excludes(flag: Int) = this and flag == 0
 /**
  * Utility class to instantiate an object
  * @author sliep

@@ -9,13 +9,19 @@
         href="index.html">org.json.JSONArray</a>&nbsp;/&nbsp;<a href="./from-json.html">fromJson</a><br/>
 <br/>
 <h1>fromJson</h1>
-<a name="sliep.jes.serializer$fromJson(org.json.JSONArray)"></a>
+<a name="sliep.jes.serializer$fromJson(org.json.JSONArray, kotlin.Array((sliep.jes.serializer.fromJson.T)))"></a>
 <code><span class="keyword">inline</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span
         class="keyword">reified</span>&nbsp;<span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
         href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
         class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">JSONArray</span><span
         class="symbol">.</span><span class="identifier">fromJson</span><span class="symbol">(</span><span
-        class="symbol">)</span><span class="symbol">: </span><a
+        class="identifier"
+        id="sliep.jes.serializer$fromJson(org.json.JSONArray, kotlin.Array((sliep.jes.serializer.fromJson.T)))/target">target</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
+        class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="from-json.html#T"><span
+        class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">?</span>&nbsp;<span
+        class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a
         href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
         class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="from-json.html#T"><span
         class="identifier">T</span></a><span class="symbol">&gt;</span></code>
@@ -25,6 +31,8 @@
 <h3>Parameters</h3>
 <p><a name="T"></a>
     <code>T</code> - type of instance component</p>
+<p><a name="target"></a>
+    <code>target</code> - to load json into or null to create a new instance</p>
 <p><strong>Author</strong><br/>
     sliep</p>
 <p><strong>Receiver</strong><br/>

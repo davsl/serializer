@@ -42,16 +42,29 @@ class ReflectionTest {
         assertEquals(1, jees)
         assertEquals(1, jees)
         assertEquals(1, jees)
-        assertEquals(2, i)
+        assertEquals(2, e)
+        var test = ModelTest(3)
+        assertEquals(2, test.jees)
+        assertEquals(2, test.jees)
+        assertEquals(3, e)
+        test = ModelTest(3)
+        assertEquals(3, test.jees)
+        assertEquals(3, test.jees)
+        assertEquals(4, e)
     }
 
-    var i = 1
-    val jees get() = lateInit(235465765) { i++ }
+    @Test
+    fun stackTest() {
+        assertEquals(javaClass, stack().clazz)
+    }
+
+    val jees get() = lateInit { e++ }
 
     class ModelTest(@JvmField val i: Int) {
         @JvmField
         val susu = "Hello"
         private val private = 345
+        val jees get() = lateInit { e++ }
 
         constructor() : this(3)
         internal constructor(int: Int, float: Float) : this(int)
@@ -66,3 +79,5 @@ class ReflectionTest {
         }
     }
 }
+
+var e = 1
