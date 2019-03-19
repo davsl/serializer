@@ -6,101 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/test/LoggableTest.kt" afterDir="false" />
+    <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="fix lateinit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/alltypes/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/alltypes/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/index-outline.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/index-outline.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/package-list" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/package-list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-function-implementer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-function-implementer/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-function-implementer/member-function.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-function-implementer/member-function.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-interface-implementer.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-interface-implementer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-constructor/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-constructor/data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-constructor/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-constructor/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-implementer.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-implementer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-object-impl/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-object-impl/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-object-impl/to-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-object-impl/to-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-object.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-object.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/-l-o-g.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/-l-o-g.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/array-to-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/array-to-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/from-json-array.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/from-json-array.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/from-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/from-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/to-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-jes-serializer/to-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-android-logger/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-android-logger/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-android-logger/is-available.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-android-logger/is-available.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-android-logger/log.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-android-logger/log.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-logger/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-logger/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-logger/log.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-logger/log.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-sys-err-logger/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-sys-err-logger/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-sys-err-logger/log.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/-sys-err-logger/log.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/log.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/log.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/logger.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-loggable/logger.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-property-implementer/get.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-property-implementer/get.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-property-implementer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-property-implementer/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-property-implementer/set.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/-property-implementer/set.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/constructor.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/constructor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/constructors.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/constructors.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/field-r.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/field-r.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/fields.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/fields.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/guess-from-parameters-types.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/guess-from-parameters-types.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/guess-from-parameters.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/guess-from-parameters.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/implement.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/implement.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/-c-o-n-s-t-a-n-t-s.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/-c-o-n-s-t-a-n-t-s.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/constructor.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/constructor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/constructors.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/constructors.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/dimensions.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/dimensions.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/field-r.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/field-r.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/fields.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/fields.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/implement.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/implement.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/is-type-primitive.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/is-type-primitive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/method.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/method.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/methods.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/methods.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/new-instance.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/new-instance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/new-unsafe-instance.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/new-unsafe-instance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/unwrapped-class.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/unwrapped-class.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/wrapped-class.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.-class/wrapped-class.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-executable/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-executable/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-executable/signature.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-executable/signature.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-field/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-field/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-field/is-final.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/java.lang.reflect.-field/is-final.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/call-getter.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/call-getter.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/call-setter.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/call-setter.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/field.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/field.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/invoke-method.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/invoke-method.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/late-init.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-any/late-init.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-array/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-array/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-array/to-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.-array/to-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/-c-o-n-s-t-a-n-t-s.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/-c-o-n-s-t-a-n-t-s.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/dimensions.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/dimensions.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/is-type-primitive.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/is-type-primitive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/log.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/log.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/unwrapped-class.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/unwrapped-class.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/wrapped-class.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/kotlin.reflect.-k-class/wrapped-class.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/late-init.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/late-init.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/method-to-string.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/method-to-string.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/method.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/method.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/methods.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/methods.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/new-instance.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/new-instance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/new-unsafe-instance.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/new-unsafe-instance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-array/from-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-array/from-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-array/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-array/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-object/from-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-object/from-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-object/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/org.json.-j-s-o-n-object/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/to-json.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serializer/sliep.jes.serializer/to-json.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/LateInitVal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/LateInitVal.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/Main.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -134,34 +43,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="51" selection-start-line="51" selection-end-line="51" />
-              <folding>
-                <element signature="e#74#171#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="57" column="18" selection-start-line="57" selection-start-column="18" selection-end-line="57" selection-end-column="18" />
+            <state relative-caret-position="340">
+              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/LoggableTest.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
-              <folding>
-                <element signature="e#119#214#0" expanded="true" />
-              </folding>
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="68">
+                <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -197,6 +94,8 @@
       <find>include</find>
       <find>emodifiers</find>
       <find>that</find>
+      <find>map</find>
+      <find>toin</find>
     </findStrings>
     <replaceStrings>
       <replace>\n *</replace>
@@ -215,21 +114,22 @@
         <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/../serializer_porcodio/build.gradle" />
         <option value="$PROJECT_DIR$/src/test/java/test/bobo/DAA.kt" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/LICENSE" />
         <option value="$PROJECT_DIR$/src/test/java/test/test.json" />
-        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" />
-        <option value="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/Main.java" />
         <option value="$PROJECT_DIR$/src/test/java/test/Main.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflectionKt.kt" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/LateInitVal.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/LoggableTest.kt" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObjectImpl.kt" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -324,7 +224,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="http.proxy" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="PsiViewer.ProjectComponent">
     <option name="HIGHLIGHT" value="false" />
@@ -357,7 +257,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.LoggableTest.serializeDeserialize">
+  <component name="RunManager" selected="Gradle.Publish">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -396,26 +296,6 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="LoggableTest.serializeDeserialize" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.LoggableTest.serializeDeserialize&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="Publish" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -437,105 +317,11 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="ReflectionTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.ReflectionTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ReflectionTest.lateInitTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.ReflectionTest.lateInitTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ReflectionTest.methodsTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.ReflectionTest.methodsTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ReflectionTest.stackTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.ReflectionTest.stackTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Gradle.Compile" />
       <item itemvalue="Gradle.Documentation" />
       <item itemvalue="Gradle.Publish" />
-      <item itemvalue="Gradle.ReflectionTest.methodsTest" />
-      <item itemvalue="Gradle.ReflectionTest.lateInitTest" />
-      <item itemvalue="Gradle.LoggableTest.serializeDeserialize" />
-      <item itemvalue="Gradle.ReflectionTest" />
-      <item itemvalue="Gradle.ReflectionTest.stackTest" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.LoggableTest.serializeDeserialize" />
-        <item itemvalue="Gradle.ReflectionTest.lateInitTest" />
-        <item itemvalue="Gradle.ReflectionTest.stackTest" />
-        <item itemvalue="Gradle.ReflectionTest" />
-        <item itemvalue="Gradle.ReflectionTest.methodsTest" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -667,7 +453,14 @@
       <option name="project" value="LOCAL" />
       <updated>1550854142820</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="fix lateinit">
+      <created>1551439544169</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1551439544169</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -715,7 +508,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24962178" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24962178" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -808,13 +601,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/test/bobo/DAA.kt" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.21/b8815e48fb45e94821287365bd9ce8623f459ac7/kotlin-stdlib-1.3.21-sources.jar!/kotlin/jvm/JvmClassMapping.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -834,13 +620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-442">
           <caret line="995" column="47" selection-start-line="995" selection-start-column="47" selection-end-line="995" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObject.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -907,17 +686,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="119">
-            <caret line="7" selection-start-line="7" selection-end-line="7" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor" />
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/lang/Class.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -970,20 +738,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObjectImpl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="22" lean-forward="true" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/test/Main.java" />
     <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/lang/Thread.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1003,64 +757,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/Main.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-23">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-          <folding>
-            <element signature="e#14#114#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflectionKt.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="32" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
-          <folding>
-            <element signature="e#56#167#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="115" column="26" selection-start-line="115" selection-start-column="26" selection-end-line="115" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="43" column="53" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/Main.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/LateInitVal.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="354">
           <caret line="37" column="29" lean-forward="true" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="51" selection-start-line="51" selection-end-line="51" />
-          <folding>
-            <element signature="e#74#171#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="266" selection-start-line="266" selection-end-line="266" />
-          <folding>
-            <element signature="e#74#270#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1092,20 +793,103 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="57" column="18" selection-start-line="57" selection-start-column="18" selection-end-line="57" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/test/LoggableTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="102">
+          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
           <folding>
             <element signature="e#119#214#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="13" lean-forward="true" selection-start-column="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflectionKt.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding>
+            <element signature="e#56#167#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
+          <folding>
+            <element signature="e#74#171#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1309">
+          <caret line="80" column="17" selection-start-line="80" selection-start-column="17" selection-end-line="80" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="39" column="9" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="298" column="21" selection-start-line="298" selection-start-column="21" selection-end-line="298" selection-end-column="21" />
+          <folding>
+            <element signature="e#74#270#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObjectImpl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="13" column="3" lean-forward="true" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObject.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="68">
+            <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
