@@ -6,6 +6,7 @@ import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
 import kotlin.reflect.KClass
+
 /* ********************************************************** *\
  ** -------------------  CONSTRUCTORS  ------------------- **
 \* ********************************************************** */
@@ -225,7 +226,7 @@ fun Any.callSetter(fieldName: String, value: Any?) {
  * @author sliep
  */
 private val MODIFIERS
-    get() = lateInit("sliep.jes.serializer.MODIFIERS".hashCode()) {
+    get() = lateInit {
         runCatching {
             runCatching { Field::class.java.fieldR("accessFlags") }
                 .getOrDefault(Field::class.java.fieldR("modifiers"))
@@ -401,8 +402,11 @@ fun <M : Executable> guessFromParametersTypes(
  * @param argTypes method arguments types
  * @return a method descriptor like java.lang.String.substring(int, int)
  */
-fun methodToString(className: String, name: String, argTypes: Array<out Class<*>?>): String {
-    val joiner = StringJoiner(", ", "$className.$name(", ")")
+fun methodToString(className: String?, name: String, argTypes: Array<out Class<*>?>): String {
+    val prefix = StringBuilder()
+    if (className != null) prefix.append(className).append('.')
+    prefix.append(name).append('(')
+    val joiner = StringJoiner(", ", prefix.toString(), ")")
     for (i in argTypes.indices) joiner.add(argTypes[i]?.name)
     return joiner.toString()
 }
@@ -412,7 +416,8 @@ fun methodToString(className: String, name: String, argTypes: Array<out Class<*>
  * @author sliep
  * @see methodToString
  */
-val Executable.signature get() = methodToString(declaringClass.name, name, parameterTypes)
+val Executable.signature
+    get() = methodToString(if (this is Constructor<*>) declaringClass.name else null, name, parameterTypes)
 
 /* ********************************************************** *\
  ** ---------------------  CLASSES  ---------------------- **
@@ -605,10 +610,10 @@ interface PropertyImplementer<T> : JesImplementer<T> {
      * @author sliep
      * @receiver proxy instance
      * @param property name
-     * @param valueType type of method parameter
+     * @param propertyType type of method parameter
      * @param value new value to be set to the property
      */
-    fun T.set(property: String, value: Any?, valueType: Class<*>)
+    fun T.set(property: String, value: Any?, propertyType: Class<*>)
 }
 
 /**
