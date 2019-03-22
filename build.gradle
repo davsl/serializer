@@ -53,8 +53,7 @@ task generateSources {
         versionFile.text = packageInfo
     }
 }
-build.dependsOn generateSources
-compileJava.dependsOn generateSources
+compileKotlin.dependsOn generateSources
 sourceSets.main.java {
     srcDir "$buildDir/generated"
 }
