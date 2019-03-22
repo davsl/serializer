@@ -29,7 +29,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 //JES INFO
-def VERSION = '3.0.7'
+def VERSION = '3.0.8'
 def ART_ID = 'serializer'
 //PACKAGE INFO
 group 'sliep.jes'
@@ -53,6 +53,7 @@ task generateSources {
         versionFile.text = packageInfo
     }
 }
+build.dependsOn generateSources
 compileJava.dependsOn generateSources
 sourceSets.main.java {
     srcDir "$buildDir/generated"
