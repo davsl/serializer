@@ -19,8 +19,8 @@ fun <T> lateInit(id: Int, init: () -> T) = if (instances.containsKey(id)) instan
 }
 
 /**
+ * Unique id will be derived from hash code of variable class name plus variable line number
  * @author sliep
- * @receiver instance that contains the variable for static variables
  * @see lateInit
  */
 @Suppress("NOTHING_TO_INLINE")
@@ -30,6 +30,7 @@ inline fun <T> lateInit(noinline init: () -> T): T {
 }
 
 /**
+ * Unique id will be derived from hash code of (variable class name plus variable line number) * hash id of receiver instance
  * @author sliep
  * @receiver instance that contains the variable for instance variables
  * @see lateInit

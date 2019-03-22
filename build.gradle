@@ -1,25 +1,74 @@
+//PLUGINS DEPENDENCY
 buildscript {
     dependencies {
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
     }
 }
+//PLUGINS
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
 }
-def VERSION = '3.0.6'
-def ART_ID = 'serializer'
-
-group 'sliep.jes'
-version VERSION
-
-sourceCompatibility = 1.8
-
+//REPOSITORIES and DEPENDENCIES
 repositories {
     mavenCentral()
     jcenter()
+}
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.json:json:20180813"
+}
+//JVM TARGET
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+//JES INFO
+def VERSION = '3.0.7'
+def ART_ID = 'serializer'
+//PACKAGE INFO
+group 'sliep.jes'
+version VERSION
+sourceCompatibility = 1.8
+//CREATE PACKAGE INFO KOTLIN FILE
+def packageInfo = """package sliep.jes.serializer
+
+object PackageInfo {
+    const val ID = "$ART_ID"
+    const val GROUP = "$project.group"
+    const val VERSION = "$project.version"
+}
+"""
+task generateSources {
+    inputs.property "version", project.version
+    outputs.dir "$buildDir/generated"
+    doFirst {
+        def versionFile = file("$buildDir/generated/sliep/jes/serializer/PackageInfo.kt")
+        versionFile.parentFile.mkdirs()
+        versionFile.text = packageInfo
+    }
+}
+compileJava.dependsOn generateSources
+sourceSets.main.java {
+    srcDir "$buildDir/generated"
+}
+//PUBLICATION
+task sourcesJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allSource
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
 def pomConfig = {
     licenses {
@@ -39,19 +88,6 @@ def pomConfig = {
     scm {
         url "https://github.com/davsl/" + ART_ID
     }
-}
-
-task sourcesJar(type: Jar) {
-    classifier "sources"
-    from sourceSets.main.allSource
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier "javadoc"
-    from javadoc.destinationDir
-}
-artifacts {
-    archives sourcesJar
-    archives javadocJar
 }
 publishing {
     publications {
@@ -76,17 +112,6 @@ publishing {
         }
     }
 }
-dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "org.json:json:20180813"
-}
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
@@ -109,6 +134,7 @@ bintray {
         }
     }
 }
+//JAVADOC
 apply plugin: 'org.jetbrains.dokka'
 dokka {
     moduleName = 'serializer'

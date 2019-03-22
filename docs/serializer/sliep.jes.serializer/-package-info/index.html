@@ -1,28 +1,56 @@
 <HTML>
 <HEAD>
     <meta charset="UTF-8">
-    <title>JesObject - serializer</title>
-    <link href="../../style.css" rel="stylesheet">
+    <title>PackageInfo - serializer</title>
+    <link href="../../../style.css" rel="stylesheet">
 </HEAD>
 <BODY>
-<a href="../index.html">serializer</a>&nbsp;/&nbsp;<a href="index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
-        href="./-jes-object.html">JesObject</a><br/>
+<a href="../../index.html">serializer</a>&nbsp;/&nbsp;<a href="../index.html">sliep.jes.serializer</a>&nbsp;/&nbsp;<a
+        href="./index.html">PackageInfo</a><br/>
 <br/>
-<h1>JesObject</h1>
-<code><span class="keyword">interface </span><span class="identifier">JesObject</span></code>
-<p>Implement <a href="./-jes-object.html">JesObject</a> interface from your model class to let <a
-        href="-jes-serializer/index.html">JesSerializer</a> know that the type can be serialized/deserialized</p>
-<p><strong>Author</strong><br/>
-    sliep</p>
-<p><strong>See Also</strong><br/>
-<p><a href="-jes-serializer/index.html">JesSerializer</a></p>
-</p>
+<h1>PackageInfo</h1>
+<code><span class="keyword">object </span><span class="identifier">PackageInfo</span></code>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <p><a href="-g-r-o-u-p.html">GROUP</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">GROUP</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="-i-d.html">ID</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ID</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="-v-e-r-s-i-o-n.html">VERSION</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">VERSION</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
 <h3>Extension Functions</h3>
 <table>
     <tbody>
     <tr>
         <td>
-            <p><a href="kotlin.-any/call-getter.html">callGetter</a></p>
+            <p><a href="../kotlin.-any/call-getter.html">callGetter</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
@@ -33,13 +61,13 @@
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
                     class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="kotlin.-any/call-getter.html#R"><span class="identifier">R</span></a></code>
+                    href="../kotlin.-any/call-getter.html#R"><span class="identifier">R</span></a></code>
             <p>Call kotlin (or java) property getters of a receiver object through reflection</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><a href="kotlin.-any/call-setter.html">callSetter</a></p>
+            <p><a href="../kotlin.-any/call-setter.html">callSetter</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><a
@@ -61,7 +89,7 @@
     </tr>
     <tr>
         <td>
-            <p><a href="kotlin.-any/field.html">field</a></p>
+            <p><a href="../kotlin.-any/field.html">field</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
@@ -76,14 +104,14 @@
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
                     class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
-                    class="symbol">)</span><span class="symbol">: </span><a href="kotlin.-any/field.html#R"><span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/field.html#R"><span
                     class="identifier">R</span></a></code>
             <p>Fetch the property value of a receiver object through reflection</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><a href="kotlin.-any/invoke-method.html">invokeMethod</a></p>
+            <p><a href="../kotlin.-any/invoke-method.html">invokeMethod</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
@@ -100,13 +128,13 @@
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
                     class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="kotlin.-any/invoke-method.html#R"><span class="identifier">R</span></a></code>
+                    href="../kotlin.-any/invoke-method.html#R"><span class="identifier">R</span></a></code>
             <p>Invoke a specific method (not only declared) of an object through reflection</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><a href="kotlin.-any/late-init.html">lateInit</a></p>
+            <p><a href="../kotlin.-any/late-init.html">lateInit</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
@@ -116,42 +144,11 @@
                     class="identifier"
                     id="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
                     class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
-                    class="symbol">-&gt;</span>&nbsp;<a href="kotlin.-any/late-init.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="kotlin.-any/late-init.html#T"><span class="identifier">T</span></a></code>
+                    class="symbol">-&gt;</span>&nbsp;<a href="../kotlin.-any/late-init.html#T"><span class="identifier">T</span></a><span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/late-init.html#T"><span
+                    class="identifier">T</span></a></code>
             <p>Unique id will be derived from hash code of (variable class name plus variable line number) * hash id of
                 receiver instance</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="to-json.html">toJson</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><a href="./-jes-object.html"><span
-                    class="identifier">JesObject</span></a><span class="symbol">.</span><span
-                    class="identifier">toJson</span><span class="symbol">(</span><span class="symbol">)</span><span
-                    class="symbol">: </span><span class="identifier">JSONObject</span></code>
-            <p>Convert a <a href="./-jes-object.html">JesObject</a> into a <a href="#">JSONObject</a></p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<h3>Inheritors</h3>
-<table>
-    <tbody>
-    <tr>
-        <td>
-            <p><a href="-jes-object-impl/index.html">JesObjectImpl</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">interface </span><span class="identifier">JesObjectImpl</span><span
-                    class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
-                    class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
-                    href="./-jes-object.html"><span class="identifier">JesObject</span></a></code>
-            <p>Let your class implement <a href="-jes-object-impl/index.html">JesObjectImpl</a> instead of <a
-                    href="./-jes-object.html">JesObject</a> to control it's serialization</p>
         </td>
     </tr>
     </tbody>

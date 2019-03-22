@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package sliep.jes.serializer
 
 import sliep.jes.serializer.Loggable.Companion.logger
