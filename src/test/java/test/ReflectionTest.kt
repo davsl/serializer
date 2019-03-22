@@ -2,8 +2,10 @@
 package test
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import sliep.jes.serializer.*
+import sliep.jes.serializer.JesPackage.Companion.findPackageBy
 import java.lang.reflect.Modifier
 
 class ReflectionTest {
@@ -56,6 +58,12 @@ class ReflectionTest {
     @Test
     fun stackTest() {
         assertEquals(javaClass, stack().clazz)
+    }
+
+    @Test
+    fun packageTest() {
+        assertTrue(findPackageBy("serializer") after "3.0.8")
+        assertTrue(findPackageBy("serializer") before "99.99.99.999")
     }
 
     val jees get() = lateInit { e++ }
