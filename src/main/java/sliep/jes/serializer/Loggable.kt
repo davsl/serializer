@@ -26,11 +26,8 @@ interface Loggable {
      * @param depth a positive number included 0. every unit of depth correspond to 4 spaces before the [message] when printing the log to indent the data. default is -1 it means that will be taken from the 'depth' static variable in the class or zero if not defined
      * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
      */
-    fun log(depth: Int = -1, message: () -> Any?) {
-        if (log) {
-            val theMessage = message()?.toString() ?: return
-            logger.log(tag, spaces(depthField, depth) + theMessage)
-        }
+    fun log(depth: Int = -1, message: String) {
+        if (log) logger.log(tag, spaces(depthField, depth) + message)
     }
 
     companion object {
@@ -77,7 +74,7 @@ interface Loggable {
 /**
  * Allows you to log as a [Loggable] from outside it's class
  * @author sliep
- * @see [Loggable.log]
+ * @see Loggable.log
  */
 fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
     if (field("LOG")) {
@@ -85,6 +82,15 @@ fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
         val depthField = kotlin.runCatching { java.fieldR("depth") }.getOrNull()
         logger.log(this.java.simpleName, null.spaces(depthField, depth) + theMessage)
     }
+}
+
+/**
+ * Log a message
+ * @author sliep
+ * @see Loggable.log
+ */
+fun Loggable.log(depth: Int = -1, message: () -> Any?) {
+    log(depth, message()?.toString() ?: return)
 }
 
 /**
