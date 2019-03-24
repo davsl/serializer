@@ -17,17 +17,14 @@ fun <T> lateInit(id: Int, init: () -> T) = if (instances.containsKey(id)) instan
     instances[id] = instance
     instance
 }
-
+//TODO non va un cazzo il lateinit
 /**
  * Unique id will be derived from hash code of variable class name plus variable line number
  * @author sliep
  * @see lateInit
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <T> lateInit(noinline init: () -> T): T {
-    val stack = stack()
-    return lateInit((stack.clazz.name + stack.lineNumber).hashCode(), init)
-}
+inline fun <T> lateInit(noinline init: () -> T): T = lateInit(init.hashCode(), init)
 
 /**
  * Unique id will be derived from hash code of (variable class name plus variable line number) * hash id of receiver instance
@@ -36,10 +33,7 @@ inline fun <T> lateInit(noinline init: () -> T): T {
  * @see lateInit
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <T> Any.lateInit(noinline init: () -> T): T {
-    val stack = stack()
-    return lateInit((stack.clazz.name + stack.lineNumber).hashCode() * System.identityHashCode(this), init)
-}
+inline fun <T> Any.lateInit(noinline init: () -> T): T = lateInit(init.hashCode() * System.identityHashCode(this), init)
 /**
  * All late-initialized instances
  */

@@ -17,8 +17,15 @@ import kotlin.reflect.KClass
  */
 interface Loggable {
     private val log get() = lateInit { this::class.field<Boolean>("LOG") }
-    private val tag get() = lateInit { this::class.java.simpleName }
-    private val depthField get() = lateInit { kotlin.runCatching { this::class.java.fieldR("depth") }.getOrNull() }
+    private val tag
+        get() = lateInit {
+            val simpleName = this::class.java.simpleName
+            if (simpleName.isBlank()) "<unknown-class>" else simpleName
+        }
+    private val depthField
+        get() = lateInit {
+            kotlin.runCatching { this::class.java.fieldR("depth", true) }.getOrNull()
+        }
 
     /**
      * Log a message
@@ -26,8 +33,8 @@ interface Loggable {
      * @param depth a positive number included 0. every unit of depth correspond to 4 spaces before the [message] when printing the log to indent the data. default is -1 it means that will be taken from the 'depth' static variable in the class or zero if not defined
      * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
      */
-    fun log(depth: Int = -1, message: String) {
-        if (log) logger.log(tag, spaces(depthField, depth) + message)
+    fun log(depth: Int = -1, message: () -> Any?) {
+        if (log) logger.log(tag, spaces(depthField, depth) + (message()?.toString() ?: return))
     }
 
     companion object {
@@ -82,15 +89,6 @@ fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
         val depthField = kotlin.runCatching { java.fieldR("depth") }.getOrNull()
         logger.log(this.java.simpleName, null.spaces(depthField, depth) + theMessage)
     }
-}
-
-/**
- * Log a message
- * @author sliep
- * @see Loggable.log
- */
-fun Loggable.log(depth: Int = -1, message: () -> Any?) {
-    log(depth, message()?.toString() ?: return)
 }
 
 /**

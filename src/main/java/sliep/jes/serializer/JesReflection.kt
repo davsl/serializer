@@ -502,20 +502,6 @@ val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
-/**
- * Get current thread stack trace
- * @author sliep
- * @param depth 0 for the current method, negative int for previous traces
- * @return stack trace element
- */
-@Suppress("NOTHING_TO_INLINE")
-inline fun stack(depth: Int = 0): StackTraceElement = Thread.currentThread().stackTrace[depth + 1]
-
-/**
- * get class instance from [StackTraceElement]
- * @author sliep
- */
-val StackTraceElement.clazz: Class<*> get() = Class.forName(className)
 
 /**
  * Check if flag is contained in int

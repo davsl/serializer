@@ -56,11 +56,6 @@ class ReflectionTest {
     }
 
     @Test
-    fun stackTest() {
-        assertEquals(javaClass, stack().clazz)
-    }
-
-    @Test
     fun packageTest() {
         assertTrue(findPackageBy("serializer") after "3.0.8")
         assertTrue(findPackageBy("serializer") before "99.99.99.999")
