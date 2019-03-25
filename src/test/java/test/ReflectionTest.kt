@@ -61,13 +61,13 @@ class ReflectionTest {
         assertTrue(findPackageBy("serializer") before "99.99.99.999")
     }
 
-    val jees get() = lateInit { e++ }
+    val jees: Int get() = lateInit(::jees) { e++ }
 
     class ModelTest(@JvmField val i: Int) {
         @JvmField
         val susu = "Hello"
         private val private = 345
-        val jees get() = lateInit { e++ }
+        val jees: Int get() = lateInit(::jees) { e++ }
 
         constructor() : this(3)
         internal constructor(int: Int, float: Float) : this(int)

@@ -16,14 +16,14 @@ import kotlin.reflect.KClass
  * @author sliep
  */
 interface Loggable {
-    private val log get() = lateInit { this::class.field<Boolean>("LOG") }
-    private val tag
-        get() = lateInit {
+    private val logIt: Boolean get() = lateInit(::logIt) { this::class.field("LOG") }
+    private val tag: String
+        get() = lateInit(::tag) {
             val simpleName = this::class.java.simpleName
             if (simpleName.isBlank()) "<unknown-class>" else simpleName
         }
-    private val depthField
-        get() = lateInit {
+    private val depthField: Field?
+        get() = lateInit(::depthField) {
             kotlin.runCatching { this::class.java.fieldR("depth", true) }.getOrNull()
         }
 
@@ -34,7 +34,7 @@ interface Loggable {
      * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
      */
     fun log(depth: Int = -1, message: () -> Any?) {
-        if (log) logger.log(tag, spaces(depthField, depth) + (message()?.toString() ?: return))
+        if (logIt) logger.log(tag, spaces(depthField, depth) + (message()?.toString() ?: return))
     }
 
     companion object {

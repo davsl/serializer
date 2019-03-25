@@ -92,6 +92,15 @@
     </tr>
     <tr>
         <td>
+            <p><a href="-jes-package/index.html">JesPackage</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">class </span><span class="identifier">JesPackage</span></code>
+            <p>Use this class to manage library properties and check version compatibility</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><a href="-jes-serializer/index.html">JesSerializer</a></p>
         </td>
         <td>
@@ -102,19 +111,21 @@
     </tr>
     <tr>
         <td>
+            <p><a href="-late-init-val/index.html">LateInitVal</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">object </span><span class="identifier">LateInitVal</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a href="-loggable/index.html"><span class="identifier">Loggable</span></a></code>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><a href="-loggable/index.html">Loggable</a></p>
         </td>
         <td>
             <code><span class="keyword">interface </span><span class="identifier">Loggable</span></code>
             <p>Logging utility</p>
         </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="-package-info/index.html">PackageInfo</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">object </span><span class="identifier">PackageInfo</span></code></td>
     </tr>
     <tr>
         <td>
@@ -139,13 +150,6 @@
     <tr>
         <td>
             <p><a href="java.lang.-class/index.html">java.lang.Class</a></p>
-        </td>
-        <td>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="java.lang.-stack-trace-element/index.html">java.lang.StackTraceElement</a></p>
         </td>
         <td>
         </td>
@@ -211,6 +215,40 @@
 <h3>Functions</h3>
 <table>
     <tbody>
+    <tr>
+        <td>
+            <p><a href="after.html">after</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">infix</span> <span class="keyword">fun </span><a href="-jes-package/index.html"><span
+                    class="identifier">JesPackage</span></a><span class="symbol">.</span><span
+                    class="identifier">after</span><span class="symbol">(</span><span class="identifier"
+                                                                                      id="sliep.jes.serializer$after(sliep.jes.serializer.JesPackage, kotlin.String)/otherVersion">otherVersion</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code>
+            <p>Check if artifact version is after given version (e.g. package after "1.2.3")</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="before.html">before</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">infix</span> <span class="keyword">fun </span><a href="-jes-package/index.html"><span
+                    class="identifier">JesPackage</span></a><span class="symbol">.</span><span
+                    class="identifier">before</span><span class="symbol">(</span><span class="identifier"
+                                                                                       id="sliep.jes.serializer$before(sliep.jes.serializer.JesPackage, kotlin.String)/otherVersion">otherVersion</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code>
+            <p>Check if artifact version is before given version (e.g. package before "1.2.3")</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><a href="constructor.html">constructor</a></p>
@@ -413,31 +451,41 @@
     </tr>
     <tr>
         <td>
+            <p><a href="is-version.html">isVersion</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">infix</span> <span class="keyword">fun </span><a href="-jes-package/index.html"><span
+                    class="identifier">JesPackage</span></a><span class="symbol">.</span><span class="identifier">isVersion</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="sliep.jes.serializer$isVersion(sliep.jes.serializer.JesPackage, kotlin.String)/otherVersion">otherVersion</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code>
+            <p>Check if artifact version is equal to given version (e.g. package isVersion "1.2.3")</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><a href="late-init.html">lateInit</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
                     class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">lateInit</span><span
                     class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer$lateInit(kotlin.Int, kotlin.Function0((sliep.jes.serializer.lateInit.T)))/id">id</span><span
+                                                 id="sliep.jes.serializer$lateInit(kotlin.reflect.KProperty((sliep.jes.serializer.lateInit.T)), kotlin.Function0((sliep.jes.serializer.lateInit.T)))/field">field</span><span
                     class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-property/index.html"><span
+                    class="identifier">KProperty</span></a><span class="symbol">&lt;</span><a
+                    href="late-init.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span
                     class="symbol">, </span><span class="identifier"
-                                                  id="sliep.jes.serializer$lateInit(kotlin.Int, kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
+                                                  id="sliep.jes.serializer$lateInit(kotlin.reflect.KProperty((sliep.jes.serializer.lateInit.T)), kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
                     class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
                     class="symbol">-&gt;</span>&nbsp;<a href="late-init.html#T"><span
                     class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a
                     href="late-init.html#T"><span class="identifier">T</span></a></code>
             <p>Allows you to define a final variable (val) that wont be initialized until you access it</p>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
-                    class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">lateInit</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer$lateInit(kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
-                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
-                    class="symbol">-&gt;</span>&nbsp;<a href="late-init.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="late-init.html#T"><span class="identifier">T</span></a></code>
-            <p>Unique id will be derived from hash code of variable class name plus variable line number</p>
         </td>
     </tr>
     <tr>
@@ -548,21 +596,6 @@
                     class="symbol">&gt;</span> <span class="identifier">newUnsafeInstance</span><span
                     class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a
                     href="new-unsafe-instance.html#T"><span class="identifier">T</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="stack.html">stack</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="identifier">stack</span><span
-                    class="symbol">(</span><span class="identifier" id="sliep.jes.serializer$stack(kotlin.Int)/depth">depth</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span
-                    class="symbol">=</span>&nbsp;0<span class="symbol">)</span><span class="symbol">: </span><a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/StackTraceElement.html"><span
-                    class="identifier">StackTraceElement</span></a></code>
-            <p>Get current thread stack trace</p>
-        </td>
     </tr>
     <tr>
         <td>

@@ -3,7 +3,9 @@
 package test
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
+import sliep.jes.serializer.LateInitVal
 import sliep.jes.serializer.Loggable
 import sliep.jes.serializer.lateInit
 
@@ -12,67 +14,30 @@ class LoggableTest {
     fun serializeDeserialize() {
         Loggable.logger = object : Loggable.Logger {
             override fun log(tag: String, message: Any) {
-//                System.err.println(tag)
-                assertEquals("    HELLO", message)
+                System.err.println("$tag $message")
+                if (tag == "JDSG")
+                    assertEquals("    true", message)
             }
         }
-        val d = object : MyClass() {}
+        LateInitVal.LOG = true
+        val d = JDSG()
+        val b = JDSG()
         d.depth++
         d.main()
-
-        d.apply {
-
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-        }
-        object : MyClass() {}.apply {
-
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-            System.err.println(gesoo)
-            System.err.println(gesoou)
-        }
-        System.err.println(ddd)
-        System.err.println(xxx)
-        System.err.println(ddd)
-        System.err.println(xxx)
-        System.err.println(ddd)
-        System.err.println(xxx)
-        System.err.println(ddd)
-        System.err.println(xxx)
-
+        System.err.println(d.sooca == b.sooca)
+        assertFalse(d.sooca == b.sooca)
     }
-
 
     class JDSG : MyClass()
 
     abstract class MyClass : Loggable {
+        val sooca: String get() = lateInit(::sooca) { System.currentTimeMillis().toString() }
         fun main() {
-            log { "HELLO" }
-            log { "HELLO" }
-            log { "HELLO" }
-            log { "HELLO" }
-            log { "HELLO" }
+            log { sooca == sooca }
+            log { sooca == sooca }
+            log { sooca == sooca }
+            log { sooca == sooca }
         }
-
-        val gesoo
-            get() = lateInit {
-                System.err.println("PORCO")
-            }
-        val gesoou
-            get() = lateInit {
-                System.err.println("DIO")
-            }
 
         var depth = 0
 
@@ -81,12 +46,3 @@ class LoggableTest {
         }
     }
 }
-
-val ddd
-    get() = lateInit {
-        System.err.println("ddd")
-    }
-val xxx
-    get() = lateInit {
-        System.err.println("xxx")
-    }

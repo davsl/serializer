@@ -2,39 +2,60 @@
 
 package sliep.jes.serializer
 
+import sliep.jes.serializer.LateInitVal.instances
+import kotlin.reflect.KProperty
+
+object LateInitVal : Loggable {
+    var LOG = false
+    /**
+     * All late-initialized instances
+     */
+    val instances = HashMap<Int, Any?>()
+}
+
 /**
  * Allows you to define a final variable (val) that wont be initialized until you access it
  *
  * This variable will be initialized the first time that you access it using your defined initializer, than the value will remain constant for all receiver instance lifeCycle
  * @author sliep
  * @param T type of the variable
- * @param id UNIQUE id of the value must be constant and unique inside your jvm instance
+ * @param field ::prop
  * @param init initializer of the variable will be called only once
  * @return result of initializer
  */
-fun <T> lateInit(id: Int, init: () -> T) = if (instances.containsKey(id)) instances[id] as T else {
-    val instance = init()
-    instances[id] = instance
-    instance
-}
-//TODO non va un cazzo il lateinit
-/**
- * Unique id will be derived from hash code of variable class name plus variable line number
- * @author sliep
- * @see lateInit
- */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <T> lateInit(noinline init: () -> T): T = lateInit(init.hashCode(), init)
+inline fun <T> lateInit(field: KProperty<T>, noinline init: () -> T): T {
+    val theId = field.hashCode()
+    return if (instances.containsKey(theId)) instances[theId] as T else {
+        val instance = init()
+        LateInitVal::class.log { "Initializing static property ${field.name} -> $instance" }
+        instances[theId] = instance
+        instance
+    }
+}
 
 /**
- * Unique id will be derived from hash code of (variable class name plus variable line number) * hash id of receiver instance
+ * Allows you to define a final variable (val) that wont be initialized until you access it
+ *
+ * This variable will be initialized the first time that you access it using your defined initializer, than the value will remain constant for all receiver instance lifeCycle
  * @author sliep
- * @receiver instance that contains the variable for instance variables
- * @see lateInit
+ * @receiver instance
+ * @param T type of the variable
+ * @param field ::prop
+ * @param init initializer of the variable will be called only once
+ * @return result of initializer
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <T> Any.lateInit(noinline init: () -> T): T = lateInit(init.hashCode() * System.identityHashCode(this), init)
-/**
- * All late-initialized instances
- */
-private val instances = HashMap<Int, Any?>()
+inline fun <T> Any.lateInit(field: KProperty<*>, noinline init: () -> T): T {
+    val theId = System.identityHashCode(this) * field.hashCode()
+    return if (instances.containsKey(theId)) instances[theId] as T else {
+        val instance = init()
+        LateInitVal::class.log {
+            "Initializing property ${field.name} for instance ${this::class.java.name}@${System.identityHashCode(
+                this
+            )}"
+        }
+        instances[theId] = instance
+        instance
+    }
+}

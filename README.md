@@ -124,7 +124,7 @@ System.err.println("value: ${java.lang.Boolean.TRUE}") //will print false
 ###### Helpful utility
 Now you can make lateInit final variables that will be initialized only once 
 ```kotlin
-private val myVal get() = lateInit { loadValue() }
+private val myVal get() = lateInit(::myVal) { loadValue() }
 //...
 fun myFun(){
 System.err.println(myVal) //here loadValue() will be called

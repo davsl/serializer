@@ -225,8 +225,8 @@ fun Any.callSetter(fieldName: String, value: Any?) {
  * Modifier modifiers
  * @author sliep
  */
-private val MODIFIERS
-    get() = lateInit {
+private val MODIFIERS: Field?
+    get() = lateInit(::MODIFIERS) {
         runCatching {
             runCatching { Field::class.java.fieldR("accessFlags") }
                 .getOrDefault(Field::class.java.fieldR("modifiers"))
