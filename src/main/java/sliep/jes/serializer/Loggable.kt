@@ -34,7 +34,7 @@ interface Loggable {
      * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
      */
     fun log(depth: Int = -1, message: () -> Any?) {
-        if (logIt) logger.log(tag, spaces(depthField, depth) + (message()?.toString() ?: return))
+        if (logIt) logger.log(tag, spaces(depthField, depth) + (message() ?: return))
     }
 
     companion object {
@@ -44,6 +44,13 @@ interface Loggable {
          */
         @JvmStatic
         var logger: Logger = if (AndroidLogger.isAvailable) AndroidLogger else SysErrLogger
+
+        fun indentAll(content: String, startIndent: Int, tagOffset: Int): String {
+            val spaces = StringBuilder().apply {
+                for (i in 0 until startIndent + tagOffset) append(' ')
+            }.toString()
+            return content.replace("\n", "\n" + spaces)
+        }
     }
 
     /**
@@ -61,7 +68,12 @@ interface Loggable {
      * @author sliep
      */
     object SysErrLogger : Logger {
-        override fun log(tag: String, message: Any) = System.err.println("$tag: $message")
+        override fun log(tag: String, message: Any) {
+            val mess = message.toString()
+            var spacesCount = 0
+            while (mess[spacesCount++] == ' ');
+            System.err.println("$tag: ${indentAll(mess, spacesCount, tag.length + 1)}")
+        }
     }
 
     /**
@@ -74,7 +86,12 @@ interface Loggable {
         private val Log = kotlin.runCatching { Class.forName("android.util.Log") }.getOrNull()
         val isAvailable = Log != null
 
-        override fun log(tag: String, message: Any) = Log!!.invokeMethod<Unit>("e", tag, message)
+        override fun log(tag: String, message: Any) {
+            val mess = message.toString()
+            var spacesCount = 0
+            while (mess[spacesCount++] == ' ');
+            Log!!.invokeMethod<Unit>("e", tag, indentAll(mess, spacesCount, tag.length + 1))
+        }
     }
 }
 
@@ -102,7 +119,7 @@ fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
 private fun Loggable?.spaces(depthField: Field?, depth: Int): String {
     if (depthField != null && this == null && !Modifier.isStatic(depthField.modifiers)) throw IllegalStateException("Can't get depth from outside the instance")
     val finalDepth = if (depth == -1) depthField?.getInt(this) ?: 0 else depth
-    val indent = StringBuilder()
-    for (i in 0 until finalDepth) indent.append("    ")
-    return indent.toString()
+    return StringBuilder().apply {
+        for (i in 0 until finalDepth) append("    ")
+    }.toString()
 }

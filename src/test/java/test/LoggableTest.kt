@@ -24,6 +24,9 @@ class LoggableTest {
         val b = JDSG()
         d.depth++
         d.main()
+        System.err.println(d.sooca)
+        Thread.sleep(1)
+        System.err.println(b.sooca)
         System.err.println(d.sooca == b.sooca)
         assertFalse(d.sooca == b.sooca)
     }

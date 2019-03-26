@@ -170,9 +170,8 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
     while (true) {
         for (field in clazz.declaredFields)
             if ((modifiers == 0 || field.modifiers includes modifiers) &&
-                (excludeModifiers == 0 || field.modifiers excludes excludeModifiers) &&
-                !response.contains(field)
-            ) response.add(field)
+                (excludeModifiers == 0 || field.modifiers excludes excludeModifiers)
+            ) response.addIfNotContained(field)
         clazz = clazz.superclass ?: return response.toArray(arrayOf())
     }
 }
@@ -193,10 +192,10 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
  */
 @Throws(NoSuchMethodException::class)
 fun <R : Any?> Any.callGetter(fieldName: String) = try {
-    invokeMethod("get${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
+    invokeMethod("get${fieldName.capitalizeFirst()}") as R
 } catch (e: NoSuchMethodException) {
     try {
-        invokeMethod("is${fieldName[0].toUpperCase()}${fieldName.substring(1)}") as R
+        invokeMethod("is${fieldName.capitalizeFirst()}") as R
     } catch (ignore: NoSuchMethodException) {
         throw e
     }
@@ -218,7 +217,7 @@ fun <R : Any?> Any.callGetter(fieldName: String) = try {
  */
 @Throws(NoSuchMethodException::class, InvocationTargetException::class)
 fun Any.callSetter(fieldName: String, value: Any?) {
-    invokeMethod<Any?>("set${fieldName[0].toUpperCase()}${fieldName.substring(1)}", value)
+    invokeMethod<Any?>("set${fieldName.capitalizeFirst()}", value)
 }
 
 /**
@@ -333,9 +332,8 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
     while (true) {
         for (method in clazz.declaredMethods)
             if ((modifiers == 0 || method.modifiers includes modifiers) &&
-                (excludeModifiers == 0 || method.modifiers excludes excludeModifiers) &&
-                !response.contains(method)
-            ) response.add(method)
+                (excludeModifiers == 0 || method.modifiers excludes excludeModifiers)
+            ) response.addIfNotContained(method)
         clazz = clazz.superclass ?: return response.toArray(arrayOf())
     }
 }
@@ -502,7 +500,40 @@ val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
+/**
+ * Add element to list if not contained. Useful to avoid duplicates
+ * @author sliep
+ * @receiver list
+ * @param value
+ */
+fun <T> ArrayList<T>.addIfNotContained(value: T) {
+    if (!contains(value)) add(value)
+}
 
+/**
+ * Only capitalize first character of a string
+ * @author sliep
+ * @receiver content
+ * @return Content
+ */
+fun String.capitalizeFirst() = this[0].toUpperCase() + substring(1)
+
+fun Any.thisToString(
+    toString: (field: Any?) -> String? = { f -> f?.toString() },
+    arrayToString: (field: Array<*>?) -> String? = { f -> if (f.isNullOrEmpty()) null else Arrays.toString(f) },
+    prefix: String = this::class.java.simpleName,
+    separator: String = "->"
+): String = StringBuilder(prefix).apply {
+    if (prefix.isNotEmpty()) append('\n')
+    bob@ for (field in this@thisToString::class.java.fields(Modifier.PUBLIC, Modifier.STATIC)) {
+        var fieldVal = field[this@thisToString]
+        fieldVal = when (fieldVal) {
+            is Array<*> -> arrayToString(fieldVal) ?: continue@bob
+            else -> toString(fieldVal) ?: continue@bob
+        }
+        append("    ${field.name} $separator $fieldVal\n")
+    }
+}.toString().trim()
 /**
  * Check if flag is contained in int
  * @author sliep

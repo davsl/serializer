@@ -18,6 +18,11 @@ private fun versionToInt(version: String): IntArray {
  */
 @Suppress("PropertyName")
 class JesPackage private constructor(packageInfo: Any) {
+    @JvmField
+    val ID: String = packageInfo.field("ID")
+    @JvmField
+    val GROUP: String = packageInfo.field("GROUP")
+    @JvmField
     val VERSION: String = packageInfo.field("VERSION")
     internal val versionInt = versionToInt(VERSION)
 
@@ -30,6 +35,8 @@ class JesPackage private constructor(packageInfo: Any) {
                 throw IllegalStateException("Package (id=$artifactId group=$group) not a jes package!")
             }
     }
+
+    override fun toString() = thisToString()
 }
 
 /**
