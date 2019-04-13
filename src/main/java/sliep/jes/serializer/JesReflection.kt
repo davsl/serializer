@@ -2,6 +2,8 @@
 
 package sliep.jes.serializer
 
+import org.json.JSONArray
+import org.json.JSONObject
 import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
@@ -534,6 +536,19 @@ fun Any.thisToString(
         append("    ${field.name} $separator $fieldVal\n")
     }
 }.toString().trim()
+
+/**
+ * Try to convert string to [JSONObject] or [JSONArray], if conversion fails return null
+ * @author sliep
+ * @receiver content
+ * @return json instance or null
+ */
+fun String.tryAsJSON(): Any? {
+    kotlin.runCatching { return JSONObject(this) }
+    kotlin.runCatching { return JSONArray(this) }
+    return null
+}
+
 /**
  * Check if flag is contained in int
  * @author sliep

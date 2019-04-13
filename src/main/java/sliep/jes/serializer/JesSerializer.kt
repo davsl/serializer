@@ -25,10 +25,6 @@ import java.lang.reflect.Modifier
  */
 object JesSerializer : Loggable {
     /**
-     * @see Loggable
-     */
-    private var depth = 0
-    /**
      * Generate debug log
      * @see Loggable
      */
@@ -205,7 +201,7 @@ object JesSerializer : Loggable {
         jes::class.java.isAssignableFrom(type) -> jes
         jes is JSONArray -> objectValue(jes, type, Array.newInstance(type, jes.length()))
         type.isEnum && jes is String -> type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
-        jes is JSONObject -> JesSerializer.objectValue(jes, type, type.newUnsafeInstance())
+        jes is JSONObject -> objectValue(jes, type, type.newUnsafeInstance())
         jes is String && type.isAssignableFrom(Char::class.java) -> jes[0]
         jes is Double && type.isAssignableFrom(Float::class.java) -> (jes as Number).toFloat()
         else -> jes
@@ -271,7 +267,7 @@ object JesSerializer : Loggable {
  * @return json object representing serialized class
  * @see JesSerializer.toJson
  */
-fun JesObject.toJson(): JSONObject = JesSerializer.toJson(this)
+fun JesObject.toJson(): JSONObject = toJson(this)
 
 /**
  * Convert an [Array] of [JesObject] into a [JSONArray]

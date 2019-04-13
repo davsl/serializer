@@ -42,8 +42,6 @@ class LoggableTest {
             log { sooca == sooca }
         }
 
-        var depth = 0
-
         companion object {
             var LOG = true
         }
