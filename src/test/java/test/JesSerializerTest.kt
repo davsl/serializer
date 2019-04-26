@@ -1,6 +1,7 @@
 @file:Suppress("unused", "UNUSED_PARAMETER", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
 package test
 
+import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -38,6 +39,14 @@ class JesSerializerTest {
         modelTest.impl = ModelImplTest("fversv", 24)
         val copy = modelTest.toJson().fromJson<ModelTest>().toJson().toString()
         assertEquals(modelTest.toJson().toString(), copy)
+    }
+
+    @Test
+    fun jsonArrayToArray() {
+        val ar1 = JSONArray("[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\"]")
+        val ar2 = JSONArray("[1,2,3,4,5]")
+        assertEquals("c", ar1.toArrayOf<String>()[2])
+        assertEquals(4, ar2.toArrayOf<Int>()[3])
     }
 
     class ModelImplTest(val a: String, val b: Int) : JesObjectImpl<String> {

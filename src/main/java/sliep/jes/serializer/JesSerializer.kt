@@ -303,3 +303,9 @@ inline fun <reified T : Any> JSONObject.fromJson(target: T? = null) =
 inline fun <reified T : Any> JSONArray.fromJson(target: kotlin.Array<T>? = null) =
     if (target == null) JesSerializer.fromJsonArray(this, T::class.java)
     else JesSerializer.objectValue(this, T::class.java, target)
+
+inline fun <reified T : Any> JSONArray.toArrayOf(): kotlin.Array<T> {
+    val array = Array.newInstance(T::class.java, length()) as kotlin.Array<T>
+    for (i in 0 until array.size) array[i] = opt(i) as T
+    return array
+}
