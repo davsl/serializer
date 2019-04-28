@@ -81,6 +81,10 @@ inline fun <reified T : Any> JSONObject.fromJson(target: T? = null): T =
     if (target == null) objectValue(this, T::class.java) as T
     else objectValue(this, T::class.java, target) as T
 
+fun <T : Any> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
+    if (target == null) objectValue(this, type) as T
+    else objectValue(this, type, target) as T
+
 /**
  * Deserialize a json array into an array object of [Class.componentType]
  * Convert a [JSONArray] into an [Array] of [T]
@@ -94,12 +98,22 @@ inline fun <reified T : Any> JSONArray.fromJson(
     target: Array<T> = java.lang.reflect.Array.newInstance(T::class.java, length()) as Array<T>
 ): Array<T> = arrayObjectValue(this, T::class.java, target as Array<Any?>) as Array<T>
 
+fun <T : Any> JSONArray.fromJson(
+    type: Class<T>, target: Array<T> = java.lang.reflect.Array.newInstance(type, length()) as Array<T>
+): Array<T> = arrayObjectValue(this, type, target as Array<Any?>) as Array<T>
+
 /**
  * Create a primitive array from [JSONArray]
  * @author sliep
  */
 inline fun <reified T : Any> JSONArray.toArrayOf(): Array<T> {
     val array = java.lang.reflect.Array.newInstance(T::class.java, length()) as Array<T>
+    for (i in 0 until array.size) array[i] = opt(i) as T
+    return array
+}
+
+fun <T : Any> JSONArray.toArrayOf(type: Class<T>): Array<T> {
+    val array = java.lang.reflect.Array.newInstance(type, length()) as Array<T>
     for (i in 0 until array.size) array[i] = opt(i) as T
     return array
 }
