@@ -10,6 +10,7 @@ import sliep.jes.serializer.*
 class JesSerializerTest {
     @Test
     fun serializePrimitiveValues() {
+//        JesSerializer.LOG = true
         val modelTest = JSONObject(ModelTest.TEST_JSON).fromJson<ModelTest>()
         assertEquals("A B C D", modelTest.s)
         assertEquals(123, modelTest.i)
