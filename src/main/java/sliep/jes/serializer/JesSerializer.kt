@@ -245,7 +245,11 @@ fun objectValue(jes: JSONObject, type: Class<*>, instance: Any): Any {
         JesSerializer.depth++
         try {
             val value = when {
-                field.type.isArray -> objectValue(jes.optJSONArray(name), field.type)
+                field.type.isArray -> {
+                    val jsonArray = jes.optJSONArray(name)
+                    if (jsonArray == null) null
+                    else objectValue(jsonArray, field.type)
+                }
                 List::class.java.isAssignableFrom(field.type) ->
                     if (jes[name] is List<*>) jes[name]
                     else jes.getJSONArray(name).toList()
