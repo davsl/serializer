@@ -256,7 +256,10 @@ fun objectValue(jes: JSONObject, type: Class<*>, instance: Any): Any {
                 Map::class.java.isAssignableFrom(field.type) ->
                     if (jes[name] is Map<*, *>) jes[name]
                     else jes.getJSONObject(name).toMap()
-                else -> objectValue(jes[name], field.type)
+                else -> {
+                    if (jes.isNull(name)) null
+                    else objectValue(jes[name], field.type)
+                }
             }
             field.isFinal = false
             field[instance] = value
