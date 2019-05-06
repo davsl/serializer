@@ -5,7 +5,7 @@ package sliep.jes.serializer
  *
  * Implementing the method [toJson] you convert the instance into a value of type [T]
  *
- * A [JesObjectImpl] instance must provide a constructor having [JesConstructor]<[T]> as only parameter to be deserialized as well
+ * A [JesObjectImpl] instance must provide a constructor having a constructor with only 1 parameter to be deserialized as well
  *
  * Example of implementation:
  *```kotlin
