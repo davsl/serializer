@@ -2,8 +2,10 @@
 
 package sliep.jes.serializer
 
-import org.json.JSONArray
-import org.json.JSONObject
+import addIfNotContained
+import capitalizeFirst
+import excludes
+import includes
 import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
@@ -66,10 +68,7 @@ fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class)
 fun <T> Class<T>.newUnsafeInstance(): T {
     checkAllocationPossible()
-    val clazz = this
-    for (allocation in AllocationMethod.values())
-        allocation.runCatching { return newInstance(clazz) }
-    throw UnsupportedOperationException("Cannot allocate instance of type: $name")
+    return Unsafe::class.field<Unsafe>("theUnsafe").allocateInstance(this) as T
 }
 
 /**
@@ -502,23 +501,6 @@ val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
-/**
- * Add element to list if not contained. Useful to avoid duplicates
- * @author sliep
- * @receiver list
- * @param value
- */
-fun <T> ArrayList<T>.addIfNotContained(value: T) {
-    if (!contains(value)) add(value)
-}
-
-/**
- * Only capitalize first character of a string
- * @author sliep
- * @receiver content
- * @return Content
- */
-fun String.capitalizeFirst() = this[0].toUpperCase() + substring(1)
 
 fun Any.thisToString(
     toString: (field: Any?) -> String? = { f -> f?.toString() },
@@ -536,52 +518,6 @@ fun Any.thisToString(
         append("    ${field.name} $separator $fieldVal\n")
     }
 }.toString().trim()
-
-/**
- * Try to convert string to [JSONObject] or [JSONArray], if conversion fails return null
- * @author sliep
- * @receiver content
- * @return json instance or null
- */
-fun String.tryAsJSON(): Any? {
-    kotlin.runCatching { return JSONObject(this) }
-    kotlin.runCatching { return JSONArray(this) }
-    return null
-}
-
-/**
- * Check if flag is contained in int
- * @author sliep
- * @receiver flags
- * @param flag to check
- * @return if flag is contained
- */
-infix fun Int.includes(flag: Int) = this and flag == flag
-
-/**
- * Check if flag is not contained in int
- * @author sliep
- * @receiver flags
- * @param flag to check
- * @return if flag is not contained
- */
-infix fun Int.excludes(flag: Int) = this and flag == 0
-/**
- * Utility class to instantiate an object
- * @author sliep
- */
-internal enum class AllocationMethod {
-    NATIVE_NEW_INSTANCE {
-        @Suppress("RemoveRedundantSpreadOperator")
-        override fun <T> newInstance(c: Class<T>) = c.constructor().newInstance()!!
-    },
-    UNSAFE {
-        override fun <T> newInstance(c: Class<T>) = Unsafe::class.field<Unsafe>("theUnsafe").allocateInstance(c) as T
-    };
-
-    @Throws(Throwable::class)
-    abstract fun <T> newInstance(c: Class<T>): T
-}
 
 /**
  * Handle simultaneously getters/setters and normal functions

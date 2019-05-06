@@ -26,11 +26,12 @@ object LateInitVal : Loggable {
 @Suppress("NOTHING_TO_INLINE")
 inline fun <T> lateInit(field: KProperty<T>, noinline init: () -> T): T {
     val theId = field.hashCode()
-    return if (instances.containsKey(theId)) instances[theId] as T else {
-        val instance = init()
-        LateInitVal::class.log { "Initializing static property ${field.name} -> $instance" }
-        instances[theId] = instance
-        instance
+    return if (instances.containsKey(theId)) instances[theId] as T else synchronized(LateInitVal) {
+        if (!instances.containsKey(theId)) {
+            LateInitVal::class.log { "Initializing static property ${field.name} -> $theId" }
+            instances[theId] = init()
+        }
+        instances[theId] as T
     }
 }
 
@@ -49,12 +50,8 @@ inline fun <T> lateInit(field: KProperty<T>, noinline init: () -> T): T {
 inline fun <T> Any.lateInit(field: KProperty<*>, noinline init: () -> T): T {
     val theId = System.identityHashCode(this) * field.hashCode()
     return if (instances.containsKey(theId)) instances[theId] as T else {
+        LateInitVal::class.log { "Initializing property ${field.name} for instance ${this::class.java.name} -> $theId" }
         val instance = init()
-        LateInitVal::class.log {
-            "Initializing property ${field.name} for instance ${this::class.java.name}@${System.identityHashCode(
-                this
-            )}"
-        }
         instances[theId] = instance
         instance
     }

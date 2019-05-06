@@ -1,17 +1,6 @@
 package sliep.jes.serializer
 
 /**
- * Your JesObjectImpl class must be instantiable from it's JesConstructor
- * @author sliep
- * @param T type of Json field from which the object will be deserialized
- * @property data source from json
- * @see JesObjectImpl
- */
-interface JesConstructor<T : Any> {
-    val data: T
-}
-
-/**
  * Let your class implement [JesObjectImpl] instead of [JesObject] to control it's serialization
  *
  * Implementing the method [toJson] you convert the instance into a value of type [T]
@@ -29,7 +18,6 @@ interface JesConstructor<T : Any> {
  * @author sliep
  * @param T type of Json field in which the object will be serialized
  * @see JesObject
- * @see JesConstructor
  */
 interface JesObjectImpl<T : Any> : JesObject {
     /**

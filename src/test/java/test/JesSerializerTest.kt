@@ -8,6 +8,7 @@ import org.junit.Test
 import sliep.jes.serializer.*
 
 class JesSerializerTest {
+
     @Test
     fun serializePrimitiveValues() {
 //        JesSerializer.LOG = true
@@ -51,9 +52,9 @@ class JesSerializerTest {
     }
 
     class ModelImplTest(val a: String, val b: Int) : JesObjectImpl<String> {
-        constructor(jes: JesConstructor<String>) : this(
-            jes.data.substring(0, jes.data.indexOf("----")),
-            jes.data.substring(jes.data.indexOf("----") + 4).toInt()
+        constructor(data: String) : this(
+            data.substring(0, data.indexOf("----")),
+            data.substring(data.indexOf("----") + 4).toInt()
         )
 
         override fun toJson(): String = "$a----$b"

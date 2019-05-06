@@ -171,7 +171,6 @@ private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): A
  * - Primitive type
  * - [String]
  * @param type of the field to be inflated can be
- * - Any that has a [JesConstructor]
  * - Assignable by [jes]
  * - [Array]
  * - [Enum]
@@ -183,10 +182,7 @@ fun objectValue(jes: Any, type: Class<*>): Any = when {
         JesSerializer.log { "${jes::class.java.simpleName}: $jes" }
         jes
     }
-    kotlin.runCatching { type.constructor(JesConstructor::class.java); true }.getOrDefault(false) ->
-        type.constructor(JesConstructor::class.java).newInstance(object : JesConstructor<Any> {
-            override val data = jes
-        })
+    JesObjectImpl::class.java.isAssignableFrom(type) -> type.newInstance(jes)
     jes is JSONArray -> {
         val componentType = type.componentType
             ?: throw IllegalStateException("Can't deserialize json array into $type: array type expected")
