@@ -70,6 +70,7 @@ interface Loggable {
     object SysErrLogger : Logger {
         override fun log(tag: String, message: Any) {
             val mess = message.toString()
+            if (mess.isBlank()) return
             var spacesCount = 0
             while (mess[spacesCount++] == ' ');
             System.err.println("$tag: ${indentAll(mess, spacesCount, tag.length + 1)}")
@@ -88,6 +89,7 @@ interface Loggable {
 
         override fun log(tag: String, message: Any) {
             val mess = message.toString()
+            if (mess.isBlank()) return
             var spacesCount = 0
             while (mess[spacesCount++] == ' ');
             Log!!.invokeMethod<Unit>("e", tag, indentAll(mess, spacesCount, tag.length + 1))
