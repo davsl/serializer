@@ -27,6 +27,21 @@ object JesSerializer : Loggable {
     var LOG: Boolean = false
 }
 
+fun fromJson(string: String, type: Class<*>): Any = try {
+    JSONObject(string).fromJson(type)
+} catch (e: JSONException) {
+    try {
+        JSONArray(string).fromJson(type)
+    } catch (e: JSONException) {
+        throw JSONException("Not a json string!", e)
+    }
+}
+
+fun toJson(any: Any): Any = when (any) {
+    is Array<*> -> (any as Array<out JesObject>).toJson()
+    else -> (any as JesObject).toJson()
+}
+
 /**
  * Serialize an object instance into a json object
  * No matter if fields are not accessible
