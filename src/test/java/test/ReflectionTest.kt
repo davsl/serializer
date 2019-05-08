@@ -2,10 +2,8 @@
 package test
 
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import sliep.jes.serializer.*
-import sliep.jes.serializer.JesPackage.Companion.findPackageBy
 import java.lang.reflect.Modifier
 
 class ReflectionTest {
@@ -56,10 +54,35 @@ class ReflectionTest {
     }
 
     @Test
-    fun packageTest() {
-        assertTrue(findPackageBy("serializer") after "3.0.8")
-        assertTrue(findPackageBy("serializer") before "99.99.99.999")
-        System.err.println(findPackageBy("serializer"))
+    fun superTest() {
+        val subClass = SubClass()
+        from
+        subClass.jesus
+        to
+        from
+        subClass.jesus
+        to
+        from
+        subClass.jesus
+        to
+
+        assertEquals(78, subClass.jesus)
+        subClass.jesus = 16
+        assertEquals(16, subClass.jesus)
+        assertEquals(16, subClass.getN())
+    }
+
+    open class SuperClass {
+        private val jesus = 78
+
+        fun getN() = jesus
+    }
+
+    class SubClass : SuperClass() {
+        //        private val jesus = super.jesus
+        var jesus: Int
+            get() = getSuper(::jesus)
+            set(value) = setSuper(::jesus, value)
     }
 
     val jees: Int get() = lateInit(::jees) { e++ }
@@ -85,3 +108,13 @@ class ReflectionTest {
 }
 
 var e = 1
+
+var start = 0L
+inline val from: Unit
+    get() {
+        start = System.nanoTime()
+    }
+inline val to: Unit
+    get() {
+        System.out.println("Testing performance -> ${(System.nanoTime() - start) / 1000000f}ms")
+    }

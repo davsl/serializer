@@ -29,35 +29,12 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 //JES INFO
-def VERSION = '3.3.3'
+def VERSION = '3.3.4'
 def ART_ID = 'serializer'
 //PACKAGE INFO
 group 'sliep.jes'
 version VERSION
 sourceCompatibility = 1.8
-//CREATE PACKAGE INFO KOTLIN FILE
-def packageInfo = """package ${project.group}.$ART_ID
-
-private object PackageInfo {
-    const val ID = "$ART_ID"
-    const val GROUP = "$project.group"
-    const val VERSION = "$project.version"
-}
-"""
-task generateSources {
-    inputs.property "version", project.version
-    outputs.dir "$buildDir/generated"
-    doFirst {
-        def packagePath = "${project.group}.$ART_ID".replace('.', '/')
-        def versionFile = file("$buildDir/generated/$packagePath/PackageInfo.kt")
-        versionFile.parentFile.mkdirs()
-        versionFile.text = packageInfo
-    }
-}
-compileKotlin.dependsOn generateSources
-sourceSets.main.java {
-    srcDir "$buildDir/generated"
-}
 //PUBLICATION
 task sourcesJar(type: Jar) {
     classifier "sources"

@@ -3,6 +3,7 @@
 package sliep.jes.serializer
 
 import sliep.jes.serializer.LateInitVal.instances
+import java.lang.reflect.Field
 import kotlin.reflect.KProperty
 
 object LateInitVal : Loggable {
@@ -55,4 +56,30 @@ inline fun <T> Any.lateInit(field: KProperty<*>, noinline init: () -> T): T {
         instances[theId] = instance
         instance
     }
+}
+
+val superInstances = HashMap<Int, Field>()
+
+@Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
+inline fun <T> Any.getSuper(prop: KProperty<*>): T {
+    val theId = System.identityHashCode(this) * prop.hashCode()
+    var field = superInstances[theId]
+    if (field == null) {
+        field = this::class.java.superclass!!.fieldR(prop.name, true)
+        field.isFinal = false
+        superInstances[theId] = field
+    }
+    return field[this] as T
+}
+
+@Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
+inline fun <T> Any.setSuper(prop: KProperty<*>, value: T) {
+    val theId = System.identityHashCode(this) * prop.hashCode()
+    var field = superInstances[theId]
+    if (field == null) {
+        field = this::class.java.superclass!!.fieldR(prop.name, true)
+        field.isFinal = false
+        superInstances[theId] = field
+    }
+    field[this] = value
 }
