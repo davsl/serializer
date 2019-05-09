@@ -16,6 +16,16 @@ fun <T> ArrayList<T>.addIfNotContained(value: T) {
     if (!contains(value)) add(value)
 }
 
+fun <T> List<T>.having(comparison: T.() -> Boolean): T? {
+    for (elem in this) if (elem.comparison()) return elem
+    return null
+}
+
+fun <T> Array<T>.having(comparison: T.() -> Boolean): T? {
+    for (elem in this) if (elem.comparison()) return elem
+    return null
+}
+
 /**
  * Only capitalize first character of a string
  * @author sliep
@@ -83,4 +93,18 @@ fun String.md5(): String {
     return StringBuilder(hash).apply {
         while (length < 32) insert(0, "0")
     }.toString()
+}
+
+
+@Suppress("UNCHECKED_CAST")
+fun <T> Number.toDynamic(clazz: Class<T>): T = when (clazz) {
+    Int::class.java -> toInt() as T
+    Float::class.java -> toFloat() as T
+    Double::class.java -> toDouble() as T
+    Long::class.java -> toLong() as T
+    Byte::class.java -> toByte() as T
+    Short::class.java -> toShort() as T
+    Char::class.java -> toChar() as T
+    String::class.java -> toString() as T
+    else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
