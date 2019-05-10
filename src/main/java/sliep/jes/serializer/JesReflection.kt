@@ -106,7 +106,7 @@ internal fun Class<*>.checkAllocationPossible() {
 \* ********************************************************** */
 
 /**
- * Fetch the property value of a receiver object through reflection
+ * Get the property value of a receiver object through reflection
  *
  * No matter if it's not accessible
  * @author sliep
@@ -127,6 +127,30 @@ fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
     }
     val fieldR = clazz.fieldR(name, inParent)
     return fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this] as R
+}
+
+/**
+ * Set the property value of a receiver object through reflection
+ *
+ * No matter if it's not accessible or final
+ * @author sliep
+ * @receiver the instance having the magic property or the property declaring class to fetch a static value
+ * @param name of the property
+ * @param value to be set
+ * @param inParent tell the function to search the field not only in the declaring class, but even in it's superclasses. default is true
+ * @throws NoSuchFieldException if a field with the specified name is not found.
+ * @see [Class.getDeclaredField]
+ */
+@Throws(NoSuchFieldException::class)
+fun Any.setField(name: String, value: Any?, inParent: Boolean = true) {
+    val clazz = when {
+        this is Class<*> -> this
+        this is KClass<*> -> this.java
+        else -> this::class.java
+    }
+    val fieldR = clazz.fieldR(name, inParent)
+    fieldR.isFinal = false
+    fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this] = value
 }
 
 /**

@@ -108,3 +108,16 @@ fun <T> Number.toDynamic(clazz: Class<T>): T = when (clazz) {
     String::class.java -> toString() as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
+
+@Suppress("UNCHECKED_CAST")
+fun <T> String.toDynamic(clazz: Class<T>): T = when (clazz) {
+    Int::class.java -> toInt() as T
+    Float::class.java -> toFloat() as T
+    Double::class.java -> toDouble() as T
+    Long::class.java -> toLong() as T
+    Byte::class.java -> toByte() as T
+    Short::class.java -> toShort() as T
+    Char::class.java -> toInt().toChar() as T
+    String::class.java -> this as T
+    else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
+}
