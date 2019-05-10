@@ -2,6 +2,8 @@
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
@@ -120,4 +122,11 @@ fun <T> String.toDynamic(clazz: Class<T>): T = when (clazz) {
     Char::class.java -> toInt().toChar() as T
     String::class.java -> this as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
+}
+
+fun Throwable.traceToString(): String = StringWriter().use { writer ->
+    PrintWriter(writer).use {
+        printStackTrace(it)
+        return writer.toString()
+    }
 }
