@@ -51,7 +51,7 @@ interface Loggable {
  * @see Loggable.log
  */
 inline fun <reified T : Loggable> logAs(depth: Int = 0, tag: String = T::class.java.simpleName, message: () -> Any?) {
-    if (T::class.getField("LOG")) Loggable.logger.log(tag, message() ?: return, depth)
+    if (getStaticField<T, Boolean>("LOG")) Loggable.logger.log(tag, message() ?: return, depth)
 }
 
 private fun buildLog(message: Any, indent: Int): String? {

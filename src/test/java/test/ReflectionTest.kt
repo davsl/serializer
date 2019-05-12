@@ -23,7 +23,7 @@ class ReflectionTest {
     @Test
     fun fieldsTest() {
         val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance.susu, instance.getField<String>("susu"))
+        assertEquals(instance.susu, instance.getInstanceField<ModelTest, String>("susu"))
         assertEquals(instance.susu, field<ModelTest>("susu")[instance])
         assertEquals(1, fields<ModelTest>(modifiers = Modifier.PRIVATE).size)
         assertEquals(2, fields<ModelTest>(excludeModifiers = Modifier.PRIVATE).size)
@@ -32,7 +32,7 @@ class ReflectionTest {
     @Test
     fun methodsTest() {
         val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance.susu, instance.getField<String>("susu"))
+        assertEquals(instance.susu, instance.getInstanceField<ModelTest, String>("susu"))
         assertEquals(instance.susu, field<ModelTest>("susu")[instance])
         assertEquals(1, fields<ModelTest>(Modifier.PRIVATE).size)
     }

@@ -89,7 +89,7 @@ inline fun <reified T : Any> constructor(vararg paramsTypes: Class<*>) = T::clas
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class)
 fun <T> Class<T>.newUnsafeInstance(): T {
     checkAllocationPossible()
-    return Unsafe::class.getField<Unsafe>("theUnsafe").allocateInstance(this) as T
+    return getStaticField<Unsafe, Unsafe>("theUnsafe").allocateInstance(this) as T
 }
 
 /**
@@ -148,7 +148,7 @@ fun <R : Any?> Any.getField(name: String, inParent: Boolean = true): R {
     return field[if (Modifier.isStatic(field.modifiers)) null else this] as R
 }
 
-inline fun <reified F : Any, R : Any?> F.getField(name: String): R {
+inline fun <reified F : Any, R : Any?> F.getInstanceField(name: String): R {
     val field = F::class.java.field(name)
     return field[this] as R
 }
@@ -177,7 +177,7 @@ fun Any.setField(name: String, value: Any?, inParent: Boolean = true) {
     field[if (Modifier.isStatic(field.modifiers)) null else this] = value
 }
 
-inline fun <reified F : Any> F.setField(name: String, value: Any?) {
+inline fun <reified F : Any> F.setInstanceField(name: String, value: Any?) {
     val field = F::class.java.field(name)
     field.isFinal = false
     field[this] = value
