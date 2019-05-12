@@ -11,9 +11,12 @@ package sliep.jes.serializer
  * @author sliep
  */
 interface Loggable {
-    var depth: Int
-    val logEnabled: Boolean
+    @Suppress("PropertyName")
+    var LOG: Boolean
     val tag: String get() = this::class.java.simpleName
+    var depth: Int
+        get() = 0
+        set(value) = throw UnsupportedOperationException("Can't set value $value on interface. Override this property")
 
     /**
      * Log a message
@@ -21,7 +24,7 @@ interface Loggable {
      * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
      */
     fun log(message: () -> Any?) {
-        if (logEnabled) logger.log(tag, message() ?: return, depth)
+        if (LOG) logger.log(tag, message() ?: return, depth)
     }
 
     companion object {
@@ -40,6 +43,15 @@ interface Loggable {
     interface Logger {
         fun log(tag: String, message: Any, indent: Int)
     }
+}
+
+/**
+ * Allows you to log as a [Loggable] from outside it's class
+ * @author sliep
+ * @see Loggable.log
+ */
+inline fun <reified T : Loggable> logAs(depth: Int = 0, tag: String = T::class.java.simpleName, message: () -> Any?) {
+    if (T::class.getField("LOG")) Loggable.logger.log(tag, message() ?: return, depth)
 }
 
 private fun buildLog(message: Any, indent: Int): String? {

@@ -29,7 +29,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 //JES INFO
-def VERSION = '3.4.0'
+def VERSION = '3.4.2'
 def ART_ID = 'serializer'
 //PACKAGE INFO
 group 'sliep.jes'

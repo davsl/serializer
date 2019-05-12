@@ -20,13 +20,7 @@ import java.lang.reflect.Modifier
  */
 object JesSerializer : Loggable {
     override var depth: Int = 0
-    override val logEnabled: Boolean get() = LOG
-    /**
-     * Generate debug log
-     * @see Loggable
-     */
-    @JvmField
-    var LOG: Boolean = false
+    override var LOG: Boolean = true
 }
 
 fun fromJson(string: String, type: Class<*>): Any = try {

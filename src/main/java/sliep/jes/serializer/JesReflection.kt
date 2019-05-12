@@ -463,9 +463,9 @@ fun <T> Class<T>.implement(handler: InvocationHandler): T =
  */
 inline fun <reified T : Any> implement(handler: InvocationHandler) = T::class.java.implement(handler)
 
-fun Method.isGetter() = name.startsWith("get") && parameterTypes.isEmpty()
-fun Method.isSetter() = name.startsWith("set") && parameterTypes.size == 1
-fun propName(setOrGet: String) = setOrGet[3].toLowerCase() + setOrGet.substring(4)
+val Method.isGetter get() = name.startsWith("get") && parameterTypes.isEmpty()
+val Method.isSetter get() = name.startsWith("set") && parameterTypes.size == 1
+val Method.propName get() = name[3].toLowerCase() + name.substring(4)
 
 /**
  * Get the java primitive type of a class (e.g. [java.lang.Integer] -> [kotlin.Int])
