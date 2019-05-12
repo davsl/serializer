@@ -15,6 +15,11 @@ interface Loggable {
     val logEnabled: Boolean
     val tag: String get() = this::class.java.simpleName
 
+    /**
+     * Log a message
+     * @author sliep
+     * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
+     */
     fun log(message: () -> Any?) {
         if (logEnabled) logger.log(tag, message() ?: return, depth)
     }
@@ -28,6 +33,10 @@ interface Loggable {
         var logger: Logger = if (AndroidLogger.isAvailable) AndroidLogger else SysErrLogger
     }
 
+    /**
+     * Simple interface for logging
+     * @author sliep
+     */
     interface Logger {
         fun log(tag: String, message: Any, indent: Int)
     }
@@ -40,6 +49,12 @@ private fun buildLog(message: Any, indent: Int): String? {
     return spaces + mess.replace("\n", "\n" + spaces)
 }
 
+/**
+ * Default java implementation of [Loggable.Logger]
+ *
+ * Print the log to the System.err stream
+ * @author sliep
+ */
 object SysErrLogger : Loggable.Logger {
     override fun log(tag: String, message: Any, indent: Int) {
         val mess = buildLog(message, indent) ?: return
@@ -47,6 +62,12 @@ object SysErrLogger : Loggable.Logger {
     }
 }
 
+/**
+ * Default android implementation of [Loggable.Logger]
+ *
+ * Print the log to the Android error log stream
+ * @author sliep
+ */
 object AndroidLogger : Loggable.Logger {
     private val e = try {
         Class.forName("android.util.Log").method("e", String::class.java, String::class.java)

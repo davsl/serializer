@@ -9,6 +9,7 @@ import includes
 import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -385,7 +386,6 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
 inline fun <reified T : Any> methods(modifiers: Int = 0, excludeModifiers: Int = 0) =
     T::class.java.methods(modifiers, excludeModifiers)
 
-//TODO guessparameterfromtypes cache signature
 /**
  * Makes possible to find a compatible method having only it's parameter types (or sub types) and the name
  * @author sliep
