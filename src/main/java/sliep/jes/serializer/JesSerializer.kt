@@ -19,6 +19,8 @@ import java.lang.reflect.Modifier
  * @author sliep
  */
 object JesSerializer : Loggable {
+    override var depth: Int = 0
+    override val logEnabled: Boolean get() = LOG
     /**
      * Generate debug log
      * @see Loggable
@@ -250,7 +252,7 @@ fun objectValue(jes: JSONObject, type: Class<*>, instance: Any): Any {
     val keys = jes.keys()
     while (keys.hasNext()) {
         val name = keys.next()
-        val field = kotlin.runCatching { type.fieldR(name, true) }.getOrNull() ?: continue
+        val field = kotlin.runCatching { type.field(name, true) }.getOrNull() ?: continue
         JesSerializer.depth++
         JesSerializer.log { "${field.name} <- ${jes[name]}" }
         JesSerializer.depth++

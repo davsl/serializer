@@ -2,44 +2,26 @@
 
 package test
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Test
-import sliep.jes.serializer.LateInitVal
 import sliep.jes.serializer.Loggable
-import sliep.jes.serializer.lateInit
 
 class LoggableTest {
     @Test
-    fun serializeDeserialize() {
-        Loggable.logger = object : Loggable.Logger {
-            override fun log(tag: String, message: Any) {
-                System.err.println("$tag $message")
-                if (tag == "JDSG")
-                    assertEquals("    true", message)
-            }
-        }
-        LateInitVal.LOG = true
-        val d = JDSG()
-        val b = JDSG()
-        d.depth++
-        d.main()
-        System.err.println(d.sooca)
-        Thread.sleep(1)
-        System.err.println(b.sooca)
-        System.err.println(d.sooca == b.sooca)
-        assertFalse(d.sooca == b.sooca)
+    fun loggableTest() {
+        MyClass.LOG = true
+        MyClass().fuck()
     }
 
-    class JDSG : MyClass()
+    class MyClass : Loggable {
+        override var depth: Int = 1
+        override val logEnabled = LOG
 
-    abstract class MyClass : Loggable {
-        val sooca: String get() = lateInit(::sooca) { System.currentTimeMillis().toString() }
-        fun main() {
-            log { sooca == sooca }
-            log { sooca == sooca }
-            log { sooca == sooca }
-            log { sooca == sooca }
+        init {
+            log { "DSVHUSJ DSJVSNB" }
+        }
+
+        fun fuck() {
+            log { "YOU" }
         }
 
         companion object {

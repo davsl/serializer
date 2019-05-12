@@ -23,8 +23,8 @@ class ReflectionTest {
     @Test
     fun fieldsTest() {
         val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance.susu, instance.field<String>("susu"))
-        assertEquals(instance.susu, fieldR<ModelTest>("susu")[instance])
+        assertEquals(instance.susu, instance.getField<String>("susu"))
+        assertEquals(instance.susu, field<ModelTest>("susu")[instance])
         assertEquals(1, fields<ModelTest>(modifiers = Modifier.PRIVATE).size)
         assertEquals(2, fields<ModelTest>(excludeModifiers = Modifier.PRIVATE).size)
     }
@@ -32,25 +32,9 @@ class ReflectionTest {
     @Test
     fun methodsTest() {
         val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance.susu, instance.field<String>("susu"))
-        assertEquals(instance.susu, fieldR<ModelTest>("susu")[instance])
+        assertEquals(instance.susu, instance.getField<String>("susu"))
+        assertEquals(instance.susu, field<ModelTest>("susu")[instance])
         assertEquals(1, fields<ModelTest>(Modifier.PRIVATE).size)
-    }
-
-    @Test
-    fun lateInitTest() {
-        assertEquals(1, jees)
-        assertEquals(1, jees)
-        assertEquals(1, jees)
-        assertEquals(2, e)
-        var test = ModelTest(3)
-        assertEquals(2, test.jees)
-        assertEquals(2, test.jees)
-        assertEquals(3, e)
-        test = ModelTest(3)
-        assertEquals(3, test.jees)
-        assertEquals(3, test.jees)
-        assertEquals(4, e)
     }
 
     @Test
@@ -85,13 +69,14 @@ class ReflectionTest {
             set(value) = setSuper(::jesus, value)
     }
 
-    val jees: Int get() = lateInit(::jees) { e++ }
+    val jees: Int by lazy {
+        e++
+    }
 
     class ModelTest(@JvmField val i: Int) {
         @JvmField
         val susu = "Hello"
         private val private = 345
-        val jees: Int get() = lateInit(::jees) { e++ }
 
         constructor() : this(3)
         internal constructor(int: Int, float: Float) : this(int)

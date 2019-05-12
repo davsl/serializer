@@ -2,9 +2,6 @@
 
 package sliep.jes.serializer
 
-import sliep.jes.serializer.Loggable.Companion.logger
-import kotlin.reflect.KClass
-
 /**
  * Logging utility
  * 1. Implement [Loggable]
@@ -15,107 +12,55 @@ import kotlin.reflect.KClass
  */
 interface Loggable {
     var depth: Int
-        get() = depths[this] ?: 0
-        set(value) {
-            depths[this] = value
-        }
-    private val logIt: Boolean get() = lateInit(::logIt) { this::class.field("LOG") }
-    private val tag: String
-        get() = lateInit(::tag) {
-            val simpleName = this::class.java.simpleName
-            if (simpleName.isBlank()) "<unknown-class>" else simpleName
-        }
+    val logEnabled: Boolean
+    val tag: String get() = this::class.java.simpleName
 
-    /**
-     * Log a message
-     * @author sliep
-     * @param depth a positive number included 0. every unit of depth correspond to 4 spaces before the [message] when printing the log to indent the data. default is -1 it means that will be taken from the 'depth' static variable in the class or zero if not defined
-     * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
-     */
-    fun log(depth: Int = -1, message: () -> Any?) {
-        if (logIt) logger.log(tag, spaces(if (depth == -1) this.depth else depth) + (message() ?: return))
+    fun log(message: () -> Any?) {
+        if (logEnabled) logger.log(tag, message() ?: return, depth)
     }
 
     companion object {
-        private val depths = HashMap<Loggable, Int>()
         /**
          * Edit this variable to define a custom [Logger] for your application
          * @author sliep
          */
         @JvmStatic
         var logger: Logger = if (AndroidLogger.isAvailable) AndroidLogger else SysErrLogger
-
-        fun indentAll(content: String, startIndent: Int, tagOffset: Int): String {
-            val spaces = StringBuilder().apply {
-                for (i in 0 until startIndent + tagOffset) append(' ')
-            }.toString()
-            return content.replace("\n", "\n" + spaces)
-        }
     }
 
-    /**
-     * Simple interface for logging
-     * @author sliep
-     */
     interface Logger {
-        fun log(tag: String, message: Any)
-    }
-
-    /**
-     * Default java implementation of [Logger]
-     *
-     * Print the log to the System.err stream
-     * @author sliep
-     */
-    object SysErrLogger : Logger {
-        override fun log(tag: String, message: Any) {
-            val mess = message.toString()
-            if (mess.isBlank()) return
-            var spacesCount = 0
-            while (mess[spacesCount++] == ' ');
-            System.err.println("$tag: ${indentAll(mess, spacesCount, tag.length + 1)}")
-        }
-    }
-
-    /**
-     * Default android implementation of [Logger]
-     *
-     * Print the log to the Android error log stream
-     * @author sliep
-     */
-    object AndroidLogger : Logger {
-        private val Log = kotlin.runCatching { Class.forName("android.util.Log") }.getOrNull()
-        val isAvailable = Log != null
-
-        override fun log(tag: String, message: Any) {
-            val mess = message.toString()
-            if (mess.isBlank()) return
-            var spacesCount = 0
-            while (mess[spacesCount++] == ' ');
-            Log!!.invokeMethod<Unit>("e", tag, indentAll(mess, spacesCount, tag.length + 1))
-        }
+        fun log(tag: String, message: Any, indent: Int)
     }
 }
 
-/**
- * Allows you to log as a [Loggable] from outside it's class
- * @author sliep
- * @see Loggable.log
- */
-fun KClass<out Loggable>.log(depth: Int = -1, message: () -> Any?) {
-    if (field("LOG")) {
-        val theMessage = message()?.toString() ?: return
-        logger.log(this.java.simpleName, null.spaces(depth) + theMessage)
+private fun buildLog(message: Any, indent: Int): String? {
+    val mess = message.toString()
+    if (mess.isBlank()) return null
+    val spaces = spaces(indent * 4)
+    return spaces + mess.replace("\n", "\n" + spaces)
+}
+
+object SysErrLogger : Loggable.Logger {
+    override fun log(tag: String, message: Any, indent: Int) {
+        val mess = buildLog(message, indent) ?: return
+        System.err.println("$tag:$mess")
     }
 }
 
-/**
- * Create spaces to indent messages
- * @author sliep
- * @receiver the loggable to get depth or null for singletons
- * @param depth override value from call if not -1 (default)
- * @return spaces string
- */
-private fun Loggable?.spaces(depth: Int): String = StringBuilder().apply {
-    for (i in 0 until depth) append("    ")
+object AndroidLogger : Loggable.Logger {
+    private val e = try {
+        Class.forName("android.util.Log").method("e", String::class.java, String::class.java)
+    } catch (e: Throwable) {
+        null
+    }
+    val isAvailable = e != null
+
+    override fun log(tag: String, message: Any, indent: Int) {
+        val mess = buildLog(message, indent) ?: return
+        e!!(null, tag, mess)
+    }
+}
+
+private fun spaces(spacesCount: Int): String = StringBuilder().apply {
+    for (i in 0 until spacesCount) append(' ')
 }.toString()

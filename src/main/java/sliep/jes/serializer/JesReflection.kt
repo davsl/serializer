@@ -10,6 +10,7 @@ import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 
 /* ********************************************************** *\
  ** -------------------  CONSTRUCTORS  ------------------- **
@@ -32,10 +33,22 @@ import kotlin.reflect.KClass
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class, InvocationTargetException::class)
 fun <T> Class<T>.newInstance(vararg params: Any?): T {
     checkAllocationPossible()
-    val constructor = guessFromParameters(name, declaredConstructors, null, params)
+    val constructor = guessFromParametersTypes(
+        name,
+        declaredConstructors,
+        null,
+        Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class }
+    )
     constructor.isAccessible = true
     return constructor.newInstance(*params) as T
 }
+
+/**
+ * @author sliep
+ * @see newInstance
+ */
+@Throws(NoSuchMethodException::class, UnsupportedOperationException::class, InvocationTargetException::class)
+inline fun <reified T : Any> newInstance(vararg params: Any?) = T::class.java.newInstance(*params)
 
 /**
  * Get the constructor of a specific class
@@ -55,6 +68,13 @@ fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
 }
 
 /**
+ * @author sliep
+ * @see Class.constructor
+ */
+@Throws(NoSuchMethodException::class)
+inline fun <reified T : Any> constructor(vararg paramsTypes: Class<*>) = T::class.java.constructor(*paramsTypes)
+
+/**
  * Create an instance of a given class if possible using it's constructor, otherwise through [Unsafe] bypassing the constructor
  * @author sliep
  * @receiver the [Class] to be instantiated
@@ -68,8 +88,15 @@ fun <T> Class<T>.constructor(vararg paramsTypes: Class<*>): Constructor<out T> {
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class)
 fun <T> Class<T>.newUnsafeInstance(): T {
     checkAllocationPossible()
-    return Unsafe::class.field<Unsafe>("theUnsafe").allocateInstance(this) as T
+    return Unsafe::class.getField<Unsafe>("theUnsafe").allocateInstance(this) as T
 }
+
+/**
+ * @author sliep
+ * @see Class.newUnsafeInstance
+ */
+@Throws(NoSuchMethodException::class, UnsupportedOperationException::class)
+inline fun <reified T : Any> newUnsafeInstance() = T::class.java.newUnsafeInstance()
 
 /**
  * Get all declared constructor of the receiver class matching given parameters
@@ -87,20 +114,16 @@ fun <T> Class<T>.constructors(modifiers: Int = 0, excludeModifiers: Int = 0): Ar
             (excludeModifiers == 0 || constructor.modifiers excludes excludeModifiers) &&
             !response.contains(constructor)
         ) response.add(constructor as Constructor<out T>)
-    return response.toArray(arrayOf())
+    return response.toTypedArray()
 }
 
 /**
- * If your QI is very low and you're trying to instantiate a primitive type or an abstract class or a enum class, this method will tell you 'Hey man, you can't!' :)
  * @author sliep
- * @throws UnsupportedOperationException if you're trying to instantiate a non-instantiable class
- * @receiver the [Class] to check
+ * @see Class.constructors
  */
-internal fun Class<*>.checkAllocationPossible() {
-    if (isPrimitive) throw UnsupportedOperationException("Cannot allocate primitive type!")
-    if (Modifier.isAbstract(modifiers)) throw UnsupportedOperationException("Cannot allocate abstract class!")
-    if (isEnum) throw UnsupportedOperationException("Cannot allocate enum class!")
-}
+inline fun <reified T : Any> constructors(modifiers: Int = 0, excludeModifiers: Int = 0) =
+    T::class.java.constructors(modifiers, excludeModifiers)
+
 /* ********************************************************** *\
  ** ----------------------  FIELDS  ---------------------- **
 \* ********************************************************** */
@@ -119,14 +142,9 @@ internal fun Class<*>.checkAllocationPossible() {
  * @see [Class.getDeclaredField]
  */
 @Throws(NoSuchFieldException::class)
-fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
-    val clazz = when {
-        this is Class<*> -> this
-        this is KClass<*> -> this.java
-        else -> this::class.java
-    }
-    val fieldR = clazz.fieldR(name, inParent)
-    return fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this] as R
+fun <R : Any?> Any.getField(name: String, inParent: Boolean = true): R {
+    val field = asClass.field(name, inParent)
+    return field[if (Modifier.isStatic(field.modifiers)) null else this] as R
 }
 
 /**
@@ -143,14 +161,9 @@ fun <R : Any?> Any.field(name: String, inParent: Boolean = true): R {
  */
 @Throws(NoSuchFieldException::class)
 fun Any.setField(name: String, value: Any?, inParent: Boolean = true) {
-    val clazz = when {
-        this is Class<*> -> this
-        this is KClass<*> -> this.java
-        else -> this::class.java
-    }
-    val fieldR = clazz.fieldR(name, inParent)
-    fieldR.isFinal = false
-    fieldR[if (Modifier.isStatic(fieldR.modifiers)) null else this] = value
+    val field = asClass.field(name, inParent)
+    field.isFinal = false
+    field[if (Modifier.isStatic(field.modifiers)) null else this] = value
 }
 
 /**
@@ -166,7 +179,7 @@ fun Any.setField(name: String, value: Any?, inParent: Boolean = true) {
  * @see [Class.getDeclaredField]
  */
 @Throws(NoSuchFieldException::class)
-fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
+fun Class<*>.field(name: String, inParent: Boolean = false): Field {
     var clazz = this
     var firstError: Throwable? = null
     while (true)
@@ -182,6 +195,13 @@ fun Class<*>.fieldR(name: String, inParent: Boolean = false): Field {
 }
 
 /**
+ * @author sliep
+ * @see Class.field
+ */
+@Throws(NoSuchFieldException::class)
+inline fun <reified T : Any> field(name: String, inParent: Boolean = false) = T::class.java.field(name, inParent)
+
+/**
  * Get all fields (not only declared) of the receiver class matching given parameters
  * @author sliep
  * @receiver the declaring [Class] of the fields
@@ -194,19 +214,25 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
     var clazz = this
     while (true) {
         for (field in clazz.declaredFields)
-            if ((modifiers == 0 || field.modifiers includes modifiers) &&
-                (excludeModifiers == 0 || field.modifiers excludes excludeModifiers)
-            ) response.addIfNotContained(field)
-        clazz = clazz.superclass ?: return response.toArray(arrayOf())
+            if ((modifiers == 0 || field.modifiers includes modifiers) && (excludeModifiers == 0 || field.modifiers excludes excludeModifiers))
+                response.addIfNotContained(field)
+        clazz = clazz.superclass ?: return response.toTypedArray()
     }
 }
+
+/**
+ * @author sliep
+ * @see Class.fields
+ */
+inline fun <reified T : Any> fields(modifiers: Int = 0, excludeModifiers: Int = 0) =
+    T::class.java.fields(modifiers, excludeModifiers)
 
 /**
  * Call kotlin (or java) property getters of a receiver object through reflection
  *
  * No matter if it's not accessible
  *
- * If the property name is 'foo', 'getFoo()' or 'isFoo()' method will be called (if exists)
+ * If the property name is 'foo', 'getFoo()' method will be called (if exists)
  * @author sliep
  * @receiver the instance having the magic property
  * @param R Type of return value
@@ -216,15 +242,7 @@ fun Class<*>.fields(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Field>
  * @see [invokeMethod]
  */
 @Throws(NoSuchMethodException::class)
-fun <R : Any?> Any.callGetter(fieldName: String) = try {
-    invokeMethod("get${fieldName.capitalizeFirst()}") as R
-} catch (e: NoSuchMethodException) {
-    try {
-        invokeMethod("is${fieldName.capitalizeFirst()}") as R
-    } catch (ignore: NoSuchMethodException) {
-        throw e
-    }
-}
+fun <R : Any?> Any.callGetter(fieldName: String) = invokeMethod("get${fieldName.capitalizeFirst()}") as R
 
 /**
  * Call kotlin (or java) property setters of a receiver object through reflection
@@ -244,18 +262,6 @@ fun <R : Any?> Any.callGetter(fieldName: String) = try {
 fun Any.callSetter(fieldName: String, value: Any?) {
     invokeMethod<Any?>("set${fieldName.capitalizeFirst()}", value)
 }
-
-/**
- * Modifier modifiers
- * @author sliep
- */
-private val MODIFIERS: Field?
-    get() = lateInit(::MODIFIERS) {
-        runCatching {
-            runCatching { Field::class.java.fieldR("accessFlags") }
-                .getOrDefault(Field::class.java.fieldR("modifiers"))
-        }.getOrNull()
-    }
 
 /**
  * Get constant fields of a given class (all public static final fields) as Array
@@ -301,15 +307,16 @@ var Field.isFinal: Boolean
  */
 @Throws(NoSuchMethodException::class, InvocationTargetException::class)
 fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
-    var clazz = when {
-        this is Class<*> -> this
-        this is KClass<*> -> this.java
-        else -> this::class.java
-    }
+    var clazz = asClass
     var firstError: Throwable? = null
     while (true)
         try {
-            val method = guessFromParameters(clazz.name, clazz.declaredMethods, name, params)
+            val method = guessFromParametersTypes(
+                clazz.name,
+                clazz.declaredMethods,
+                name,
+                Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class }
+            )
             method.isAccessible = true
             return method.invoke(if (Modifier.isStatic(method.modifiers)) null else this, *params) as R
         } catch (e: NoSuchMethodException) {
@@ -330,7 +337,7 @@ fun <R : Any?> Any.invokeMethod(name: String, vararg params: Any?): R {
  * @see [Class.getDeclaredMethod]
  */
 @Throws(NoSuchMethodException::class)
-fun Class<*>.method(name: String, vararg paramsTypes: Class<*>, searchParent: Boolean = true): Method {
+fun Class<*>.method(name: String, vararg paramsTypes: Class<*>, searchParent: Boolean = false): Method {
     var clazz = this
     while (true)
         try {
@@ -342,6 +349,14 @@ fun Class<*>.method(name: String, vararg paramsTypes: Class<*>, searchParent: Bo
             clazz = clazz.superclass ?: throw e
         }
 }
+
+/**
+ * @author sliep
+ * @see Class.method
+ */
+@Throws(NoSuchMethodException::class)
+inline fun <reified T : Any> method(name: String, vararg params: Class<*>, searchParent: Boolean = false) =
+    T::class.java.method(name, *params, searchParent = searchParent)
 
 /**
  * Get all methods (not only declared) of the receiver class matching given parameters
@@ -359,33 +374,18 @@ fun Class<*>.methods(modifiers: Int = 0, excludeModifiers: Int = 0): Array<Metho
             if ((modifiers == 0 || method.modifiers includes modifiers) &&
                 (excludeModifiers == 0 || method.modifiers excludes excludeModifiers)
             ) response.addIfNotContained(method)
-        clazz = clazz.superclass ?: return response.toArray(arrayOf())
+        clazz = clazz.superclass ?: return response.toTypedArray()
     }
 }
 
 /**
- * Makes possible to find a compatible method having only it's parameter values and the name
  * @author sliep
- * @param clazzName only for debug: the name of declaring class
- * @param members all methods in that class
- * @param name of the method
- * @param params input method arguments (null arguments are jolly, this can lead to ambiguity problems)
- * @return the matching method
- * @throws NoSuchMethodException if a matching method is not found.
+ * @see Class.methods
  */
-@Throws(NoSuchMethodException::class)
-fun <M : Executable> guessFromParameters(
-    clazzName: String,
-    members: Array<out M>,
-    name: String?,
-    params: Array<out Any?>
-) = guessFromParametersTypes(
-    clazzName,
-    members,
-    name,
-    kotlin.Array(params.size) { i -> if (params[i] == null) null else params[i]!!::class }
-)
+inline fun <reified T : Any> methods(modifiers: Int = 0, excludeModifiers: Int = 0) =
+    T::class.java.methods(modifiers, excludeModifiers)
 
+//TODO guessparameterfromtypes cache signature
 /**
  * Makes possible to find a compatible method having only it's parameter types (or sub types) and the name
  * @author sliep
@@ -399,9 +399,9 @@ fun <M : Executable> guessFromParameters(
 @Throws(NoSuchMethodException::class)
 fun <M : Executable> guessFromParametersTypes(
     clazzName: String,
-    members: Array<out M>,
+    members: Array<M>,
     name: String?,
-    params: Array<out KClass<*>?>
+    params: Array<KClass<*>?>
 ): M {
     bob@ for (method in members) {
         if (name != null && method.name != name) continue
@@ -449,53 +449,23 @@ val Executable.signature
  * Implement an interface through reflection
  * @author sliep
  * @param T the class to be instantiated
- * @param implementer invocation handler to dispatch method invocations to
+ * @param handler invocation handler to dispatch method invocations to
  * @return a new proxy instance of the given class
  * @throws IllegalArgumentException if [T] is not an interface
- * @see JesImplementer
  */
 @Throws(IllegalArgumentException::class)
-fun <T> Class<T>.implement(implementer: JesImplementer<T>) =
-    Proxy.newProxyInstance(classLoader, arrayOf(this)) { proxy, method, args ->
-        val methodName = method.name
-        val argsCount = args?.size ?: 0
-        proxy as T
-        when {
-            implementer is PropertyImplementer<T> && argsCount == 0 && methodName.startsWith("get") && methodName[3].isUpperCase() ->
-                implementer.apply {
-                    return@newProxyInstance proxy.get(
-                        methodName[3].toLowerCase() + methodName.substring(4),
-                        method.returnType
-                    )
-                }
-            implementer is PropertyImplementer<T> && argsCount == 0 && methodName.startsWith("is") && methodName[2].isUpperCase() ->
-                implementer.apply {
-                    return@newProxyInstance proxy.get(
-                        methodName[2].toLowerCase() + methodName.substring(3),
-                        method.returnType
-                    )
-                }
-            implementer is PropertyImplementer<T> && argsCount == 1 && methodName.startsWith("set") && methodName[3].isUpperCase() ->
-                implementer.apply {
-                    return@newProxyInstance proxy.set(
-                        methodName[3].toLowerCase() + methodName.substring(4), args[0],
-                        method.parameterTypes[0]
-                    )
-                }
-            implementer is FunctionImplementer<T> ->
-                implementer.apply { return@newProxyInstance proxy.memberFunction(method, args ?: arrayOf()) }
-            else -> throw UnsupportedOperationException("Incompatible implementer: method=$methodName implementer=$implementer")
-        }
-    } as T
+fun <T> Class<T>.implement(handler: InvocationHandler): T =
+    Proxy.newProxyInstance(classLoader, arrayOf(this), handler) as T
 
 /**
  * @author sliep
- * @see implement
+ * @see Class.implement
  */
-fun <T> Class<T>.implement(functionImplementer: T.(method: Method, args: Array<out Any>) -> Any?) =
-    implement(object : FunctionImplementer<T> {
-        override fun T.memberFunction(method: Method, args: Array<out Any>) = functionImplementer(method, args)
-    })
+inline fun <reified T : Any> implement(handler: InvocationHandler) = T::class.java.implement(handler)
+
+fun Method.isGetter() = name.startsWith("get") && parameterTypes.isEmpty()
+fun Method.isSetter() = name.startsWith("set") && parameterTypes.size == 1
+fun propName(setOrGet: String) = setOrGet[3].toLowerCase() + setOrGet.substring(4)
 
 /**
  * Get the java primitive type of a class (e.g. [java.lang.Integer] -> [kotlin.Int])
@@ -503,28 +473,71 @@ fun <T> Class<T>.implement(functionImplementer: T.(method: Method, args: Array<o
  * an [unwrappedClass] of a non primitive class is equal to the receiver object
  * @author sliep
  */
-val Class<*>.unwrappedClass: Class<*> get() = kotlin.unwrappedClass
+val KClass<*>.unwrappedClass: Class<*> get() = javaPrimitiveType ?: java
+
 /**
  * Get the java object type of a class (e.g. [kotlin.Int] -> [java.lang.Integer])
  *
  * a [wrappedClass] of a non primitive class is equal to the receiver object
  * @author sliep
  */
-val Class<*>.wrappedClass: Class<*> get() = kotlin.wrappedClass
+val KClass<*>.wrappedClass: Class<*> get() = javaObjectType
+
 /**
  * Unlike [Class.isPrimitive] this value result true even for wrapper types
  * @author sliep
  */
-val Class<*>.isTypePrimitive: Boolean get() = kotlin.isTypePrimitive
+val KClass<*>.isTypePrimitive: Boolean get() = javaPrimitiveType != null
 /**
  * Dimensions of an array type (zero for non array types)
  * @author sliep
  */
 val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 
+/**
+ * @author sliep
+ * @see Class.dimensions
+ */
+val KClass<*>.dimensions: Int get() = java.dimensions
+
 /* ********************************************************** *\
  ** ---------------------  UTILITY  ---------------------- **
 \* ********************************************************** */
+
+/**
+ * Modifier modifiers
+ * @author sliep
+ */
+private val MODIFIERS: Field? by lazy {
+    try {
+        Field::class.java.field("accessFlags")
+    } catch (e: Throwable) {
+        try {
+            Field::class.java.field("modifiers")
+        } catch (e: Throwable) {
+            null
+        }
+    }
+}
+
+/**
+ * If your QI is very low and you're trying to instantiate a primitive type or an abstract class or a enum class, this method will tell you 'Hey man, you can't!' :)
+ * @author sliep
+ * @throws UnsupportedOperationException if you're trying to instantiate a non-instantiable class
+ * @receiver the [Class] to check
+ */
+internal fun Class<*>.checkAllocationPossible() {
+    if (isPrimitive) throw UnsupportedOperationException("Cannot allocate primitive type!")
+    if (Modifier.isAbstract(modifiers)) throw UnsupportedOperationException("Cannot allocate abstract class!")
+    if (isEnum) throw UnsupportedOperationException("Cannot allocate enum class!")
+}
+
+internal inline val Any.asClass
+    get() = when {
+        this is Class<*> -> this
+        this is KClass<*> -> this.java
+        else -> this::class.java
+    }
 
 fun Any.thisToString(
     toString: (field: Any?) -> String? = { f -> f?.toString() },
@@ -543,118 +556,28 @@ fun Any.thisToString(
     }
 }.toString().trim()
 
-/**
- * Handle simultaneously getters/setters and normal functions
- *
- * If the function name starts with get/is/set the invocation will be dispatched to [PropertyImplementer] else to [FunctionImplementer]
- * @author sliep
- * @param T proxy type
- * @see JesImplementer
- */
-interface InterfaceImplementer<T> : PropertyImplementer<T>, FunctionImplementer<T>
+val superInstances = HashMap<Int, Field>()
 
-/**
- * Handle every property access of the proxy interface
- * This implementer is great when you want to define an interface without methods but only properties (only in kotlin)
- *
- * Example of usage:
- * ```kotlin
- * interface MyInterface {
- *     var setting: String
- *     val name: String
- *     var something: Int
- * }
- *
- * fun main() {
- *     implement(object : PropertyImplementer<MyInterface> {
- *         override fun MyInterface.get(property: String): Any? = when (property) {
- *             "setting" -> mySettings
- *             "name" -> "Gian Paolo"
- *             "something" -> 1234
- *             else -> throw UnsupportedOperationException("UNIMPLEMENTED")
- *         }
- *
- *         override fun MyInterface.set(property: String, value: Any?) = when (property) {
- *             "setting" -> mySettings = value as String
- *             "something" -> setSomething(value as Int)
- *             else -> throw UnsupportedOperationException("UNIMPLEMENTED")
- *         }
- *     })
- * }
- * ```
- * @author sliep
- * @param T proxy type
- * @see JesImplementer
- */
-interface PropertyImplementer<T> : JesImplementer<T> {
-    /**
-     * A property getter is a empty-parameter function called get[property] or is[property] where property is the name of the property having the first letter capitalized
-     * @author sliep
-     * @receiver proxy instance
-     * @param property name
-     * @param propertyType return type of the method
-     * @return property value
-     */
-    fun T.get(property: String, propertyType: Class<*>): Any?
-
-    /**
-     * A property setter is a function with 1 parameter called set[property] where property is the name of the property having the first letter capitalized
-     * @author sliep
-     * @receiver proxy instance
-     * @param property name
-     * @param propertyType type of method parameter
-     * @param value new value to be set to the property
-     */
-    fun T.set(property: String, value: Any?, propertyType: Class<*>)
+@Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
+inline fun <T> Any.getSuper(prop: KProperty<*>): T {
+    val theId = System.identityHashCode(this) * prop.hashCode()
+    var field = superInstances[theId]
+    if (field == null) {
+        field = this::class.java.superclass!!.field(prop.name, true)
+        field.isFinal = false
+        superInstances[theId] = field
+    }
+    return field[this] as T
 }
 
-/**
- * Handle every function call of the proxy interface
- *
- * Example of usage:
- * ```kotlin
- * interface MyInterface {
- *     fun doSomething(aNumber: Int, lol: Boolean): String
- *     fun doSomethingElse(): FloatArray
- * }
- *
- * fun main() {
- *     implement<MyInterface> { name, args ->
- *         when (name) {
- *             "doSomething" -> if (args[1] as Boolean) "lol" else args[0].toString()
- *             "doSomethingElse" -> throw IllegalStateException("Causal error just for fun")
- *             else -> throw UnsupportedOperationException("UNIMPLEMENTED")
- *         }
- *     }
- * }
- * ```
- * @author sliep
- * @param T proxy type
- * @see JesImplementer
- */
-interface FunctionImplementer<T> : JesImplementer<T> {
-
-    /**
-     * Implement this method to handle a function call
-     * @author sliep
-     * @receiver proxy instance
-     * @param method invoked
-     * @param args parameters passed to the method (can be empty but non null)
-     * @return function result or Unit for void functions
-     */
-    fun T.memberFunction(method: Method, args: Array<out Any>): Any?
+@Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
+inline fun <T> Any.setSuper(prop: KProperty<*>, value: T) {
+    val theId = System.identityHashCode(this) * prop.hashCode()
+    var field = superInstances[theId]
+    if (field == null) {
+        field = this::class.java.superclass!!.field(prop.name, true)
+        field.isFinal = false
+        superInstances[theId] = field
+    }
+    field[this] = value
 }
-
-/**
- * When a method is invoked on a proxy instance created by [implement], the method invocation is encoded and dispatched to the [JesImplementer]
- *
- * Do not pass to implement method a direct instance of this interface, instead use it's subtypes
- * - [FunctionImplementer] to handle any function call as a member function
- * - [PropertyImplementer] to handle only getters and setters
- * - [InterfaceImplementer] a mix of the previous implementers: perfect solution to handle getters setters and functions in a separate way
- * @author sliep
- * @param T proxy type
- * @see implement
- * @see InvocationHandler
- */
-interface JesImplementer<T>

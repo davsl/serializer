@@ -30,4 +30,23 @@ class UtilityTest {
         val f3 = f2 or HELLO
         assertTrue(f3 includes HELLO)
     }
+
+    @Test
+    fun testLazy() {
+        sooca
+        sooca
+        sooca
+        sooca
+        sooca
+        sooca
+        sooca
+        sooca
+        sooca
+    }
+
+
+    val sooca: String by lazy {
+        System.err.println("LAZYYYYY")
+        "dildo"
+    }
 }
