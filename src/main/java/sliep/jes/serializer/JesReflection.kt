@@ -148,6 +148,16 @@ fun <R : Any?> Any.getField(name: String, inParent: Boolean = true): R {
     return field[if (Modifier.isStatic(field.modifiers)) null else this] as R
 }
 
+inline fun <reified F : Any, R : Any?> F.getField(name: String): R {
+    val field = F::class.java.field(name)
+    return field[this] as R
+}
+
+inline fun <reified F : Any, R : Any?> getStaticField(name: String): R {
+    val field = F::class.java.field(name)
+    return field[null] as R
+}
+
 /**
  * Set the property value of a receiver object through reflection
  *
@@ -165,6 +175,18 @@ fun Any.setField(name: String, value: Any?, inParent: Boolean = true) {
     val field = asClass.field(name, inParent)
     field.isFinal = false
     field[if (Modifier.isStatic(field.modifiers)) null else this] = value
+}
+
+inline fun <reified F : Any> F.setField(name: String, value: Any?) {
+    val field = F::class.java.field(name)
+    field.isFinal = false
+    field[this] = value
+}
+
+inline fun <reified F : Any> setStaticField(name: String, value: Any?) {
+    val field = F::class.java.field(name)
+    field.isFinal = false
+    field[null] = value
 }
 
 /**

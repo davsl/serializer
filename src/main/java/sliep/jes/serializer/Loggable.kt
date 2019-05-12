@@ -13,7 +13,7 @@ package sliep.jes.serializer
 interface Loggable {
     @Suppress("PropertyName")
     var LOG: Boolean
-    val tag: String get() = this::class.java.simpleName
+    val logTag: String get() = this::class.java.simpleName
     var depth: Int
         get() = 0
         set(value) = throw UnsupportedOperationException("Can't set value $value on interface. Override this property")
@@ -24,7 +24,7 @@ interface Loggable {
      * @param message a function that will be executed only if 'LOG' is true. the result of this call must be the message to print or null to print nothing
      */
     fun log(message: () -> Any?) {
-        if (LOG) logger.log(tag, message() ?: return, depth)
+        if (LOG) logger.log(logTag, message() ?: return, depth)
     }
 
     companion object {
