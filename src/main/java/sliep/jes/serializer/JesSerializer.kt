@@ -20,7 +20,7 @@ import java.lang.reflect.Modifier
  */
 object JesSerializer : Loggable {
     override var depth: Int = 0
-    override var LOG: Boolean = true
+    override var LOG: Boolean = false
 }
 
 fun fromJson(string: String, type: Class<*>): Any = try {
