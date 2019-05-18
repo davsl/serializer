@@ -578,28 +578,25 @@ fun Any.thisToString(
     }
 }.toString().trim()
 
-val superInstances = HashMap<Int, Field>()
+inline fun <reified T : Any, R : Any?> Super() = Super<T, R>(T::class.java)
 
-@Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
-inline fun <T> Any.getSuper(prop: KProperty<*>): T {
-    val theId = System.identityHashCode(this) * prop.hashCode()
-    var field = superInstances[theId]
-    if (field == null) {
-        field = this::class.java.superclass!!.field(prop.name, true)
-        field.isFinal = false
-        superInstances[theId] = field
-    }
-    return field[this] as T
-}
+@Suppress("UNCHECKED_CAST")
+class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
 
-@Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
-inline fun <T> Any.setSuper(prop: KProperty<*>, value: T) {
-    val theId = System.identityHashCode(this) * prop.hashCode()
-    var field = superInstances[theId]
-    if (field == null) {
-        field = this::class.java.superclass!!.field(prop.name, true)
-        field.isFinal = false
-        superInstances[theId] = field
+    operator fun getValue(thisRef: Any, property: KProperty<*>): R =
+        getField(property.hashCode(), property.name).get(thisRef) as R
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: R) =
+        getField(property.hashCode(), property.name).set(thisRef, value)
+
+    private fun getField(fieldId: Int, name: String): Field = superFields[fieldId] ?: synchronized(this) {
+        superFields[fieldId] ?: clazz.field(name).apply {
+            isFinal = false
+            superFields[fieldId] = this
+        }
     }
-    field[this] = value
+
+    companion object {
+        val superFields = HashMap<Int, Field>()
+    }
 }

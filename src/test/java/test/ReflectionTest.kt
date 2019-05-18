@@ -64,9 +64,7 @@ class ReflectionTest {
 
     class SubClass : SuperClass() {
         //        private val jesus = super.jesus
-        var jesus: Int
-            get() = getSuper(::jesus)
-            set(value) = setSuper(::jesus, value)
+        var jesus: Int by Super<SuperClass, Int>()
     }
 
     val jees: Int by lazy {

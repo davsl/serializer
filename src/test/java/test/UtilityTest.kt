@@ -44,7 +44,6 @@ class UtilityTest {
         sooca
     }
 
-
     val sooca: String by lazy {
         System.err.println("LAZYYYYY")
         "dildo"
