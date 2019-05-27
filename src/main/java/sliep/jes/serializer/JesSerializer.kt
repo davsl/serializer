@@ -5,6 +5,7 @@ package sliep.jes.serializer
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import toDynamic
 import java.lang.reflect.Modifier
 /**
  * Welcome to JesSerializer
@@ -206,9 +207,9 @@ fun objectValue(jes: Any, type: Class<*>): Any = when {
         type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes.toString())
     }
     jes is JSONObject -> objectValue(jes, type, type.newUnsafeInstance())
-    jes is String && type.isAssignableFrom(Char::class.java) -> {
-        JesSerializer.log { "Char: $jes" }
-        jes[0]
+    jes is String -> {
+        JesSerializer.log { "String: $jes" }
+        jes.toDynamic(type)
     }
     jes is Double && type.isAssignableFrom(Float::class.java) -> {
         JesSerializer.log { "Float: $jes" }

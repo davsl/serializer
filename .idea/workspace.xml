@@ -8,9 +8,10 @@
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/UtilityTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/UtilityTest.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -53,35 +54,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/UtilityTest.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-              <folding>
-                <element signature="e#14#119#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="65" column="49" selection-start-line="65" selection-start-column="49" selection-end-line="65" selection-end-column="49" />
-              <folding>
-                <element signature="e#118#240#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="601" column="1" selection-start-line="601" selection-start-column="1" selection-end-line="601" selection-end-column="1" />
+            <state relative-caret-position="370">
+              <caret line="216" column="5" lean-forward="true" selection-start-line="216" selection-start-column="5" selection-end-line="216" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -99,11 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>simple</find>
-      <find>MODIFI</find>
-      <find>buildscript</find>
-      <find>dokka</find>
-      <find>Loggable.</find>
       <find>)</find>
       <find>lateini</find>
       <find>fields</find>
@@ -129,6 +101,11 @@
       <find>gets</find>
       <find>getsup</find>
       <find>get(</find>
+      <find>primitive</find>
+      <find>istypep</find>
+      <find>Long::class</find>
+      <find>is String</find>
+      <find>String::cl</find>
     </findStrings>
     <replaceStrings>
       <replace>\n *</replace>
@@ -164,17 +141,17 @@
         <option value="$PROJECT_DIR$/src/test/java/test/dto/Bitch.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObjectImpl.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" />
-        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/dd.java" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflectionKt.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/LateInitVal.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/LoggableTest.kt" />
         <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" />
-        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/UtilityTest.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" />
         <option value="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" />
       </list>
     </option>
   </component>
@@ -305,7 +282,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.ReflectionTest.superTest">
+  <component name="RunManager" selected="Gradle.Publish">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -343,6 +320,26 @@
         <option name="vmOptions" value="" />
       </ExternalSystemSettings>
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="JesSerializerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;test.JesSerializerTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
     <configuration name="LoggableTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -406,52 +403,12 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="ReflectionTest.superTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.ReflectionTest.superTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="UtilityTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
         <option name="scriptParameters" value="--tests &quot;test.UtilityTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="UtilityTest.testSuper" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;test.UtilityTest.testSuper&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -473,16 +430,14 @@
       <item itemvalue="Gradle.LoggableTest" />
       <item itemvalue="Gradle.ReflectionTest" />
       <item itemvalue="Gradle.UtilityTest" />
-      <item itemvalue="Gradle.UtilityTest.testSuper" />
-      <item itemvalue="Gradle.ReflectionTest.superTest" />
+      <item itemvalue="Gradle.JesSerializerTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.ReflectionTest.superTest" />
-        <item itemvalue="Gradle.UtilityTest.testSuper" />
-        <item itemvalue="Gradle.LoggableTest" />
+        <item itemvalue="Gradle.JesSerializerTest" />
         <item itemvalue="Gradle.UtilityTest" />
         <item itemvalue="Gradle.ReflectionTest" />
+        <item itemvalue="Gradle.LoggableTest" />
       </list>
     </recent_temporary>
   </component>
@@ -496,13 +451,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00001" summary="intellij is fucked up">
-      <created>1550674101750</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1550674101750</updated>
     </task>
     <task id="LOCAL-00002" summary="intellij is fucked up">
       <created>1550674724443</created>
@@ -840,28 +788,17 @@
       <option name="project" value="LOCAL" />
       <updated>1557744980503</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="superrr">
+      <created>1558169296431</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1558169296432</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LoggableTest_loggableTest - 2019.05.12 at 10h 26m 43s.xml">
-      <configuration name="LoggableTest.loggableTest" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="LoggableTest - 2019.05.12 at 10h 27m 02s.xml">
-      <configuration name="LoggableTest" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="ReflectionTest - 2019.05.12 at 10h 27m 12s.xml">
-      <configuration name="ReflectionTest" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="UtilityTest - 2019.05.12 at 10h 27m 19s.xml">
-      <configuration name="UtilityTest" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="LoggableTest - 2019.05.12 at 10h 27m 30s.xml">
-      <configuration name="LoggableTest" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="LoggableTest - 2019.05.12 at 10h 29m 26s.xml">
-      <configuration name="LoggableTest" configurationId="GradleRunConfiguration" />
-    </history-entry>
     <history-entry file="LoggableTest - 2019.05.12 at 10h 56m 41s.xml">
       <configuration name="LoggableTest" configurationId="GradleRunConfiguration" />
     </history-entry>
@@ -873,6 +810,24 @@
     </history-entry>
     <history-entry file="UtilityTest_testSuper - 2019.05.18 at 10h 18m 26s.xml">
       <configuration name="UtilityTest.testSuper" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="ReflectionTest_superTest - 2019.05.18 at 10h 47m 45s.xml">
+      <configuration name="ReflectionTest.superTest" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="ReflectionTest_superTest - 2019.05.18 at 10h 49m 46s.xml">
+      <configuration name="ReflectionTest.superTest" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="ReflectionTest_superTest - 2019.05.18 at 10h 50m 24s.xml">
+      <configuration name="ReflectionTest.superTest" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="ReflectionTest_superTest - 2019.05.18 at 10h 50m 50s.xml">
+      <configuration name="ReflectionTest.superTest" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="ReflectionTest_superTest - 2019.05.18 at 10h 51m 32s.xml">
+      <configuration name="ReflectionTest.superTest" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="ReflectionTest_superTest - 2019.05.18 at 10h 52m 04s.xml">
+      <configuration name="ReflectionTest.superTest" configurationId="GradleRunConfiguration" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -926,7 +881,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="done" />
     <MESSAGE value="intellij is fucked up" />
     <MESSAGE value="big update" />
     <MESSAGE value="updated docs" />
@@ -951,7 +905,8 @@
     <MESSAGE value="improved loggable" />
     <MESSAGE value="added something" />
     <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
+    <MESSAGE value="superrr" />
+    <option name="LAST_COMMIT_MESSAGE" value="superrr" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -964,14 +919,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/dto/Bitch.kt" />
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/io/Serializable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="178" column="17" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20180813/60753006d96d5fc85b61b0897f3326b5c4e1c4f0/json-20180813-sources.jar!/org/json/JSONObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -1229,20 +1176,6 @@
     <entry file="file://$PROJECT_DIR$/build/reports/tests/test/index.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="22" column="36" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/test/LoggableTest.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1284,17 +1217,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt">
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="601" column="1" selection-start-line="601" selection-start-column="1" selection-end-line="601" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="68" column="22" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
+        <state relative-caret-position="317">
+          <caret line="100" column="11" selection-start-line="100" selection-start-column="11" selection-end-line="100" selection-end-column="11" />
+          <folding>
+            <element signature="e#118#240#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1308,13 +1237,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="65" column="49" selection-start-line="65" selection-start-column="49" selection-end-line="65" selection-end-column="49" />
-          <folding>
-            <element signature="e#118#240#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="228">
+          <caret line="39" column="24" lean-forward="true" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.31/d16c788b755be19bf8a7eace113755519a1d7182/kotlin-stdlib-1.3.31-sources.jar!/kotlin/text/StringNumberConversionsJVM.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="51" column="32" selection-start-line="51" selection-start-column="32" selection-end-line="51" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.31/958c401b129f64de74af4b11a0894693edfa168d/kotlin-stdlib-common-1.3.31-sources.jar!/generated/_Strings.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="503" column="16" lean-forward="true" selection-start-line="503" selection-start-column="16" selection-end-line="503" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="127" lean-forward="true" selection-start-line="127" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="216" column="5" lean-forward="true" selection-start-line="216" selection-start-column="5" selection-end-line="216" selection-end-column="5" />
         </state>
       </provider>
     </entry>

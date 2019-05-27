@@ -51,7 +51,12 @@ class ReflectionTest {
         to
 
         assertEquals(78, subClass.jesus)
+        from
+        subClass.jesus = 15
+        to
+        from
         subClass.jesus = 16
+        to
         assertEquals(16, subClass.jesus)
         assertEquals(16, subClass.getN())
     }

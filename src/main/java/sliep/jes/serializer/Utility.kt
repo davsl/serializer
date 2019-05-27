@@ -108,6 +108,7 @@ fun <T> Number.toDynamic(clazz: Class<T>): T = when (clazz) {
     Short::class.java -> toShort() as T
     Char::class.java -> toChar() as T
     String::class.java -> toString() as T
+    Boolean::class.java -> (toInt() != 0) as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
 
@@ -119,8 +120,9 @@ fun <T> String.toDynamic(clazz: Class<T>): T = when (clazz) {
     Long::class.java -> toLong() as T
     Byte::class.java -> toByte() as T
     Short::class.java -> toShort() as T
-    Char::class.java -> toInt().toChar() as T
+    Char::class.java -> first() as T
     String::class.java -> this as T
+    Boolean::class.java -> toBoolean() as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
 
