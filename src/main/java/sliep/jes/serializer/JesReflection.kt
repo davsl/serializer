@@ -51,6 +51,12 @@ fun <T> Class<T>.newInstance(vararg params: Any?): T {
 @Throws(NoSuchMethodException::class, UnsupportedOperationException::class, InvocationTargetException::class)
 inline fun <reified T : Any> newInstance(vararg params: Any?) = T::class.java.newInstance(*params)
 
+@Throws(IllegalArgumentException::class)
+fun <T> Class<T>.newArrayInstance(length: Int): Array<T> = java.lang.reflect.Array.newInstance(this, length) as Array<T>
+
+@Throws(IllegalArgumentException::class)
+inline fun <reified T> newArrayInstance(length: Int) = T::class.java.newArrayInstance(length)
+
 /**
  * Get the constructor of a specific class
  * @author sliep

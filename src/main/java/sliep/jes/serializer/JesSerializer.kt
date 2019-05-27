@@ -24,17 +24,7 @@ object JesSerializer : Loggable {
     override var LOG: Boolean = false
 }
 
-fun fromJson(string: String, type: Class<*>): Any = try {
-    JSONObject(string).fromJson(type)
-} catch (e: JSONException) {
-    try {
-        JSONArray(string).fromJson(type)
-    } catch (e: JSONException) {
-        throw JSONException("Not a json string!", e)
-    }
-}
-
-fun toJson(any: Any): Any = when (any) {
+fun toGenericJson(any: Any): Any = when (any) {
     is Array<*> -> (any as Array<out JesObject>).toJson()
     else -> (any as JesObject).toJson()
 }
@@ -89,11 +79,11 @@ fun Array<out JesObject>.toJson(): JSONArray {
  * @param target to load json into or null to create a new instance
  * @return a new instance of [T] built from json object
  */
-inline fun <reified T : Any> JSONObject.fromJson(target: T? = null): T =
+inline fun <reified T : JesObject> JSONObject.fromJson(target: T? = null): T =
     if (target == null) objectValue(this, T::class.java) as T
     else objectValue(this, T::class.java, target) as T
 
-fun <T : Any> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
+fun <T : JesObject> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
     if (target == null) objectValue(this, type) as T
     else objectValue(this, type, target) as T
 
@@ -106,26 +96,22 @@ fun <T : Any> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
  * @param target to load json into or null to create a new instance
  * @return a new instance of [T] built from json object
  */
-inline fun <reified T : Any> JSONArray.fromJson(
-    target: Array<T> = java.lang.reflect.Array.newInstance(T::class.java, length()) as Array<T>
+inline fun <reified T : JesObject> JSONArray.fromJson(
+    target: Array<T> = newArrayInstance(length())
 ): Array<T> = arrayObjectValue(this, T::class.java, target as Array<Any?>) as Array<T>
 
-fun <T : Any> JSONArray.fromJson(
-    type: Class<T>, target: Array<T> = java.lang.reflect.Array.newInstance(type, length()) as Array<T>
+fun <T : JesObject> JSONArray.fromJson(
+    type: Class<T>, target: Array<T> = type.newArrayInstance(length())
 ): Array<T> = arrayObjectValue(this, type, target as Array<Any?>) as Array<T>
 
 /**
  * Create a primitive array from [JSONArray]
  * @author sliep
  */
-inline fun <reified T : Any> JSONArray.toArrayOf(): Array<T> {
-    val array = java.lang.reflect.Array.newInstance(T::class.java, length()) as Array<T>
-    for (i in 0 until array.size) array[i] = opt(i) as T
-    return array
-}
+inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
 
-fun <T : Any> JSONArray.toArrayOf(type: Class<T>): Array<T> {
-    val array = java.lang.reflect.Array.newInstance(type, length()) as Array<T>
+fun <T : Any> JSONArray.toTypedArray(type: Class<T>): Array<T> {
+    val array = type.newArrayInstance(length())
     for (i in 0 until array.size) array[i] = opt(i) as T
     return array
 }
@@ -198,9 +184,7 @@ fun objectValue(jes: Any, type: Class<*>): Any = when {
     jes is JSONArray -> {
         val componentType = type.componentType
             ?: throw IllegalStateException("Can't deserialize json array into $type: array type expected")
-        arrayObjectValue(
-            jes, componentType, java.lang.reflect.Array.newInstance(componentType, jes.length()) as Array<Any?>
-        )
+        arrayObjectValue(jes, componentType, componentType.newArrayInstance(jes.length()))
     }
     type.isEnum -> {
         JesSerializer.log { "Enum: $jes" }
@@ -209,11 +193,20 @@ fun objectValue(jes: Any, type: Class<*>): Any = when {
     jes is JSONObject -> objectValue(jes, type, type.newUnsafeInstance())
     jes is String -> {
         JesSerializer.log { "String: $jes" }
-        jes.toDynamic(type)
+        when {
+            String::class.java.isAssignableFrom(type) -> jes
+            type.kotlin.isTypePrimitive -> jes.toDynamic(type)
+            JSONObject::class.java.isAssignableFrom(type) -> JSONObject(jes)
+            JSONArray::class.java.isAssignableFrom(type) -> JSONArray(jes)
+            JesObject::class.java.isAssignableFrom(type) -> JSONObject(jes).fromJson(type as Class<out JesObject>)
+            type.componentType != null && JesObject::class.java.isAssignableFrom(type.componentType) ->
+                JSONArray(jes).fromJson(type.componentType as Class<out JesObject>)
+            else -> throw UnsupportedOperationException("Can't convert String to $type")
+        }
     }
-    jes is Double && type.isAssignableFrom(Float::class.java) -> {
-        JesSerializer.log { "Float: $jes" }
-        jes.toFloat()
+    jes is Number -> {
+        JesSerializer.log { "Number: $jes" }
+        jes.toDynamic(type)
     }
     else -> jes
 }
@@ -223,9 +216,10 @@ fun objectValue(jes: Any, type: Class<*>): Any = when {
  * @author sliep
  * @see objectValue
  */
-fun arrayObjectValue(jes: JSONArray, componentType: Class<*>, instance: Array<Any?>): Array<*> {
+fun arrayObjectValue(jes: JSONArray, componentType: Class<*>, instance: Array<*>): Array<*> {
     JesSerializer.log { "Deserializing JSONArray to array of ${componentType.simpleName} [" }
     JesSerializer.depth++
+    instance as Array<Any?>
     for (i in 0 until jes.length()) {
         JesSerializer.log { "$i ->" }
         JesSerializer.depth++

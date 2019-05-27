@@ -47,8 +47,8 @@ class JesSerializerTest {
     fun jsonArrayToArray() {
         val ar1 = JSONArray("[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\"]")
         val ar2 = JSONArray("[1,2,3,4,5]")
-        assertEquals("c", ar1.toArrayOf<String>()[2])
-        assertEquals(4, ar2.toArrayOf<Int>()[3])
+        assertEquals("c", ar1.toTypedArray<String>()[2])
+        assertEquals(4, ar2.toTypedArray<Int>()[3])
     }
 
     class ModelImplTest(val a: String, val b: Int) : JesObjectImpl<String> {
