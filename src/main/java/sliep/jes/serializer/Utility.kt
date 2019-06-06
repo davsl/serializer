@@ -132,3 +132,32 @@ fun Throwable.traceToString(): String = StringWriter().use { writer ->
         return writer.toString()
     }
 }
+
+inline fun <reified T> Array<T>.remove(element: T): Array<T> {
+    val indexOf = indexOf(element)
+    return if (indexOf == -1) this
+    else removeAt(indexOf)
+}
+
+inline fun <reified T> Array<T>.removeAt(index: Int): Array<T> {
+    if (index >= size) throw IndexOutOfBoundsException("Index: $index, Size: $size")
+    if (index < 0) throw NegativeArraySizeException()
+    return Array(size - 1) { i ->
+        when {
+            i >= index -> this@removeAt[i + 1]
+            else -> this@removeAt[i]
+        }
+    }
+}
+
+inline fun <reified T> Array<T>.add(element: T, index: Int = size): Array<T> {
+    if (index > size) throw IndexOutOfBoundsException("Index: $index, Size: $size")
+    if (index < 0) throw NegativeArraySizeException()
+    return Array(size + 1) { i ->
+        when {
+            i < index -> this@add[i]
+            i > index -> this@add[i - 1]
+            else -> element
+        }
+    }
+}
