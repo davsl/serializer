@@ -299,7 +299,8 @@ fun Any.callSetter(fieldName: String, value: Any?) {
 val Class<*>.CONSTANTS: HashMap<String, Any?>
     get() {
         val constants = HashMap<String, Any?>()
-        fields(Modifier.PUBLIC or Modifier.STATIC or Modifier.FINAL).forEach { constant -> constants[constant.name] = constant[null] }
+        fields(Modifier.PUBLIC or Modifier.STATIC or Modifier.FINAL)
+            .forEach { constant -> constants[constant.name] = constant[null] }
         return constants
     }
 /**
@@ -605,4 +606,14 @@ class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
     companion object {
         val superFields = HashMap<Int, Field>()
     }
+}
+
+inline fun <reified T : Any> T.duplicate(): T {
+    val duplicate = newInstance<T>()
+    for (field in fields<T>(excludeModifiers = Modifier.STATIC)) kotlin.runCatching {
+        field.isAccessible = true
+        field.isFinal = false
+        field[duplicate] = field[this]
+    }
+    return duplicate
 }

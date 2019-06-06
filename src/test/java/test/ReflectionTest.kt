@@ -1,4 +1,5 @@
 @file:Suppress("unused", "UNUSED_PARAMETER", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
+
 package test
 
 import org.junit.Assert.assertEquals
@@ -35,6 +36,12 @@ class ReflectionTest {
         assertEquals(instance.susu, instance.getInstanceField<ModelTest, String>("susu"))
         assertEquals(instance.susu, field<ModelTest>("susu")[instance])
         assertEquals(1, fields<ModelTest>(Modifier.PRIVATE).size)
+    }
+
+    @Test
+    fun duplicateTest() {
+        val instance = constructor<ModelTest>().newInstance()
+        assertEquals(instance, instance.duplicate())
     }
 
     @Test
@@ -84,6 +91,26 @@ class ReflectionTest {
         constructor() : this(3)
         internal constructor(int: Int, float: Float) : this(int)
         private constructor(int: Int, double: Double) : this(int)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as ModelTest
+
+            if (i != other.i) return false
+            if (susu != other.susu) return false
+            if (private != other.private) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = i
+            result = 31 * result + susu.hashCode()
+            result = 31 * result + private
+            return result
+        }
     }
 
     class ModelTest2(s: String) {
