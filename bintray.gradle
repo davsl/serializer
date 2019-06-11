@@ -37,6 +37,7 @@ artifacts {
 publishing {
     publications {
         toJCenter(MavenPublication) {
+            from components.java
             groupId = GROUP_ID
             artifactId = ART_ID
             version = VERSION
