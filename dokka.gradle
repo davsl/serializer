@@ -1,0 +1,9 @@
+apply plugin: 'org.jetbrains.dokka'
+dokka {
+    moduleName = ART_ID
+    includeNonPublic = false
+    skipDeprecated = false
+    skipEmptyPackages = true
+    outputFormat = 'html'
+    outputDirectory = "$projectDir/docs"
+}

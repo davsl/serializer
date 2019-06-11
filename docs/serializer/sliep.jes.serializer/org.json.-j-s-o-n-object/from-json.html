@@ -12,15 +12,17 @@
 <a name="sliep.jes.serializer$fromJson(org.json.JSONObject, sliep.jes.serializer.fromJson.T)"></a>
 <code><span class="keyword">inline</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span
         class="keyword">reified</span>&nbsp;<span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
-        class="identifier">Any</span></a><span class="symbol">&gt;</span> <span
+        href="../-jes-object.html"><span class="identifier">JesObject</span></a><span class="symbol">&gt;</span> <span
         class="identifier">JSONObject</span><span class="symbol">.</span><span class="identifier">fromJson</span><span
         class="symbol">(</span><span class="identifier"
                                      id="sliep.jes.serializer$fromJson(org.json.JSONObject, sliep.jes.serializer.fromJson.T)/target">target</span><span
         class="symbol">:</span>&nbsp;<a href="from-json.html#T"><span class="identifier">T</span></a><span
         class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span
         class="symbol">: </span><a href="from-json.html#T"><span class="identifier">T</span></a></code>
-<p>Convert a <a href="#">JSONObject</a> into an instance of <a href="from-json.html#T">T</a></p>
+<p>Deserialize a json object into a JVM instance
+    No matter if fields are not accessible
+    Every field present in json object will be loaded into the new instance field (if exists, else will be ignored)
+    Convert a <a href="#">JSONObject</a> into an instance of <a href="from-json.html#T">T</a></p>
 <h3>Parameters</h3>
 <p><a name="T"></a>
     <code>T</code> - type of instance</p>
@@ -32,8 +34,19 @@
     object to be deserialized</p>
 <p><strong>Return</strong><br/>
     a new instance of <a href="from-json.html#T">T</a> built from json object</p>
-<p><strong>See Also</strong><br/>
-<p><a href="../-jes-serializer/from-json.html">JesSerializer.fromJson</a></p>
-</p>
+<a name="sliep.jes.serializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.fromJson.T)), sliep.jes.serializer.fromJson.T)"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span
+        class="symbol">:</span>&nbsp;<a href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
+        class="symbol">&gt;</span> <span class="identifier">JSONObject</span><span class="symbol">.</span><span
+        class="identifier">fromJson</span><span class="symbol">(</span><span class="identifier"
+                                                                             id="sliep.jes.serializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.fromJson.T)), sliep.jes.serializer.fromJson.T)/type">type</span><span
+        class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
+        class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="from-json.html#T"><span
+        class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span
+        class="identifier"
+        id="sliep.jes.serializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.fromJson.T)), sliep.jes.serializer.fromJson.T)/target">target</span><span
+        class="symbol">:</span>&nbsp;<a href="from-json.html#T"><span class="identifier">T</span></a><span
+        class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span
+        class="symbol">: </span><a href="from-json.html#T"><span class="identifier">T</span></a></code>
 </BODY>
 </HTML>

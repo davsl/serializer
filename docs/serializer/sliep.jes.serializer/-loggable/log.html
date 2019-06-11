@@ -9,13 +9,10 @@
         href="index.html">Loggable</a>&nbsp;/&nbsp;<a href="./log.html">log</a><br/>
 <br/>
 <h1>log</h1>
-<a name="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))"></a>
+<a name="sliep.jes.serializer.Loggable$log(kotlin.Function0((kotlin.Any)))"></a>
 <code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">log</span><span
         class="symbol">(</span><span class="identifier"
-                                     id="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/depth">depth</span><span
-        class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-        class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">, </span><span
-        class="identifier" id="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/message">message</span><span
+                                     id="sliep.jes.serializer.Loggable$log(kotlin.Function0((kotlin.Any)))/message">message</span><span
         class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
         class="symbol">-&gt;</span>&nbsp;<a
         href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
@@ -23,11 +20,6 @@
         href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
 <p>Log a message</p>
 <h3>Parameters</h3>
-<p><a name="depth"></a>
-    <code>depth</code> - a positive number included 0. every unit of depth correspond to 4 spaces before the <a
-            href="log.html#sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/message">message</a>
-    when printing the log to indent the data. default is -1 it means that will be taken from the 'depth' static variable
-    in the class or zero if not defined</p>
 <p><a name="message"></a>
     <code>message</code> - a function that will be executed only if 'LOG' is true. the result of this call must be the
     message to print or null to print nothing</p>

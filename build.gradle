@@ -1,124 +1,44 @@
-//PLUGINS DEPENDENCY
 buildscript {
+    ext.kotlin_version = '1.3.31'
+    repositories {
+        jcenter()
+    }
     dependencies {
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
-//PLUGINS
-plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.31'
-    id "com.jfrog.bintray" version "1.8.4"
-    id 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+ext.VERSION = '3.5.2'
+ext.ART_ID = 'serializer'
+ext.GROUP_ID = 'sliep.jes'
+
+apply from: 'dokka.gradle'
+apply from: 'bintray.gradle'
+
+group GROUP_ID
+version VERSION
+
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }
-//REPOSITORIES and DEPENDENCIES
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
 repositories {
     mavenCentral()
     jcenter()
 }
+
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.json:json:20180813"
-}
-//JVM TARGET
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-//JES INFO
-def VERSION = '3.5.1'
-def ART_ID = 'serializer'
-//PACKAGE INFO
-group 'sliep.jes'
-version VERSION
-sourceCompatibility = 1.8
-//PUBLICATION
-task sourcesJar(type: Jar) {
-    classifier "sources"
-    from sourceSets.main.allSource
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier "javadoc"
-    from javadoc.destinationDir
-}
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-def pomConfig = {
-    licenses {
-        license {
-            name "The Apache Software License, Version 2.0"
-            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "sliep"
-            name "Sliep"
-            email "dade.sliep@gmail.com"
-        }
-    }
-    scm {
-        url "https://github.com/davsl/" + ART_ID
-    }
-}
-publishing {
-    publications {
-        toJCenter(MavenPublication) {
-            from components.java
-            groupId = 'sliep.jes'
-            artifactId = ART_ID
-            version = VERSION
-            artifact sourcesJar {
-                classifier "sources"
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', 'An AWESOME lib Really')
-                root.appendNode('name', ART_ID)
-                root.appendNode('url', 'https://github.com/davsl/' + ART_ID)
-                root.children().last() + pomConfig
-            }
-        }
-    }
-}
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publications = ['toJCenter']
-    pkg {
-        repo = 'jes'
-        name = ART_ID
-        userOrg = 'sliep'
-        desc = 'Amazing serialization/deserialization library details on https://davsl.github.io/' + ART_ID + '/'
-        licenses = ['Apache-2.0']
-        websiteUrl = 'https://davsl.github.io/' + ART_ID + '/'
-        issueTrackerUrl = 'https://github.com/davsl/' + ART_ID + '/issues'
-        vcsUrl = 'https://github.com/davsl/' + ART_ID + '.git'
-        labels = ['beta', 'developing']
-        publicDownloadNumbers = true
-        version {
-            name = VERSION
-            desc = 'Added fix'
-            released = new Date()
-        }
-    }
-}
-//JAVADOC
-apply plugin: 'org.jetbrains.dokka'
-dokka {
-    moduleName = 'serializer'
-    includeNonPublic = false
-    skipDeprecated = false
-    skipEmptyPackages = true
-    outputFormat = 'html'
-    outputDirectory = "$projectDir/docs"
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }

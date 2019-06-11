@@ -17,8 +17,7 @@
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">:</span>&nbsp;<a href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
                     class="symbol">&gt;</span> <span class="identifier">JSONObject</span><span
                     class="symbol">.</span><span class="identifier">fromJson</span><span class="symbol">(</span><span
                     class="identifier"
@@ -27,8 +26,27 @@
                     class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span
                     class="symbol">)</span><span class="symbol">: </span><a href="from-json.html#T"><span
                     class="identifier">T</span></a></code>
-            <p>Convert a <a href="#">JSONObject</a> into an instance of <a href="from-json.html#T">T</a></p>
-        </td>
+            <p>Deserialize a json object into a JVM instance
+                No matter if fields are not accessible
+                Every field present in json object will be loaded into the new instance field (if exists, else will be
+                ignored)
+                Convert a <a href="#">JSONObject</a> into an instance of <a href="from-json.html#T">T</a></p>
+            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
+                    class="symbol">&gt;</span> <span class="identifier">JSONObject</span><span
+                    class="symbol">.</span><span class="identifier">fromJson</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.fromJson.T)), sliep.jes.serializer.fromJson.T)/type">type</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
+                    class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="from-json.html#T"><span
+                    class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.fromJson.T)), sliep.jes.serializer.fromJson.T)/target">target</span><span
+                    class="symbol">:</span>&nbsp;<a href="from-json.html#T"><span class="identifier">T</span></a><span
+                    class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span
+                    class="symbol">)</span><span class="symbol">: </span><a href="from-json.html#T"><span
+                    class="identifier">T</span></a></code></td>
     </tr>
     </tbody>
 </table>

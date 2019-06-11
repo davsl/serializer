@@ -1,0 +1,80 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "sliep"
+            name "Sliep"
+            email "dade.sliep@gmail.com"
+        }
+    }
+    scm {
+        url "https://github.com/davsl/$ART_ID"
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allSource
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        toJCenter(MavenPublication) {
+            groupId = GROUP_ID
+            artifactId = ART_ID
+            version = VERSION
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'An AWESOME lib Really')
+                root.appendNode('name', ART_ID)
+                root.appendNode('url', "https://github.com/davsl/$ART_ID")
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    //noinspection GroovyAccessibility
+    publications = ['toJCenter']
+    pkg {
+        repo = 'jes'
+        name = ART_ID
+        userOrg = 'sliep'
+        licenses = ['Apache-2.0']
+        websiteUrl = "https://github.com/davsl/$ART_ID"
+        issueTrackerUrl = "https://github.com/davsl/$ART_ID/issues"
+        vcsUrl = "https://github.com/davsl/${ART_ID}.git"
+        labels = ['beta', 'developing']
+        version {
+            name = VERSION
+            desc = 'Very good lib'
+            released = new Date()
+        }
+    }
+}

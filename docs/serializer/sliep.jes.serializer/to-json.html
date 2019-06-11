@@ -13,15 +13,17 @@
 <code><span class="keyword">fun </span><a href="-jes-object.html"><span class="identifier">JesObject</span></a><span
         class="symbol">.</span><span class="identifier">toJson</span><span class="symbol">(</span><span
         class="symbol">)</span><span class="symbol">: </span><span class="identifier">JSONObject</span></code>
-<p>Convert a <a href="-jes-object.html">JesObject</a> into a <a href="#">JSONObject</a></p>
+<p>Serialize an object instance into a json object
+    No matter if fields are not accessible
+    A field to be serialized must be a <a href="-jes-object.html">JesObject</a> or a primitive type or a String.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+    <code>IllegalArgumentException</code> - if the instance is a primitive type/array/enum</p>
 <p><strong>Author</strong><br/>
     sliep</p>
 <p><strong>Receiver</strong><br/>
     instance to be serialized</p>
 <p><strong>Return</strong><br/>
     json object representing serialized class</p>
-<p><strong>See Also</strong><br/>
-<p><a href="-jes-serializer/to-json.html">JesSerializer.toJson</a></p>
-</p>
 </BODY>
 </HTML>

@@ -20,9 +20,6 @@
 </ul>
 <p>use <a href="../to-json.html">JesObject.toJson</a> to serialize an object</p>
 <p>use <a href="../org.json.-j-s-o-n-object/from-json.html">JSONObject.fromJson</a> to deserialize a json</p>
-<p>For java boyz instead of method extensions you can call <a href="to-json.html">JesSerializer.toJson</a>, <a
-        href="array-to-json.html">JesSerializer.arrayToJson</a>, <a href="from-json.html">JesSerializer.fromJson</a>, <a
-        href="from-json-array.html">JesSerializer.fromJsonArray</a>,</p>
 <p><strong>Author</strong><br/>
     sliep</p>
 <h3>Properties</h3>
@@ -35,133 +32,31 @@
         <td>
             <code><span class="keyword">var </span><span class="identifier">LOG</span><span class="symbol">: </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
-                    class="identifier">Boolean</span></a></code>
-            <p>Generate debug log</p>
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="depth.html">depth</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">var </span><span class="identifier">depth</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
         </td>
     </tr>
     </tbody>
 </table>
-<h3>Functions</h3>
+<h3>Inherited Properties</h3>
 <table>
     <tbody>
     <tr>
         <td>
-            <p><a href="array-to-json.html">arrayToJson</a></p>
+            <p><a href="../-loggable/log-tag.html">logTag</a></p>
         </td>
         <td>
-            <code><span class="keyword">fun </span><span class="identifier">arrayToJson</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer.JesSerializer$arrayToJson(kotlin.Array((sliep.jes.serializer.JesObject)))/instance">instance</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
-                    class="identifier">Array</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a
-                    href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
-                    class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span
-                    class="identifier">JSONArray</span></code>
-            <p>Serialize an array instance into a json array</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="from-json.html">fromJson</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
-                    class="symbol">&gt;</span> <span class="identifier">fromJson</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer.JesSerializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.JesSerializer.fromJson.T)))/jes">jes</span><span
-                    class="symbol">:</span>&nbsp;<span class="identifier">JSONObject</span><span
-                    class="symbol">, </span><span class="identifier"
-                                                  id="sliep.jes.serializer.JesSerializer$fromJson(org.json.JSONObject, java.lang.Class((sliep.jes.serializer.JesSerializer.fromJson.T)))/type">type</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="from-json.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a href="from-json.html#T"><span class="identifier">T</span></a></code>
-            <p>Deserialize a json object into a JVM instance</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="from-json-array.html">fromJsonArray</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
-                    class="symbol">&gt;</span> <span class="identifier">fromJsonArray</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer.JesSerializer$fromJsonArray(org.json.JSONArray, java.lang.Class((sliep.jes.serializer.JesSerializer.fromJsonArray.T)))/jes">jes</span><span
-                    class="symbol">:</span>&nbsp;<span class="identifier">JSONArray</span><span class="symbol">, </span><span
-                    class="identifier"
-                    id="sliep.jes.serializer.JesSerializer$fromJsonArray(org.json.JSONArray, java.lang.Class((sliep.jes.serializer.JesSerializer.fromJsonArray.T)))/componentType">componentType</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><a href="from-json-array.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
-                    class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="from-json-array.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">&gt;</span></code>
-            <p>Deserialize a json array into an array object of <a
-                    href="from-json-array.html#sliep.jes.serializer.JesSerializer$fromJsonArray(org.json.JSONArray, java.lang.Class((sliep.jes.serializer.JesSerializer.fromJsonArray.T)))/componentType">componentType</a>
-            </p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="object-value.html">objectValue</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
-                    class="identifier">T</span><span class="symbol">&gt;</span> <span
-                    class="identifier">objectValue</span><span class="symbol">(</span><span class="identifier"
-                                                                                            id="sliep.jes.serializer.JesSerializer$objectValue(org.json.JSONArray, java.lang.Class((kotlin.Any)), sliep.jes.serializer.JesSerializer.objectValue.T)/jes">jes</span><span
-                    class="symbol">:</span>&nbsp;<span class="identifier">JSONArray</span><span class="symbol">, </span><span
-                    class="identifier"
-                    id="sliep.jes.serializer.JesSerializer$objectValue(org.json.JSONArray, java.lang.Class((kotlin.Any)), sliep.jes.serializer.JesSerializer.objectValue.T)/componentType">componentType</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier"
-                                                                                  id="sliep.jes.serializer.JesSerializer$objectValue(org.json.JSONArray, java.lang.Class((kotlin.Any)), sliep.jes.serializer.JesSerializer.objectValue.T)/instance">instance</span><span
-                    class="symbol">:</span>&nbsp;<a href="object-value.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="object-value.html#T"><span class="identifier">T</span></a></code>
-            <p>Load json elements into array instance</p>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
-                    class="identifier">T</span><span class="symbol">&gt;</span> <span
-                    class="identifier">objectValue</span><span class="symbol">(</span><span class="identifier"
-                                                                                            id="sliep.jes.serializer.JesSerializer$objectValue(org.json.JSONObject, java.lang.Class((kotlin.Any)), sliep.jes.serializer.JesSerializer.objectValue.T)/jes">jes</span><span
-                    class="symbol">:</span>&nbsp;<span class="identifier">JSONObject</span><span
-                    class="symbol">, </span><span class="identifier"
-                                                  id="sliep.jes.serializer.JesSerializer$objectValue(org.json.JSONObject, java.lang.Class((kotlin.Any)), sliep.jes.serializer.JesSerializer.objectValue.T)/type">type</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span
-                    class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span
-                    class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier"
-                                                                                  id="sliep.jes.serializer.JesSerializer$objectValue(org.json.JSONObject, java.lang.Class((kotlin.Any)), sliep.jes.serializer.JesSerializer.objectValue.T)/instance">instance</span><span
-                    class="symbol">:</span>&nbsp;<a href="object-value.html#T"><span
-                    class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a
-                    href="object-value.html#T"><span class="identifier">T</span></a></code>
-            <p>Load json elements into object instance</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><a href="to-json.html">toJson</a></p>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="identifier">toJson</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer.JesSerializer$toJson(sliep.jes.serializer.JesObject)/instance">instance</span><span
-                    class="symbol">:</span>&nbsp;<a href="../-jes-object.html"><span class="identifier">JesObject</span></a><span
-                    class="symbol">)</span><span class="symbol">: </span><span
-                    class="identifier">JSONObject</span></code>
-            <p>Serialize an object instance into a json object</p>
-        </td>
+            <code><span class="keyword">open</span> <span class="keyword">val </span><span
+                    class="identifier">logTag</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
     </tr>
     </tbody>
 </table>
@@ -175,11 +70,7 @@
         <td>
             <code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">log</span><span
                     class="symbol">(</span><span class="identifier"
-                                                 id="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/depth">depth</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span
-                    class="symbol">=</span>&nbsp;-1<span class="symbol">, </span><span class="identifier"
-                                                                                       id="sliep.jes.serializer.Loggable$log(kotlin.Int, kotlin.Function0((kotlin.Any)))/message">message</span><span
+                                                 id="sliep.jes.serializer.Loggable$log(kotlin.Function0((kotlin.Any)))/message">message</span><span
                     class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
                     class="symbol">-&gt;</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
@@ -235,24 +126,25 @@
     </tr>
     <tr>
         <td>
-            <p><a href="../kotlin.-any/field.html">field</a></p>
+            <p><a href="../kotlin.-any/get-field.html">getField</a></p>
         </td>
         <td>
             <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
                     class="identifier">R</span><span class="symbol">&gt;</span> <a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
-                    class="symbol">.</span><span class="identifier">field</span><span class="symbol">(</span><span
-                    class="identifier" id="sliep.jes.serializer$field(kotlin.Any, kotlin.String, kotlin.Boolean)/name">name</span><span
+                    class="symbol">.</span><span class="identifier">getField</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="sliep.jes.serializer$getField(kotlin.Any, kotlin.String, kotlin.Boolean)/name">name</span><span
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
                     class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
-                                                                                            id="sliep.jes.serializer$field(kotlin.Any, kotlin.String, kotlin.Boolean)/inParent">inParent</span><span
+                                                                                            id="sliep.jes.serializer$getField(kotlin.Any, kotlin.String, kotlin.Boolean)/inParent">inParent</span><span
                     class="symbol">:</span>&nbsp;<a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
                     class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
-                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/field.html#R"><span
+                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/get-field.html#R"><span
                     class="identifier">R</span></a></code>
-            <p>Fetch the property value of a receiver object through reflection</p>
+            <p>Get the property value of a receiver object through reflection</p>
         </td>
     </tr>
     <tr>
@@ -280,27 +172,71 @@
     </tr>
     <tr>
         <td>
-            <p><a href="../kotlin.-any/late-init.html">lateInit</a></p>
+            <p><a href="../kotlin.-any/set-field.html">setField</a></p>
         </td>
         <td>
-            <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span
-                    class="identifier">T</span><span class="symbol">&gt;</span> <a
+            <code><span class="keyword">fun </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
-                    class="symbol">.</span><span class="identifier">lateInit</span><span class="symbol">(</span><span
+                    class="symbol">.</span><span class="identifier">setField</span><span class="symbol">(</span><span
                     class="identifier"
-                    id="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.reflect.KProperty((kotlin.Any)), kotlin.Function0((sliep.jes.serializer.lateInit.T)))/field">field</span><span
+                    id="sliep.jes.serializer$setField(kotlin.Any, kotlin.String, kotlin.Any, kotlin.Boolean)/name">name</span><span
                     class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-property/index.html"><span
-                    class="identifier">KProperty</span></a><span class="symbol">&lt;</span><span
-                    class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">, </span><span
-                    class="identifier"
-                    id="sliep.jes.serializer$lateInit(kotlin.Any, kotlin.reflect.KProperty((kotlin.Any)), kotlin.Function0((sliep.jes.serializer.lateInit.T)))/init">init</span><span
-                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
-                    class="symbol">-&gt;</span>&nbsp;<a href="../kotlin.-any/late-init.html#T"><span class="identifier">T</span></a><span
-                    class="symbol">)</span><span class="symbol">: </span><a href="../kotlin.-any/late-init.html#T"><span
-                    class="identifier">T</span></a></code>
-            <p>Allows you to define a final variable (val) that wont be initialized until you access it</p>
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
+                                                                                            id="sliep.jes.serializer$setField(kotlin.Any, kotlin.String, kotlin.Any, kotlin.Boolean)/value">value</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">, </span><span class="identifier"
+                                                                               id="sliep.jes.serializer$setField(kotlin.Any, kotlin.String, kotlin.Any, kotlin.Boolean)/inParent">inParent</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code>
+            <p>Set the property value of a receiver object through reflection</p>
         </td>
+    </tr>
+    <tr>
+        <td>
+            <p><a href="../kotlin.-any/this-to-string.html">thisToString</a></p>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">.</span><span class="identifier">thisToString</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="sliep.jes.serializer$thisToString(kotlin.Any, kotlin.Function1((kotlin.Any, kotlin.String)), kotlin.Function1((kotlin.Array((kotlin.Any)), kotlin.String)), kotlin.String, kotlin.String)/toString">toString</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">field</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;{
+                f -&gt; f?.toString() }<span class="symbol">, </span><span class="identifier"
+                                                                           id="sliep.jes.serializer$thisToString(kotlin.Any, kotlin.Function1((kotlin.Any, kotlin.String)), kotlin.Function1((kotlin.Array((kotlin.Any)), kotlin.String)), kotlin.String, kotlin.String)/arrayToString">arrayToString</span><span
+                        class="symbol">:</span>&nbsp;<span class="symbol">(</span><span
+                        class="identifier">field</span><span class="symbol">:</span>&nbsp;<a
+                        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
+                        class="identifier">Array</span></a><span class="symbol">&lt;</span><span
+                        class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">?</span><span
+                        class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+                        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                        class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span
+                        class="symbol">=</span>&nbsp;{ f -&gt; if (f.isNullOrEmpty()) null else Arrays.toString(f)
+                }<span class="symbol">, </span><span class="identifier"
+                                                     id="sliep.jes.serializer$thisToString(kotlin.Any, kotlin.Function1((kotlin.Any, kotlin.String)), kotlin.Function1((kotlin.Array((kotlin.Any)), kotlin.String)), kotlin.String, kotlin.String)/prefix">prefix</span><span
+                        class="symbol">:</span>&nbsp;<a
+                        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                        class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;this::class.java.simpleName<span
+                        class="symbol">, </span><span class="identifier"
+                                                      id="sliep.jes.serializer$thisToString(kotlin.Any, kotlin.Function1((kotlin.Any, kotlin.String)), kotlin.Function1((kotlin.Array((kotlin.Any)), kotlin.String)), kotlin.String, kotlin.String)/separator">separator</span><span
+                        class="symbol">:</span>&nbsp;<a
+                        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                        class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;"-&gt;"<span
+                        class="symbol">)</span><span class="symbol">: </span><a
+                        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                        class="identifier">String</span></a></code></td>
     </tr>
     </tbody>
 </table>
