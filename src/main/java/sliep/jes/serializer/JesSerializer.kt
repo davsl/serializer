@@ -7,6 +7,10 @@ import org.json.JSONException
 import org.json.JSONObject
 import toDynamic
 import java.lang.reflect.Modifier
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.set
+
 /**
  * Welcome to JesSerializer
  *
@@ -108,12 +112,43 @@ fun <T : JesObject> JSONArray.fromJson(
  * Create a primitive array from [JSONArray]
  * @author sliep
  */
-inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
+inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> =
+    getInstanceField<JSONArray, ArrayList<T>>("myArrayList").toTypedArray()
 
 fun <T : Any> JSONArray.toTypedArray(type: Class<T>): Array<T> {
     val array = type.newArrayInstance(length())
     for (i in 0 until array.size) array[i] = opt(i) as T
     return array
+}
+
+fun JSONArray.toGenericList(): ArrayList<*> {
+    val arrayList = getInstanceField<JSONArray, ArrayList<*>>("myArrayList")
+    val results = ArrayList<Any?>(arrayList.size)
+    for (element in arrayList) {
+        if (element == null || JSONObject.NULL == element) {
+            results.add(null)
+        } else if (element is JSONArray) {
+            results.add(element.toGenericList())
+        } else if (element is JSONObject) {
+            results.add(element.toGenericMap())
+        } else {
+            results.add(element)
+        }
+    }
+    return results
+}
+
+fun JSONObject.toGenericMap(): Map<String, *> {
+    val results = HashMap<String, Any?>()
+    for (entry in this.invokeMethod<Set<Map.Entry<String, *>>>("entrySet")) {
+        results[entry.key] = when {
+            entry.value == null || JSONObject.NULL == entry.value -> null
+            entry.value is JSONObject -> (entry.value as JSONObject).toGenericMap()
+            entry.value is JSONArray -> (entry.value as JSONArray).toGenericList()
+            else -> entry.value
+        }
+    }
+    return results
 }
 
 /**
@@ -254,10 +289,10 @@ fun objectValue(jes: JSONObject, type: Class<*>, instance: Any): Any {
                 }
                 List::class.java.isAssignableFrom(field.type) ->
                     if (jes[name] is List<*>) jes[name]
-                    else jes.getJSONArray(name).toList()
+                    else jes.getJSONArray(name).toGenericList()
                 Map::class.java.isAssignableFrom(field.type) ->
                     if (jes[name] is Map<*, *>) jes[name]
-                    else jes.getJSONObject(name).toMap()
+                    else jes.getJSONObject(name).toGenericMap()
                 else -> {
                     if (jes.isNull(name)) null
                     else objectValue(jes[name], field.type)
