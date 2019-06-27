@@ -1,10 +1,10 @@
 package test
 
-import excludes
-import includes
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import toDynamic
+import sliep.jes.serializer.excludes
+import sliep.jes.serializer.includes
+import sliep.jes.serializer.toDynamic
 
 class UtilityTest {
     @Test

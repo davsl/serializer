@@ -1,4 +1,5 @@
 @file:Suppress("unused", "UNUSED_PARAMETER", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
+
 package test
 
 import org.json.JSONArray
@@ -51,6 +52,18 @@ class JesSerializerTest {
         assertEquals(4, ar2.toTypedArray<Int>()[3])
     }
 
+    @Test
+    fun testEnum() {
+        val modelTest = JSONObject(ModelTest.TEST_JSON).fromJson<ModelTest>()
+        assertEquals(modelTest.ciccio, AnEnumClass.SSUUS)
+    }
+
+    enum class AnEnumClass(override val value: Int) : ValueEnum {
+        CANE(1),
+        SSUUS(2),
+        SOSOSOO(3)
+    }
+
     class ModelImplTest(val a: String, val b: Int) : JesObjectImpl<String> {
         constructor(data: String) : this(
             data.substring(0, data.indexOf("----")),
@@ -64,6 +77,7 @@ class JesSerializerTest {
         var s: String,
         val i: Int,
         val f: Float,
+        val ciccio: AnEnumClass,
         val d: Double,
         val b: Boolean,
         val c: Char,
@@ -75,6 +89,7 @@ class JesSerializerTest {
             const val TEST_JSON = "{\n" +
                     "  \"s\": \"A B C D\",\n" +
                     "  \"i\": 123,\n" +
+                    "  \"ciccio\": 2,\n" +
                     "  \"f\": 45.6,\n" +
                     "  \"d\": 78.9,\n" +
                     "  \"b\": true,\n" +

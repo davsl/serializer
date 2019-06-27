@@ -5,11 +5,7 @@ package sliep.jes.serializer
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import toDynamic
 import java.lang.reflect.Modifier
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.set
 
 /**
  * Welcome to JesSerializer
@@ -108,12 +104,12 @@ fun <T : JesObject> JSONArray.fromJson(
     type: Class<T>, target: Array<T> = type.newArrayInstance(length())
 ): Array<T> = arrayObjectValue(this, type, target as Array<Any?>) as Array<T>
 
+//TODO deserialize lists. idk how but Gson can do it...
 /**
  * Create a primitive array from [JSONArray]
  * @author sliep
  */
-inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> =
-    getInstanceField<JSONArray, ArrayList<T>>("myArrayList").toTypedArray()
+inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
 
 fun <T : Any> JSONArray.toTypedArray(type: Class<T>): Array<T> {
     val array = type.newArrayInstance(length())
@@ -122,32 +118,27 @@ fun <T : Any> JSONArray.toTypedArray(type: Class<T>): Array<T> {
 }
 
 fun JSONArray.toGenericList(): ArrayList<*> {
-    val arrayList = getInstanceField<JSONArray, ArrayList<*>>("myArrayList")
-    val results = ArrayList<Any?>(arrayList.size)
-    for (element in arrayList) {
-        if (element == null || JSONObject.NULL == element) {
-            results.add(null)
-        } else if (element is JSONArray) {
-            results.add(element.toGenericList())
-        } else if (element is JSONObject) {
-            results.add(element.toGenericMap())
-        } else {
-            results.add(element)
+    val size = length()
+    val results = ArrayList<Any?>(size)
+    for (i in 0 until size)
+        when (val element = opt(i)) {
+            null, JSONObject.NULL -> results.add(null)
+            is JSONArray -> results.add(element.toGenericList())
+            is JSONObject -> results.add(element.toGenericMap())
+            else -> results.add(element)
         }
-    }
     return results
 }
 
 fun JSONObject.toGenericMap(): Map<String, *> {
     val results = HashMap<String, Any?>()
-    for (entry in this.invokeMethod<Set<Map.Entry<String, *>>>("entrySet")) {
-        results[entry.key] = when {
-            entry.value == null || JSONObject.NULL == entry.value -> null
-            entry.value is JSONObject -> (entry.value as JSONObject).toGenericMap()
-            entry.value is JSONArray -> (entry.value as JSONArray).toGenericList()
-            else -> entry.value
+    for (key in keys())
+        results[key] = when (val value = opt(key)) {
+            null, JSONObject.NULL -> null
+            is JSONObject -> value.toGenericMap()
+            is JSONArray -> value.toGenericList()
+            else -> value
         }
-    }
     return results
 }
 
@@ -176,7 +167,7 @@ private fun jsonValue(instance: Any, blackList: ArrayList<Int> = ArrayList()): A
         JesSerializer.depth--
         response
     }
-    instance is Enum<*> -> instance.name
+    instance is Enum<*> -> if (instance is ValueEnum) instance.value else instance.name
     instance::class.isTypePrimitive || instance !is JesObject -> instance
     else -> {
         val hashCode = System.identityHashCode(instance)
@@ -223,7 +214,17 @@ fun objectValue(jes: Any, type: Class<*>): Any = when {
     }
     type.isEnum -> {
         JesSerializer.log { "Enum: $jes" }
-        type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes.toString())
+        if (ValueEnum::class.java.isAssignableFrom(type)) {
+            var result: ValueEnum? = null
+            for (value in type.enumConstants) {
+                if ((value as ValueEnum).value == jes.toString().toInt()) {
+                    result = value
+                    break
+                }
+            }
+            result ?: throw IllegalArgumentException("No enum value for: $jes")
+        } else
+            type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes.toString())
     }
     jes is JSONObject -> objectValue(jes, type, type.newUnsafeInstance())
     jes is String -> {
@@ -282,21 +283,15 @@ fun objectValue(jes: JSONObject, type: Class<*>, instance: Any): Any {
         JesSerializer.depth++
         try {
             val value = when {
-                field.type.isArray -> {
-                    val jsonArray = jes.optJSONArray(name)
-                    if (jsonArray == null) null
-                    else objectValue(jsonArray, field.type)
-                }
+                jes.isNull(name) -> null
+                field.type.isArray -> objectValue(jes.getJSONArray(name), field.type)
                 List::class.java.isAssignableFrom(field.type) ->
                     if (jes[name] is List<*>) jes[name]
                     else jes.getJSONArray(name).toGenericList()
                 Map::class.java.isAssignableFrom(field.type) ->
                     if (jes[name] is Map<*, *>) jes[name]
                     else jes.getJSONObject(name).toGenericMap()
-                else -> {
-                    if (jes.isNull(name)) null
-                    else objectValue(jes[name], field.type)
-                }
+                else -> objectValue(jes[name], field.type)
             }
             field.isFinal = false
             field[instance] = value

@@ -1,5 +1,7 @@
 @file:Suppress("unused")
 
+package sliep.jes.serializer
+
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.PrintWriter
