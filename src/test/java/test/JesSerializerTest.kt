@@ -32,6 +32,7 @@ class JesSerializerTest {
         assertEquals(modelTest.toString(), modelTest.fromJson<ModelTest>().toJson().toString())
         val fromJson = modelTest.fromJson<ModelTest>()
         fromJson.s = "ARRRRRRG"
+        assertEquals(fromJson.ciccio, AnEnumClass.SSUUS)
         modelTest.fromJson(fromJson)
         assertEquals("A B C D", fromJson.s)
     }
@@ -73,7 +74,8 @@ class JesSerializerTest {
         override fun toJson(): String = "$a----$b"
     }
 
-    class ModelTest(
+    data class Skkkk(val ulul: String, val ddfdf: Int) : JesObject
+    data class ModelTest(
         var s: String,
         val i: Int,
         val f: Float,
@@ -82,6 +84,9 @@ class JesSerializerTest {
         val b: Boolean,
         val c: Char,
         val l: Long,
+        val deee: Array<Int>,
+        val doo: List<Skkkk>,
+        val mappy: Map<Int, Skkkk>,
         val o: ModelTest2,
         var impl: ModelImplTest
     ) : JesObject {
@@ -90,6 +95,15 @@ class JesSerializerTest {
                     "  \"s\": \"A B C D\",\n" +
                     "  \"i\": 123,\n" +
                     "  \"ciccio\": 2,\n" +
+                    "  \"deee\": [1,2,3,5,78,8],\n" +
+                    "  \"doo\": [{" +
+                    "    \"ulul\": \"E F G\",\n" +
+                    "    \"ddfdf\": 24\n" +
+                    "  }],\n" +
+                    "  \"mappy\": {\"1\":{" +
+                    "    \"ulul\": \"E F G\",\n" +
+                    "    \"ddfdf\": 24\n" +
+                    "  }},\n" +
                     "  \"f\": 45.6,\n" +
                     "  \"d\": 78.9,\n" +
                     "  \"b\": true,\n" +

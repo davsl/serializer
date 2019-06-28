@@ -160,6 +160,9 @@ inline fun <reified F : Any, R : Any?> getStaticField(name: String): R {
     return field[null] as R
 }
 
+inline val Field.typeArguments: Array<Type>
+    get() = (genericType as? ParameterizedType)?.actualTypeArguments ?: arrayOf()
+
 /**
  * Set the property value of a receiver object through reflection
  *
@@ -581,6 +584,7 @@ fun Any.thisToString(
     }
 }.toString().trim()
 
+@Suppress("FunctionName")
 inline fun <reified T : Any, R : Any?> Super() = Super<T, R>(T::class.java)
 
 @Suppress("UNCHECKED_CAST")

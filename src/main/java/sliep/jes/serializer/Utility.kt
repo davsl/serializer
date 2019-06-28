@@ -101,30 +101,30 @@ fun String.md5(): String {
 
 
 @Suppress("UNCHECKED_CAST")
-fun <T> Number.toDynamic(clazz: Class<T>): T = when (clazz) {
-    Int::class.java -> toInt() as T
-    Float::class.java -> toFloat() as T
-    Double::class.java -> toDouble() as T
-    Long::class.java -> toLong() as T
-    Byte::class.java -> toByte() as T
-    Short::class.java -> toShort() as T
-    Char::class.java -> toChar() as T
-    String::class.java -> toString() as T
-    Boolean::class.java -> (toInt() != 0) as T
+fun <T> Number.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin) {
+    Int::class -> toInt() as T
+    Float::class -> toFloat() as T
+    Double::class -> toDouble() as T
+    Long::class -> toLong() as T
+    Byte::class -> toByte() as T
+    Short::class -> toShort() as T
+    Char::class -> toChar() as T
+    String::class -> toString() as T
+    Boolean::class -> (toInt() != 0) as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T> String.toDynamic(clazz: Class<T>): T = when (clazz) {
-    Int::class.java -> toInt() as T
-    Float::class.java -> toFloat() as T
-    Double::class.java -> toDouble() as T
-    Long::class.java -> toLong() as T
-    Byte::class.java -> toByte() as T
-    Short::class.java -> toShort() as T
-    Char::class.java -> first() as T
-    String::class.java -> this as T
-    Boolean::class.java -> toBoolean() as T
+fun <T> String.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin) {
+    Int::class -> toInt() as T
+    Float::class -> toFloat() as T
+    Double::class -> toDouble() as T
+    Long::class -> toLong() as T
+    Byte::class -> toByte() as T
+    Short::class -> toShort() as T
+    Char::class -> first() as T
+    String::class -> this as T
+    Boolean::class -> toBoolean() as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
 
