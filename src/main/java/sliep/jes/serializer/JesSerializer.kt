@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package sliep.jes.serializer
 
 import org.json.JSONArray
@@ -17,7 +19,7 @@ fun Map<*, *>.toJson(): JSONObject = JesSerializer().jsonValue(this) as JSONObje
 fun Array<*>.toJson(): JSONArray = JesSerializer().jsonValue(this) as JSONArray
 fun List<*>.toJson(): JSONArray = JesSerializer().jsonValue(this) as JSONArray
 
-private class JesSerializer {
+class JesSerializer {
     private val blackList: ArrayList<Int> = ArrayList()
 
     @Throws(NonJesObjectException::class)
@@ -30,9 +32,9 @@ private class JesSerializer {
         else -> throw NonJesObjectException(instance::class.java)
     }
 
-    private fun isObjectInstance(instance: Any) = instance is JesObject || instance is Map<*, *>
+    fun isObjectInstance(instance: Any) = instance is JesObject || instance is Map<*, *>
 
-    private fun serializeObject(instance: Any): JSONObject = JSONObject().apply {
+    fun serializeObject(instance: Any): JSONObject = JSONObject().apply {
         when (instance) {
             is JesObject -> {
                 var clazz = instance::class.java as Class<*>
@@ -58,9 +60,9 @@ private class JesSerializer {
         }
     }
 
-    private fun isArrayInstance(instance: Any) = instance is Array<*> || instance is List<*>
+    fun isArrayInstance(instance: Any) = instance is Array<*> || instance is List<*>
 
-    private fun serializeArray(instance: Any): JSONArray = JSONArray().apply {
+    fun serializeArray(instance: Any): JSONArray = JSONArray().apply {
         when (instance) {
             is Array<*> -> for (element in instance) element?.let { put(jsonValue(it)) }
             is List<*> -> for (element in instance) element?.let { put(jsonValue(it)) }
@@ -68,15 +70,15 @@ private class JesSerializer {
         }
     }
 
-    private fun isPrimitiveInstance(instance: Any) =
+    fun isPrimitiveInstance(instance: Any) =
         instance is String || instance::class.javaPrimitiveType != null || instance is Enum<*>
 
-    private fun serializePrimitive(instance: Any): Any = when (instance) {
+    fun serializePrimitive(instance: Any): Any = when (instance) {
         is Enum<*> -> if (instance is ValueEnum) instance.value else instance.name
         else -> instance
     }
 
-    private fun isBlackListed(instance: Any): Boolean {
+    fun isBlackListed(instance: Any): Boolean {
         val hashCode = System.identityHashCode(instance)
         if (blackList.contains(hashCode)) return true
         blackList.add(hashCode)

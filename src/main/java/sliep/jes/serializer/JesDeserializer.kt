@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate", "unused")
 
 package sliep.jes.serializer
 
@@ -10,10 +10,15 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 inline fun <reified T : JesObject> JSONObject.fromJson(target: T? = null) = fromJson(T::class.java, target)
+inline fun <reified T : JesObject> JSONArray.fromJson(target: Array<T>? = null) = fromJson(T::class.java, target)
 
 fun <T : JesObject> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
-    if (target == null) JesDeserializer().objectValue(this, type) as T
+    if (target == null) JesDeserializer().deserializeObject(type, this) as T
     else JesDeserializer().deserializeObject(type, this, target) as T
+
+fun <T : JesObject> JSONArray.fromJson(type: Class<T>, target: Array<T>? = null): Array<T> =
+    if (target == null) JesDeserializer().deserializeArray(type, this) as Array<T>
+    else JesDeserializer().deserializeArray(type, this, target as Array<Any?>) as Array<T>
 
 inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
 
@@ -42,7 +47,7 @@ fun JSONObject.toGenericMap(): Map<String, *> {
     return results
 }
 
-private class JesDeserializer {
+class JesDeserializer {
 
     fun objectValue(jes: Any, type: Class<*>): Any = when {
         type.isInstance(jes) -> jes
@@ -57,7 +62,7 @@ private class JesDeserializer {
         else -> jes
     }
 
-    private fun deserializeEnum(type: Class<*>, jes: String): Any {
+    fun deserializeEnum(type: Class<*>, jes: String): Any {
         if (ValueEnum::class.java.isAssignableFrom(type)) {
             for (value in type.enumConstants) if ((value as ValueEnum).value == jes.toInt()) return value
             throw IllegalArgumentException("No enum value for: $jes")
@@ -65,7 +70,7 @@ private class JesDeserializer {
         return type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
     }
 
-    private fun deserializeArray(
+    fun deserializeArray(
         componentType: Class<*>,
         jes: JSONArray,
         instance: Array<Any?> = java.lang.reflect.Array.newInstance(componentType, jes.length()) as Array<Any?>
@@ -74,11 +79,15 @@ private class JesDeserializer {
         return instance
     }
 
-    private fun deserializeString(type: Class<*>, jes: String): Any = when {
+    fun deserializeString(type: Class<*>, jes: String): Any = when {
         String::class.java.isAssignableFrom(type) -> jes
         type.kotlin.javaPrimitiveType != null -> jes.toDynamic(type)
         JSONObject::class.java.isAssignableFrom(type) -> JSONObject(jes)
         JSONArray::class.java.isAssignableFrom(type) -> JSONArray(jes)
+        JesObject::class.java.isAssignableFrom(type) ->
+            deserializeObject(type, JSONObject(jes))
+        type.componentType != null && JesObject::class.java.isAssignableFrom(type.componentType!!) ->
+            deserializeArray(type.componentType, JSONArray(jes))
         else -> throw IllegalStateException("Can't convert String to $type")
     }
 
@@ -109,7 +118,7 @@ private class JesDeserializer {
         return instance
     }
 
-    private fun deserializeList(jes: JSONArray, field: Field): List<*> {
+    fun deserializeList(jes: JSONArray, field: Field): List<*> {
         val componentType = field.typeArguments[0] as? Class<*>
             ?: throw IllegalArgumentException("List field ${field.name} has no component type, can't be deserialized")
         if (!field.type.isAssignableFrom(ArrayList::class.java))
@@ -119,7 +128,7 @@ private class JesDeserializer {
         }
     }
 
-    private fun deserializeMap(jes: JSONObject, field: Field): Map<*, *> {
+    fun deserializeMap(jes: JSONObject, field: Field): Map<*, *> {
         val keyType = field.typeArguments[0] as? Class<*>
             ?: throw IllegalArgumentException("Map field ${field.name} has no key type, can't be deserialized")
         if (keyType.kotlin.javaPrimitiveType == null && !String::class.java.isAssignableFrom(keyType))
