@@ -62,13 +62,10 @@ class JesDeserializer {
         else -> jes
     }
 
-    fun deserializeEnum(type: Class<*>, jes: String): Any {
-        if (ValueEnum::class.java.isAssignableFrom(type)) {
-            for (value in type.enumConstants) if ((value as ValueEnum).value == jes.toInt()) return value
-            throw IllegalArgumentException("No enum value for: $jes")
-        }
-        return type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
-    }
+    fun deserializeEnum(type: Class<*>, jes: String): Any = if (ValueEnum::class.java.isAssignableFrom(type))
+        (type as Class<out ValueEnum>).fromId(jes.toInt())
+    else
+        type.getDeclaredMethod("valueOf", String::class.java).invoke(null, jes)
 
     fun deserializeArray(
         componentType: Class<*>,

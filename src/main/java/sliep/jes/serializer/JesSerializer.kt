@@ -11,6 +11,7 @@ fun toGenericJson(any: Any): Any = when (any) {
     is Map<*, *> -> any.toJson()
     is Array<*> -> any.toJson()
     is List<*> -> any.toJson()
+    is JSONObject, is JSONArray -> any
     else -> throw IllegalArgumentException("Instance of type ${any::class.java} cannot be converted into json")
 }
 
@@ -46,7 +47,7 @@ class JesSerializer {
                         val value = field[instance] ?: continue
                         try {
                             put(key, jsonValue(value))
-                        } catch (e: NonJesObjectException) {
+                        } catch (ignored: NonJesObjectException) {
                         }
                     }
                     clazz = clazz.superclass ?: break
@@ -54,7 +55,7 @@ class JesSerializer {
             }
             is Map<*, *> -> for (entry in instance.entries) try {
                 entry.value?.let { put(entry.key.toString(), jsonValue(it)) }
-            } catch (e: NonJesObjectException) {
+            } catch (ignored: NonJesObjectException) {
             }
             else -> throw IllegalArgumentException("Only Array<*> and List<*> are accepted")
         }
