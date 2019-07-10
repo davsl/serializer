@@ -41,7 +41,7 @@ class JesSerializer {
                 var clazz = instance::class.java as Class<*>
                 while (true) {
                     for (field in clazz.declaredFields) if (field.modifiers excludes TO_EXCLUDE) {
-                        val key = field.name
+                        val key = field.getDeclaredAnnotation(JesName::class.java)?.name ?: field.name
                         if (has(key)) continue
                         field.isAccessible = true
                         val value = field[instance] ?: continue

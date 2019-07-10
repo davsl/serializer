@@ -76,6 +76,7 @@ class JesSerializerTest {
 
     data class Skkkk(val ulul: String, val ddfdf: Int) : JesObject
     data class ModelTest(
+        @field:JesName("pippo")
         var s: String,
         val i: Int,
         val f: Float,
@@ -92,7 +93,7 @@ class JesSerializerTest {
     ) : JesObject {
         companion object {
             const val TEST_JSON = "{\n" +
-                    "  \"s\": \"A B C D\",\n" +
+                    "  \"pippo\": \"A B C D\",\n" +
                     "  \"i\": 123,\n" +
                     "  \"ciccio\": 2,\n" +
                     "  \"deee\": [1,2,3,5,78,8],\n" +

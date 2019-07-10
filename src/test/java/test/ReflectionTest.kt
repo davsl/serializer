@@ -9,39 +9,55 @@ import java.lang.reflect.Modifier
 
 class ReflectionTest {
 
+    open class Mother {
+        @JvmField
+        var hello = "hello"
+        private var world = "world"
+        protected open var pro = "pro"
+    }
+
+    class Child : Mother() {
+        @JvmField
+        var hello2 = "hello2"
+        private var world = "world"
+        override var pro: String = "pru"
+    }
+
+    @Test
+    fun testMethod() {
+        val child = Child()
+        val allMethods = child::class.java.allMethods
+        val allFields = child::class.java.allFields
+        System.err.println(allFields.contentToString())
+        System.err.println(allMethods.contentToString())
+    }
+
     @Test
     fun constructorTest() {
-        val newInstance = constructor<ModelTest>().newInstance()
+        val newInstance = ModelTest::class.java.newInstanceNative()
         assertEquals("Hello", newInstance.susu)
-        assertEquals(4, constructors<ModelTest>().size)
-        assertEquals(3, constructors<ModelTest>(Modifier.PUBLIC).size)
-        assertEquals(1, constructors<ModelTest>(Modifier.PRIVATE).size)
-        assertEquals(5, newInstance<ModelTest>(5).i)
-        assertEquals(3, newInstance<ModelTest>().i)
-        assertEquals(0, newUnsafeInstance<ModelTest2>().i)
+        assertEquals(3, ModelTest::class.java.declaredConstructors.filter(Modifier.PUBLIC).size)
+        assertEquals(5, ModelTest::class.java.newInstanceNative(5).i)
+        assertEquals(0, ModelTest::class.java.newUnsafeInstance().i)
     }
 
     @Test
     fun fieldsTest() {
-        val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance.susu, instance.getInstanceField<ModelTest, String>("susu"))
-        assertEquals(instance.susu, field<ModelTest>("susu")[instance])
-        assertEquals(1, fields<ModelTest>(modifiers = Modifier.PRIVATE).size)
-        assertEquals(2, fields<ModelTest>(excludeModifiers = Modifier.PRIVATE).size)
+        val instance = ModelTest::class.java.newInstanceNative()
+        assertEquals(instance.susu, instance.getFieldValueNative<String>("susu"))
+        assertEquals(instance.susu, instance::class.java.getFieldNative("susu")[instance])
     }
 
     @Test
     fun methodsTest() {
-        val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance.susu, instance.getInstanceField<ModelTest, String>("susu"))
-        assertEquals(instance.susu, field<ModelTest>("susu")[instance])
-        assertEquals(1, fields<ModelTest>(Modifier.PRIVATE).size)
+        val instance = ModelTest::class.java.newInstanceNative()
+        assertEquals(instance.susu, instance.getFieldValueNative<String>("susu"))
     }
 
     @Test
     fun duplicateTest() {
-        val instance = constructor<ModelTest>().newInstance()
-        assertEquals(instance, instance.duplicate())
+        val instance = ModelTest::class.java.newInstanceNative()
+        assertEquals(instance, instance.cloneInstance())
     }
 
     @Test

@@ -51,7 +51,7 @@ interface Loggable {
  * @see Loggable.log
  */
 inline fun <reified T : Loggable> logAs(depth: Int = 0, tag: String = T::class.java.simpleName, message: () -> Any?) {
-    if (getStaticField<T, Boolean>("LOG")) Loggable.logger.log(tag, message() ?: return, depth)
+    if (T::class.java.getStaticFieldValueNative("LOG")) Loggable.logger.log(tag, message() ?: return, depth)
 }
 
 private fun buildLog(message: Any, indent: Int): String? {
@@ -82,7 +82,7 @@ object SysErrLogger : Loggable.Logger {
  */
 object AndroidLogger : Loggable.Logger {
     private val e = try {
-        Class.forName("android.util.Log").method("e", String::class.java, String::class.java)
+        Class.forName("android.util.Log").getMethodNative("e", String::class.java, String::class.java)
     } catch (e: Throwable) {
         null
     }

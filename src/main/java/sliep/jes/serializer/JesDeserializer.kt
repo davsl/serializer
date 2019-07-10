@@ -51,7 +51,7 @@ class JesDeserializer {
 
     fun objectValue(jes: Any, type: Class<*>): Any = when {
         type.isInstance(jes) -> jes
-        JesObjectImpl::class.java.isAssignableFrom(type) -> type.newInstance(jes)
+        JesObjectImpl::class.java.isAssignableFrom(type) -> type.newInstanceNative(jes)
         jes is JSONArray -> deserializeArray(
             type.componentType ?: throw IllegalStateException("Expected array type, found $type"), jes
         )
@@ -90,18 +90,13 @@ class JesDeserializer {
 
     fun deserializeObject(type: Class<*>, jes: JSONObject, instance: Any = type.newUnsafeInstance()): Any {
         val keys = jes.keys()
-        bob@ while (keys.hasNext()) {
+        while (keys.hasNext()) {
             val key = keys.next()
-            if (jes.isNull(key)) continue@bob
-            var clazz = type
-            var field: Field
-            while (true) try {
-                field = clazz.getDeclaredField(key)
-                field.isAccessible = true
-                field.isFinal = false
-                break
+            if (jes.isNull(key)) continue
+            val field = try {
+                type.getFieldNative { (it.getDeclaredAnnotation(JesName::class.java)?.name ?: it.name) == key }
             } catch (e: NoSuchFieldException) {
-                clazz = clazz.superclass ?: continue@bob
+                continue
             }
             val fieldType = field.type
             val value = jes[key]
