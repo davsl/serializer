@@ -9,42 +9,10 @@ import kotlin.collections.HashMap
 import kotlin.reflect.KProperty
 
 val Class<*>.allFields: Array<Field>
-    get() {
-        cachedFields[this]?.let { return it }
-        val allFields = LinkedHashSet<Field>()
-        addAll(allFields, privateGetDeclaredFieldsMethod(this, false))
-        for (iFace in interfaces) addAll(allFields, iFace.allFields)
-        superclass?.let { addAll(allFields, it.allFields) }
-        return allFields.toTypedArray().apply { cachedFields[this@allFields] = this }
-    }
+    get() = currentPlatform.allFields(this)
 
 val Class<*>.allMethods: Array<Method>
-    get() {
-        cachedMethods[this]?.let { return it }
-        val publicMethods = publicMethodsConstructor.newInstance()
-        var methods = privateGetDeclaredMethodsMethod(this, false) as Array<Method>
-        var methodsSize = methods.size
-        var i = 0
-        while (i < methodsSize) mergeMethod(publicMethods, methods[i++])
-        superclass?.let {
-            methods = it.allMethods
-            methodsSize = methods.size
-            i = 0
-            while (i < methodsSize) mergeMethod(publicMethods, methods[i++])
-        }
-        val interfaces = interfaces
-        val interfacesSize = interfaces.size
-        i = 0
-        while (i < interfacesSize) {
-            methods = interfaces[i++].allMethods
-            methodsSize = methods.size
-            for (j in 0 until methodsSize) {
-                val method = methods[j]
-                if (!Modifier.isStatic(method.modifiers)) mergeMethod(publicMethods, method)
-            }
-        }
-        return (toArrayMethod(publicMethods) as Array<Method>).apply { cachedMethods[this@allMethods] = this }
-    }
+    get() = currentPlatform.allMethods(this)
 
 fun Class<*>.getFieldNative(name: String): Field {
     val allFields = allFields
@@ -136,9 +104,12 @@ val Class<*>.CONSTANTS: HashMap<String, Any?>
 var Field.isFinal: Boolean
     get() = Modifier.isFinal(modifiers)
     set(value) {
-        val accessFlags = accessFlagField ?: return
-        if (Modifier.isFinal(modifiers) != value)
-            accessFlags[this] = modifiers and if (value) Modifier.FINAL else Modifier.FINAL.inv()
+        try {
+            val accessFlags = currentPlatform.accessFlagField
+            if (Modifier.isFinal(modifiers) != value)
+                accessFlags[this] = modifiers and if (value) Modifier.FINAL else Modifier.FINAL.inv()
+        } catch (e: Throwable) {
+        }
     }
 
 val Field.typeArguments: Array<Type>
@@ -206,26 +177,129 @@ fun <T> Class<T>.implement(handler: InvocationHandler): T =
 
 private val cachedFields = HashMap<Class<*>, Array<Field>>()
 private val cachedMethods = HashMap<Class<*>, Array<Method>>()
-private val privateGetDeclaredFieldsMethod =
-    Class::class.java.getDeclaredMethod("privateGetDeclaredFields", Boolean::class.javaPrimitiveType)
-        .apply { isAccessible = true }
-private val publicMethodsClass = Class.forName("java.lang.PublicMethods")
-private val publicMethodsConstructor = publicMethodsClass.getDeclaredConstructor().apply { isAccessible = true }
-private val mergeMethod =
-    publicMethodsClass.getDeclaredMethod("merge", Method::class.java).apply { isAccessible = true }
-private val toArrayMethod = publicMethodsClass.getDeclaredMethod("toArray").apply { isAccessible = true }
-private val privateGetDeclaredMethodsMethod =
-    Class::class.java.getDeclaredMethod("privateGetDeclaredMethods", Boolean::class.javaPrimitiveType)
-        .apply { isAccessible = true }
-private val accessFlagField: Field? by lazy {
-    try {
-        Field::class.java.getFieldNative("accessFlags")
-    } catch (e: Throwable) {
-        try {
-            Field::class.java.getFieldNative("modifiers")
-        } catch (e: Throwable) {
-            null
+
+interface Platform {
+    fun allFields(clazz: Class<*>): Array<Field>
+    fun allMethods(clazz: Class<*>): Array<Method>
+    val accessFlagField: Field
+}
+
+val currentPlatform: Platform = try {
+    JavaPlatform
+} catch (e: Throwable) {
+    AndroidPlatform
+}
+
+object AndroidPlatform : Platform {
+    override val accessFlagField: Field by lazy { Field::class.java.getFieldNative("accessFlags") }
+
+    override fun allFields(clazz: Class<*>): Array<Field> {
+        cachedFields[clazz]?.let { return it }
+        val allFields = LinkedHashSet<Field>()
+        addAll(allFields, clazz.declaredFields)
+        for (iFace in clazz.interfaces) addAll(allFields, allFields(iFace))
+        clazz.superclass?.let { addAll(allFields, allFields(it)) }
+        return allFields.toTypedArray().apply { cachedFields[clazz] = this }
+    }
+
+    override fun allMethods(clazz: Class<*>): Array<Method> {
+        cachedMethods[clazz]?.let { return it }
+        val publicMethods = HashMap<Key, Method>()
+        var methods = clazz.declaredMethods
+        var methodsSize = methods.size
+        var i = 0
+        while (i < methodsSize) publicMethods.merge(methods[i++])
+        clazz.superclass?.let {
+            methods = allMethods(it)
+            methodsSize = methods.size
+            i = 0
+            while (i < methodsSize) publicMethods.merge(methods[i++])
         }
+        val interfaces = clazz.interfaces
+        val interfacesSize = interfaces.size
+        i = 0
+        while (i < interfacesSize) {
+            methods = allMethods(interfaces[i++])
+            methodsSize = methods.size
+            for (j in 0 until methodsSize) {
+                val method = methods[j]
+                if (!Modifier.isStatic(method.modifiers)) publicMethods.merge(method)
+            }
+        }
+        return publicMethods.values.toTypedArray().apply { cachedMethods[clazz] = this }
+    }
+
+
+    private fun HashMap<Key, Method>.merge(method: Method) {
+        val key = Key(method)
+        if (!containsKey(key)) {
+            put(key, method)
+            return
+        }
+    }
+
+    private class Key internal constructor(method: Method) {
+        private val name: String = method.name
+        private val paramTypes: Array<Class<*>> = method.parameterTypes
+
+        override fun equals(other: Any?): Boolean = when {
+            this === other -> true
+            other !is Key -> false
+            else -> name == other.name && paramTypes.contentEquals(other.paramTypes)
+        }
+
+        override fun hashCode(): Int = name.hashCode() + 31 * paramTypes.contentHashCode()
+    }
+}
+
+object JavaPlatform : Platform {
+    override val accessFlagField: Field by lazy { Field::class.java.getFieldNative("modifiers") }
+    private val privateGetDeclaredFieldsMethod =
+        Class::class.java.getDeclaredMethod("privateGetDeclaredFields", Boolean::class.javaPrimitiveType)
+            .apply { isAccessible = true }
+    private val publicMethodsClass = Class.forName("java.lang.PublicMethods")
+    private val publicMethodsConstructor = publicMethodsClass.getDeclaredConstructor().apply { isAccessible = true }
+    private val mergeMethod =
+        publicMethodsClass.getDeclaredMethod("merge", Method::class.java).apply { isAccessible = true }
+    private val toArrayMethod = publicMethodsClass.getDeclaredMethod("toArray").apply { isAccessible = true }
+    private val privateGetDeclaredMethodsMethod =
+        Class::class.java.getDeclaredMethod("privateGetDeclaredMethods", Boolean::class.javaPrimitiveType)
+            .apply { isAccessible = true }
+
+    override fun allFields(clazz: Class<*>): Array<Field> {
+        cachedFields[clazz]?.let { return it }
+        val allFields = LinkedHashSet<Field>()
+        addAll(allFields, privateGetDeclaredFieldsMethod(clazz, false))
+        for (iFace in clazz.interfaces) addAll(allFields, allFields(iFace))
+        clazz.superclass?.let { addAll(allFields, allFields(it)) }
+        return allFields.toTypedArray().apply { cachedFields[clazz] = this }
+    }
+
+    override fun allMethods(clazz: Class<*>): Array<Method> {
+        cachedMethods[clazz]?.let { return it }
+        val publicMethods = publicMethodsConstructor.newInstance()
+        var methods = privateGetDeclaredMethodsMethod(clazz, false) as Array<Method>
+        var methodsSize = methods.size
+        var i = 0
+        while (i < methodsSize) mergeMethod(publicMethods, methods[i++])
+        clazz.superclass?.let {
+            methods = allMethods(it)
+            methodsSize = methods.size
+            i = 0
+            while (i < methodsSize) mergeMethod(publicMethods, methods[i++])
+        }
+        val interfaces = clazz.interfaces
+        val interfacesSize = interfaces.size
+        i = 0
+        while (i < interfacesSize) {
+            methods = allMethods(interfaces[i++])
+            methodsSize = methods.size
+            for (j in 0 until methodsSize) {
+                val method = methods[j]
+                if (!Modifier.isStatic(method.modifiers)) mergeMethod(publicMethods, method)
+            }
+        }
+        return (toArrayMethod(publicMethods) as Array<Method>).apply { cachedMethods[clazz] = this }
     }
 }
 
