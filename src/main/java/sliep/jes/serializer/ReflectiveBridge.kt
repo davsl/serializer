@@ -233,6 +233,8 @@ object AndroidPlatform : Platform {
     private fun HashMap<Key, Method>.merge(method: Method) {
         val key = Key(method)
         if (!containsKey(key)) {
+            @Suppress("DEPRECATION")
+            if (!method.isAccessible) method.isAccessible = true
             put(key, method)
             return
         }
@@ -275,18 +277,21 @@ object JavaPlatform : Platform {
         return allFields.toTypedArray().apply { cachedFields[clazz] = this }
     }
 
+    @Suppress("DEPRECATION")
     override fun allMethods(clazz: Class<*>): Array<Method> {
         cachedMethods[clazz]?.let { return it }
         val publicMethods = publicMethodsConstructor.newInstance()
         var methods = privateGetDeclaredMethodsMethod(clazz, false) as Array<Method>
         var methodsSize = methods.size
         var i = 0
-        while (i < methodsSize) mergeMethod(publicMethods, methods[i++])
+        while (i < methodsSize)
+            mergeMethod(publicMethods, methods[i++].apply { if (!isAccessible) isAccessible = true })
         clazz.superclass?.let {
             methods = allMethods(it)
             methodsSize = methods.size
             i = 0
-            while (i < methodsSize) mergeMethod(publicMethods, methods[i++])
+            while (i < methodsSize)
+                mergeMethod(publicMethods, methods[i++].apply { if (!isAccessible) isAccessible = true })
         }
         val interfaces = clazz.interfaces
         val interfacesSize = interfaces.size
@@ -295,7 +300,7 @@ object JavaPlatform : Platform {
             methods = allMethods(interfaces[i++])
             methodsSize = methods.size
             for (j in 0 until methodsSize) {
-                val method = methods[j]
+                val method = methods[j].apply { if (!isAccessible) isAccessible = true }
                 if (!Modifier.isStatic(method.modifiers)) mergeMethod(publicMethods, method)
             }
         }

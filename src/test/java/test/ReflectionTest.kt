@@ -14,6 +14,9 @@ class ReflectionTest {
         var hello = "hello"
         private var world = "world"
         protected open var pro = "pro"
+        private fun helloo() {
+            System.err.println("HELLOO")
+        }
     }
 
     class Child : Mother() {
@@ -21,6 +24,9 @@ class ReflectionTest {
         var hello2 = "hello2"
         private var world = "world"
         override var pro: String = "pru"
+        private fun world() {
+            System.err.println("WORLD")
+        }
     }
 
     @Test
