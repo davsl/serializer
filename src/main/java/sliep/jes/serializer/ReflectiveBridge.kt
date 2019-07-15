@@ -8,6 +8,12 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.reflect.KProperty
 
+private val currentPlatform: Platform = try {
+    JavaPlatform
+} catch (e: Throwable) {
+    AndroidPlatform
+}
+
 val Class<*>.allFields: Array<Field>
     get() = currentPlatform.allFields(this)
 
@@ -178,19 +184,13 @@ fun <T> Class<T>.implement(handler: InvocationHandler): T =
 private val cachedFields = HashMap<Class<*>, Array<Field>>()
 private val cachedMethods = HashMap<Class<*>, Array<Method>>()
 
-interface Platform {
+private interface Platform {
     fun allFields(clazz: Class<*>): Array<Field>
     fun allMethods(clazz: Class<*>): Array<Method>
     val accessFlagField: Field
 }
 
-val currentPlatform: Platform = try {
-    JavaPlatform
-} catch (e: Throwable) {
-    AndroidPlatform
-}
-
-object AndroidPlatform : Platform {
+private object AndroidPlatform : Platform {
     override val accessFlagField: Field by lazy { Field::class.java.getFieldNative("accessFlags") }
 
     override fun allFields(clazz: Class<*>): Array<Field> {
@@ -254,7 +254,7 @@ object AndroidPlatform : Platform {
     }
 }
 
-object JavaPlatform : Platform {
+private object JavaPlatform : Platform {
     override val accessFlagField: Field by lazy { Field::class.java.getFieldNative("modifiers") }
     private val privateGetDeclaredFieldsMethod =
         Class::class.java.getDeclaredMethod("privateGetDeclaredFields", Boolean::class.javaPrimitiveType)

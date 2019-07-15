@@ -164,7 +164,7 @@ inline fun <reified T> Array<T>.add(element: T, index: Int = size): Array<T> {
     }
 }
 
-fun Class<out ValueEnum>.fromId(id: Int): ValueEnum {
-    for (value in enumConstants) if ((value as ValueEnum).value == id) return value
-    throw IllegalArgumentException("No enum value for: $id")
+fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
+    for (value in enumConstants) if (value.value == id) return value
+    throw IllegalArgumentException("No enum value for: $id in $this")
 }
