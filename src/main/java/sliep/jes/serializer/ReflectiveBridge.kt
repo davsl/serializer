@@ -36,13 +36,6 @@ fun Class<*>.getFieldNative(filter: (field: Field) -> Boolean): Field {
     throw NoSuchFieldException(filter.toString())
 }
 
-fun Class<*>.forEachFilteredField(filter: (field: Field) -> Boolean, block: (field: Field) -> Unit) {
-    val allFields = allFields
-    val allFieldsSie = allFields.size - 1
-    var i = -1
-    while (i < allFieldsSie) if (filter(allFields[++i])) block(allFields[i])
-}
-
 fun Class<*>.getMethodNative(name: String, vararg paramTypes: Class<*>?): Method {
     val allMethods = allMethods
     val allMethodsSie = allMethods.size - 1
@@ -59,13 +52,6 @@ fun Class<*>.getMethodNative(filter: (method: Method) -> Boolean): Method {
     var i = -1
     while (i < allMethodsSie) if (filter(allMethods[++i])) return allMethods[i]
     throw NoSuchMethodException(filter.toString())
-}
-
-fun Class<*>.forEachFilteredMethod(filter: (method: Method) -> Boolean, block: (field: Method) -> Unit) {
-    val allMethods = allMethods
-    val allMethodsSie = allMethods.size - 1
-    var i = -1
-    while (i < allMethodsSie) if (filter(allMethods[++i])) block(allMethods[i])
 }
 
 fun <T> Class<T>.getConstructorNative(vararg paramTypes: Class<*>?): Constructor<T> {

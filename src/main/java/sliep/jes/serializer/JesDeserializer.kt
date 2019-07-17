@@ -3,6 +3,7 @@
 package sliep.jes.serializer
 
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.lang.reflect.Field
 import java.util.*
@@ -104,7 +105,11 @@ class JesDeserializer {
                 fieldType.isInstance(value) -> value
                 List::class.java.isAssignableFrom(fieldType) -> deserializeList(jes.getJSONArray(key), field)
                 Map::class.java.isAssignableFrom(fieldType) -> deserializeMap(jes.getJSONObject(key), field)
-                else -> objectValue(jes[key], field.type)
+                else -> try {
+                    objectValue(jes[key], field.type)
+                } catch (e: Throwable) {
+                    throw JSONException("Failed to deserialize field $key", e)
+                }
             }
         }
         return instance
