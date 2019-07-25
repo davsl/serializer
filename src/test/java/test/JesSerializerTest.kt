@@ -7,6 +7,7 @@ import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.*
+import java.util.*
 
 class JesSerializerTest {
 
@@ -26,7 +27,8 @@ class JesSerializerTest {
     @Test
     fun serializeDeserialize() {
         val originalJson = JSONObject(ModelTest.TEST_JSON)
-        val modelTest = originalJson.fromJson<ModelTest>().toJson()
+        val modelTesto = originalJson.fromJson<ModelTest>()
+        val modelTest = modelTesto.toJson()
         assertEquals(modelTest.toString(), originalJson.toString())
         assertEquals(modelTest.toString(), modelTest.fromJson<ModelTest>().toJson().toString())
         val fromJson = modelTest.fromJson<ModelTest>()
@@ -75,7 +77,7 @@ class JesSerializerTest {
 
     data class Skkkk(val ulul: String, val ddfdf: Int) : JesObject
     data class ModelTest(
-        @field:JesName("pippo")
+        @JesName("pippo")
         var s: String,
         val i: Int,
         val f: Float,
@@ -84,6 +86,8 @@ class JesSerializerTest {
         val b: Boolean,
         val c: Char,
         val l: Long,
+        @JesDate("HH:mm:ss")
+        val puzzy: Date,
         val deee: Array<Int>,
         val doo: List<Skkkk>,
         val mappy: Map<Int, Skkkk>,
@@ -109,6 +113,7 @@ class JesSerializerTest {
                     "  \"b\": true,\n" +
                     "  \"c\": \"c\",\n" +
                     "  \"l\": 34567654345678,\n" +
+                    "  \"puzzy\": \"13:14:00\",\n" +
                     "  \"o\": {\n" +
                     "    \"s\": \"E F G\"\n" +
                     "  }\n" +

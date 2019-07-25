@@ -45,8 +45,12 @@ class JesSerializer {
                         if (has(key)) continue
                         field.isAccessible = true
                         val value = field[instance] ?: continue
+                        val jesDate = field.getDeclaredAnnotation(JesDate::class.java)
                         try {
-                            put(key, jsonValue(value))
+                            when {
+                                jesDate != null -> put(key, formats[jesDate].format(value))
+                                else -> put(key, jsonValue(value))
+                            }
                         } catch (ignored: NonJesObjectException) {
                         }
                     }

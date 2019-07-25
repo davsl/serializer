@@ -106,7 +106,11 @@ class JesDeserializer {
                 List::class.java.isAssignableFrom(fieldType) -> deserializeList(jes.getJSONArray(key), field)
                 Map::class.java.isAssignableFrom(fieldType) -> deserializeMap(jes.getJSONObject(key), field)
                 else -> try {
-                    objectValue(jes[key], field.type)
+                    val jesDate = field.getDeclaredAnnotation(JesDate::class.java)
+                    when {
+                        jesDate != null -> formats[jesDate].parse(value.toString())
+                        else -> objectValue(jes[key], field.type)
+                    }
                 } catch (e: Throwable) {
                     throw JSONException("Failed to deserialize field $key", e)
                 }

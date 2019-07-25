@@ -8,6 +8,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -167,4 +168,13 @@ inline fun <reified T> Array<T>.add(element: T, index: Int = size): Array<T> {
 fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
     for (value in enumConstants) if (value.value == id) return value
     throw IllegalArgumentException("No enum value for: $id in $this")
+}
+
+internal val formats = HashMap<String, SimpleDateFormat>()
+
+internal operator fun HashMap<String, SimpleDateFormat>.get(date: JesDate): SimpleDateFormat {
+    formats[date.format]?.let { return it }
+    val format = SimpleDateFormat(date.format)
+    formats[date.format] = format
+    return format
 }
