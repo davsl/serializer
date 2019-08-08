@@ -171,7 +171,7 @@ class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
 
 inline fun <reified T : Any> T.cloneInstance(): T {
     val duplicate = T::class.java.newInstanceNative()
-    for (field in T::class.java.allFields.filter(excludeModifiers = Modifier.STATIC)) kotlin.runCatching {
+    for (field in T::class.java.allFields.filter(excludeModifiers = Modifier.STATIC)) suppress {
         field.isFinal = false
         field[duplicate] = field[this]
     }

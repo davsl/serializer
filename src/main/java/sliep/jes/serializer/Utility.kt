@@ -10,6 +10,7 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.reflect.KClass
 
 /**
  * Add element to list if not contained. Useful to avoid duplicates
@@ -37,7 +38,7 @@ fun <T> Array<T>.having(comparison: T.() -> Boolean): T? {
  * @receiver content
  * @return Content
  */
-fun String.capitalizeFirst() = this[0].toUpperCase() + substring(1)
+fun String.capitalizeFirst() = if (isEmpty()) this else this[0].toUpperCase() + substring(1)
 
 /**
  * Try to convert string to [JSONObject] or [JSONArray], if conversion fails return null
@@ -46,8 +47,8 @@ fun String.capitalizeFirst() = this[0].toUpperCase() + substring(1)
  * @return json instance or null
  */
 fun String.tryAsJSON(): Any? {
-    kotlin.runCatching { return JSONObject(this) }
-    kotlin.runCatching { return JSONArray(this) }
+    suppress { return JSONObject(this) }
+    suppress { return JSONArray(this) }
     return null
 }
 
@@ -168,6 +169,18 @@ inline fun <reified T> Array<T>.add(element: T, index: Int = size): Array<T> {
 fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
     for (value in enumConstants) if (value.value == id) return value
     throw IllegalArgumentException("No enum value for: $id in $this")
+}
+
+inline fun <reified T : Any> build(block: T.() -> Unit) = T::class.java.newUnsafeInstance().apply(block)
+
+inline fun suppress(vararg throwable: KClass<out Throwable>, block: () -> Unit) {
+    try {
+        block()
+    } catch (e: Throwable) {
+        if (throwable.isEmpty()) return
+        for (t in throwable) if (t.java.isInstance(e)) return
+        throw e
+    }
 }
 
 internal val formats = HashMap<String, SimpleDateFormat>()

@@ -12,7 +12,7 @@ fun toGenericJson(any: Any): Any = when (any) {
     is Array<*> -> any.toJson()
     is List<*> -> any.toJson()
     is JSONObject, is JSONArray -> any
-    else -> throw IllegalArgumentException("Instance of type ${any::class.java} cannot be converted into json")
+    else -> throw NonJesObjectException(any::class.java)
 }
 
 fun JesObject.toJson(): JSONObject = JesSerializer().jsonValue(this) as JSONObject

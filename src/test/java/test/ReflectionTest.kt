@@ -44,7 +44,7 @@ class ReflectionTest {
         assertEquals("Hello", newInstance.susu)
         assertEquals(3, ModelTest::class.java.declaredConstructors.filter(Modifier.PUBLIC).size)
         assertEquals(5, ModelTest::class.java.newInstanceNative(5).i)
-        assertEquals(0, ModelTest::class.java.newUnsafeInstance().i)
+        assertEquals(0, build<ModelTest> { }.i)
     }
 
     @Test
