@@ -4,6 +4,9 @@ package sliep.jes.serializer
 
 import org.json.JSONArray
 import org.json.JSONObject
+import sliep.jes.serializer.impl.JesName
+import sliep.jes.serializer.impl.putJesDate
+import sliep.jes.serializer.impl.putJesImpl
 import java.lang.reflect.Modifier
 
 fun toGenericJson(any: Any): Any = when (any) {
@@ -25,7 +28,6 @@ class JesSerializer {
 
     @Throws(NonJesObjectException::class)
     fun jsonValue(instance: Any): Any = when {
-        instance is JesObjectImpl<*> -> instance.toJson()
         isArrayInstance(instance) -> serializeArray(instance)
         isPrimitiveInstance(instance) -> serializePrimitive(instance)
         isBlackListed(instance) -> throw BlackListedFieldException()
@@ -45,10 +47,10 @@ class JesSerializer {
                         if (has(key)) continue
                         field.isAccessible = true
                         val value = field[instance] ?: continue
-                        val jesDate = field.getDeclaredAnnotation(JesDate::class.java)
                         try {
                             when {
-                                jesDate != null -> put(key, formats[jesDate].format(value))
+                                putJesImpl(field, key, value) -> Unit
+                                putJesDate(field, key, value) -> Unit
                                 else -> put(key, jsonValue(value))
                             }
                         } catch (ignored: NonJesObjectException) {

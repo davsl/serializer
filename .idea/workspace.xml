@@ -7,12 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesSerializerImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesDate.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesName.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesName.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObjectImpl.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/ReflectiveBridge.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/ReflectiveBridge.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,8 +58,8 @@
       <list>
         <option value="Class" />
         <option value="Kotlin Class" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin File" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
@@ -104,9 +108,16 @@
     <option name="AUTOSCROLL_FROM_SOURCE" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
+    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer" />
       <recent name="test" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="sliep.jes.serializer.impl" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
@@ -114,10 +125,6 @@
       <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test\dto" />
       <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test" />
       <recent name="C:\Users\ASUS\IdeaProjects\serializer" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -132,7 +139,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.Publish">
+  <component name="RunManager" selected="Gradle.LoggableTest">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -284,9 +291,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.LoggableTest" />
         <item itemvalue="Gradle.UtilityTest" />
         <item itemvalue="Gradle.ReflectionTest" />
-        <item itemvalue="Gradle.LoggableTest" />
         <item itemvalue="Gradle.JesSerializerTest" />
       </list>
     </recent_temporary>
@@ -301,13 +308,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00019" summary="fix lateinit">
-      <created>1553009620033</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1553009620033</updated>
     </task>
     <task id="LOCAL-00020" summary="fix lateinit">
       <created>1553016047979</created>
@@ -645,7 +645,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564057425094</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="added utility">
+      <created>1565272296813</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1565272296814</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TodoView">
@@ -690,7 +697,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="oooooooooooooo" />
     <MESSAGE value="fixes" />
     <MESSAGE value="added utilities" />
     <MESSAGE value="made JesObject Serializable" />
@@ -715,7 +721,8 @@
     <MESSAGE value="added fun" />
     <MESSAGE value="fix" />
     <MESSAGE value="added date serialization" />
-    <option name="LAST_COMMIT_MESSAGE" value="added date serialization" />
+    <MESSAGE value="added utility" />
+    <option name="LAST_COMMIT_MESSAGE" value="added utility" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -726,61 +733,6 @@
         <watch expression="((StackTraceElement[])trace)[2]" custom="java.lang.StackTraceElement[]" />
       </configuration>
     </watches-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="evaluateExpression">
-      <expression>
-        <expression-string>cachedMethods</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.annotations</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.declaredAnnotations.size</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.declaredAnnotations</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.getAnnotation(JesName::class.java)?.name</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.getDeclaredAnnotation(JesName::class.java)?.name</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>(it.getDeclaredAnnotation(JesName::class.java)?.name</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>(it.getDeclaredAnnotation(JesName::class.java)?.name ?: it.name) == key</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Unsafe::class.java.allFields</expression-string>
-        <language-id>kotlin</language-id>
-        <custom-info>import sliep.jes.serializer.allFields</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
   <component name="masterDetails">
     <states>

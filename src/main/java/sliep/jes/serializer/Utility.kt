@@ -8,7 +8,6 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger
 import java.security.MessageDigest
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -181,13 +180,4 @@ inline fun suppress(vararg throwable: KClass<out Throwable>, block: () -> Unit) 
         for (t in throwable) if (t.java.isInstance(e)) return
         throw e
     }
-}
-
-internal val formats = HashMap<String, SimpleDateFormat>()
-
-internal operator fun HashMap<String, SimpleDateFormat>.get(date: JesDate): SimpleDateFormat {
-    formats[date.format]?.let { return it }
-    val format = SimpleDateFormat(date.format)
-    formats[date.format] = format
-    return format
 }

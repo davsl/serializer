@@ -7,6 +7,10 @@ import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.*
+import sliep.jes.serializer.impl.JesDate
+import sliep.jes.serializer.impl.JesImpl
+import sliep.jes.serializer.impl.JesName
+import sliep.jes.serializer.impl.JesSerializerImpl
 import java.util.*
 
 class JesSerializerTest {
@@ -66,13 +70,16 @@ class JesSerializerTest {
         SOSOSOO(3)
     }
 
-    class ModelImplTest(val a: String, val b: Int) : JesObjectImpl<String> {
-        constructor(data: String) : this(
-            data.substring(0, data.indexOf("----")),
-            data.substring(data.indexOf("----") + 4).toInt()
-        )
+    class ModelImplTest(val a: String, val b: Int)
 
-        override fun toJson(): String = "$a----$b"
+    class JesTestSerializer : JesSerializerImpl<String, ModelImplTest> {
+        override fun toJson(value: ModelImplTest, vararg args: String): String =
+            "${value.a}----${value.b}"
+
+        override fun fromJson(value: String, type: Class<*>, vararg args: String) = ModelImplTest(
+            value.substring(0, value.indexOf("----")),
+            value.substring(value.indexOf("----") + 4).toInt()
+        )
     }
 
     data class Skkkk(val ulul: String, val ddfdf: Int) : JesObject
@@ -92,6 +99,7 @@ class JesSerializerTest {
         val doo: List<Skkkk>,
         val mappy: Map<Int, Skkkk>,
         val o: ModelTest2,
+        @JesImpl(JesTestSerializer::class)
         var impl: ModelImplTest
     ) : JesObject {
         companion object {
@@ -109,6 +117,7 @@ class JesSerializerTest {
                     "    \"ddfdf\": 24\n" +
                     "  }},\n" +
                     "  \"f\": 45.6,\n" +
+                    "  \"impl\": 23----45,\n" +
                     "  \"d\": 78.9,\n" +
                     "  \"b\": true,\n" +
                     "  \"c\": \"c\",\n" +

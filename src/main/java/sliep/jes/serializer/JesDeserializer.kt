@@ -5,6 +5,10 @@ package sliep.jes.serializer
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import sliep.jes.serializer.impl.JesDate
+import sliep.jes.serializer.impl.JesImpl
+import sliep.jes.serializer.impl.JesName
+import sliep.jes.serializer.impl.objectValue
 import java.lang.reflect.Field
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,7 +56,6 @@ class JesDeserializer {
 
     fun objectValue(jes: Any, type: Class<*>): Any = when {
         type.isInstance(jes) -> jes
-        JesObjectImpl::class.java.isAssignableFrom(type) -> type.newInstanceNative(jes)
         jes is JSONArray -> deserializeArray(
             type.componentType ?: throw IllegalStateException("Expected array type, found $type"), jes
         )
@@ -107,9 +110,11 @@ class JesDeserializer {
                 Map::class.java.isAssignableFrom(fieldType) -> deserializeMap(jes.getJSONObject(key), field)
                 else -> try {
                     val jesDate = field.getDeclaredAnnotation(JesDate::class.java)
+                    val jesImpl = field.getDeclaredAnnotation(JesImpl::class.java)
                     when {
-                        jesDate != null -> formats[jesDate].parse(value.toString())
-                        else -> objectValue(jes[key], field.type)
+                        jesImpl != null -> jesImpl.objectValue(value, field.type)
+                        jesDate != null -> jesDate.objectValue(value)
+                        else -> objectValue(value, field.type)
                     }
                 } catch (e: Throwable) {
                     throw JSONException("Failed to deserialize field $key", e)

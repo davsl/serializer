@@ -1,4 +1,4 @@
-package sliep.jes.serializer
+package sliep.jes.serializer.impl
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
