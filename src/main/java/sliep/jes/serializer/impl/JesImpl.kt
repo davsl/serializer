@@ -2,11 +2,11 @@ package sliep.jes.serializer.impl
 
 import org.json.JSONObject
 import sliep.jes.serializer.newInstanceNative
-import java.lang.reflect.Field
+import java.lang.reflect.AccessibleObject
 import java.util.*
 import kotlin.reflect.KClass
 
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class JesImpl(val serializer: KClass<out JesSerializerImpl<*, *>>, vararg val args: String)
 
@@ -20,7 +20,7 @@ private operator fun HashMap<KClass<*>, JesSerializerImpl<*, *>>.get(impl: JesIm
     return serializer as JesSerializerImpl<Any, Any>
 }
 
-internal fun JSONObject.putJesImpl(field: Field, key: String, value: Any): Boolean {
+internal fun JSONObject.putJesImpl(field: AccessibleObject, key: String, value: Any): Boolean {
     val jesImpl = field.getDeclaredAnnotation(JesImpl::class.java) ?: return false
     put(key, serializers[jesImpl].toJson(value, *jesImpl.args))
     return true

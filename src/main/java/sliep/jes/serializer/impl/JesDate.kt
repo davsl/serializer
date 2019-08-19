@@ -1,11 +1,11 @@
 package sliep.jes.serializer.impl
 
 import org.json.JSONObject
-import java.lang.reflect.Field
+import java.lang.reflect.AccessibleObject
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class JesDate(val format: String, val locale: String = "")
 
@@ -18,7 +18,7 @@ private operator fun HashMap<String, SimpleDateFormat>.get(date: JesDate): Simpl
     return format
 }
 
-internal fun JSONObject.putJesDate(field: Field, key: String, value: Any): Boolean {
+internal fun JSONObject.putJesDate(field: AccessibleObject, key: String, value: Any): Boolean {
     val jesDate = field.getDeclaredAnnotation(JesDate::class.java) ?: return false
     put(key, formats[jesDate].format(value))
     return true

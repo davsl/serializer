@@ -7,16 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesSerializerImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/DTOEditor.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesDate.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesName.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesName.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObjectImpl.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesDate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesDate.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesName.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesName.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/UtilityTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/UtilityTest.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -90,7 +87,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="MANAGE_IGNORE_FILES_PROPERTY" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/sliep/jes/serializer" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -108,9 +105,12 @@
     <option name="AUTOSCROLL_FROM_SOURCE" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer" />
+      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test\dto" />
+      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer" />
@@ -119,12 +119,9 @@
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer.impl" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test\dto" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -139,7 +136,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.LoggableTest">
+  <component name="RunManager" selected="Gradle.Publish">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -280,6 +277,26 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="UtilityTest.dtoEditorTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;test.UtilityTest.dtoEditorTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Gradle.Compile" />
       <item itemvalue="Gradle.Documentation" />
@@ -288,9 +305,11 @@
       <item itemvalue="Gradle.ReflectionTest" />
       <item itemvalue="Gradle.UtilityTest" />
       <item itemvalue="Gradle.LoggableTest" />
+      <item itemvalue="Gradle.UtilityTest.dtoEditorTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.UtilityTest.dtoEditorTest" />
         <item itemvalue="Gradle.LoggableTest" />
         <item itemvalue="Gradle.UtilityTest" />
         <item itemvalue="Gradle.ReflectionTest" />
@@ -308,13 +327,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00020" summary="fix lateinit">
-      <created>1553016047979</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1553016047979</updated>
     </task>
     <task id="LOCAL-00021" summary="added package info">
       <created>1553243746879</created>
@@ -652,7 +664,14 @@
       <option name="project" value="LOCAL" />
       <updated>1565272296814</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="added annotation to customize serialization">
+      <created>1565517148225</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1565517148225</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TodoView">
@@ -697,7 +716,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="fixes" />
     <MESSAGE value="added utilities" />
     <MESSAGE value="made JesObject Serializable" />
     <MESSAGE value="added function jsonarrya to array" />
@@ -722,7 +740,8 @@
     <MESSAGE value="fix" />
     <MESSAGE value="added date serialization" />
     <MESSAGE value="added utility" />
-    <option name="LAST_COMMIT_MESSAGE" value="added utility" />
+    <MESSAGE value="added annotation to customize serialization" />
+    <option name="LAST_COMMIT_MESSAGE" value="added annotation to customize serialization" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

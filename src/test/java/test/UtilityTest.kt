@@ -1,10 +1,12 @@
 package test
 
-import org.junit.Assert.assertTrue
+import org.json.JSONObject
+import org.junit.Assert.*
 import org.junit.Test
-import sliep.jes.serializer.excludes
-import sliep.jes.serializer.includes
-import sliep.jes.serializer.toDynamic
+import sliep.jes.serializer.*
+import sliep.jes.serializer.impl.JesDate
+import sliep.jes.serializer.impl.JesName
+import java.util.*
 
 class UtilityTest {
     @Test
@@ -29,6 +31,67 @@ class UtilityTest {
         assertTrue(f2 excludes WORLD)
         val f3 = f2 or HELLO
         assertTrue(f3 includes HELLO)
+    }
+
+    @Test
+    fun dtoEditorTest() {
+        val fff = Bb(1, "we", 1.3f)
+        val editor = edit<TestEditor>(object : DTOEditorCallback {
+            override fun onCommit(result: JSONObject) = System.err.println("COMMIT $result")
+
+            override fun onPropertyChanged(prop: String, newValue: Any?, state: PropertyState) =
+                when (state) {
+                    PropertyState.ADDED -> println("Added $prop -> $newValue")
+                    PropertyState.CHANGED -> println("Editing $prop -> $newValue")
+                    PropertyState.REMOVED -> println("Removed $prop")
+                }
+        })
+        editor.prop1 = 23
+        assertEquals(23, editor.prop1)
+        editor.prop1 = 24
+        editor.prop1 = 25
+        editor.prop1 = 26
+        editor.prop2 = "qwsdf"
+        assertEquals("qwsdf", editor.prop2)
+        editor.prop2 = "fgh"
+        editor.prop2 = null
+        assertEquals(null, editor.prop2)
+        editor.prop3 = 2.34f
+        editor.remove(Bb::prop3)
+        try {
+            editor.prop3
+            assertTrue(false)
+        } catch (e: NullPointerException) {
+        }
+        editor["deeo"] = "bubu"
+        assertEquals("bubu", editor["deeo"])
+        editor.commit()
+        val t: Bb = editor.build()
+        println("Built -> $t")
+        println("Original -> $fff")
+        editor.sync(fff, true)
+        editor.remove("deeo")
+        editor.sync(fff)
+        println("Sync -> $fff")
+        assertFalse(editor.isEmpty)
+        editor.clear()
+        assertTrue(editor.isEmpty)
+        editor.date = Date()
+        editor.bibbo = editor.date.time.toString()
+        assertEquals(editor.date, Date(editor.bibbo.toLong()))
+        editor.commit()
+    }
+
+    data class Bb(val prop1: Int, val prop2: String?, val prop3: Float) : JesObject
+
+    interface TestEditor : DTOEditor {
+        var prop1: Int
+        var prop2: String?
+        var prop3: Float
+        @set:JesDate("YY-mm HH-ss")
+        var date: Date
+        @set:JesName("pullo")
+        var bibbo: String
     }
 
     @Test
