@@ -21,16 +21,6 @@ fun <T> ArrayList<T>.addIfNotContained(value: T) {
     if (!contains(value)) add(value)
 }
 
-fun <T> List<T>.having(comparison: T.() -> Boolean): T? {
-    for (elem in this) if (elem.comparison()) return elem
-    return null
-}
-
-fun <T> Array<T>.having(comparison: T.() -> Boolean): T? {
-    for (elem in this) if (elem.comparison()) return elem
-    return null
-}
-
 /**
  * Only capitalize first character of a string
  * @author sliep
@@ -180,4 +170,12 @@ inline fun suppress(vararg throwable: KClass<out Throwable>, block: () -> Unit) 
         for (t in throwable) if (t.java.isInstance(e)) return
         throw e
     }
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T> Collection<*>.toTypedArray(type: Class<T>): Array<T> {
+    @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+    val thisCollection = this as java.util.Collection<T>
+    val component = java.lang.reflect.Array.newInstance(type, 0) as Array<T>
+    return thisCollection.toArray(component)
 }

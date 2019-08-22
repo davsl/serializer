@@ -23,6 +23,19 @@ class UtilityTest {
     }
 
     @Test
+    fun testToArray() {
+        val list = listOf<CharSequence>("A", "B", "C")
+        try {
+            @Suppress("UNCHECKED_CAST")
+            list.toTypedArray() as Array<String>
+            assert(false)
+        } catch (e: Throwable) {
+            println(e)
+        }
+        list.toTypedArray(String::class.java)
+    }
+
+    @Test
     fun testFlags() {
         val f1 = HELLO or WORLD
         assertTrue(f1 includes HELLO)
@@ -55,7 +68,7 @@ class UtilityTest {
         assertEquals("qwsdf", editor.prop2)
         editor.prop2 = "fgh"
         editor.prop2 = null
-        assertEquals(null, editor.prop2)
+        assertTrue(null == editor.prop2)
         editor.prop3 = 2.34f
         editor.remove(Bb::prop3)
         try {
