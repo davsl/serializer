@@ -6,7 +6,9 @@ import sun.misc.Unsafe
 import java.lang.reflect.*
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty0
 
 private val currentPlatform: Platform = try {
     JavaPlatform
@@ -167,6 +169,20 @@ class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
     companion object {
         val superFields = HashMap<Int, Field>()
     }
+}
+
+fun <T> linkTo(prop: KProperty0<T>) = LinkDelegate(prop::get, null)
+fun <T> linkTo(prop: KMutableProperty0<T>) = LinkDelegate(prop::get, prop::set)
+fun <T> linkTo(getter: (() -> T)?, setter: ((T) -> Unit)? = null) = LinkDelegate(getter, setter)
+
+class LinkDelegate<T>(private val getter: (() -> T)?, private val setter: ((T) -> Unit)?) {
+    operator fun getValue(receiver: Any, property: KProperty<*>): T =
+        if (getter != null) getter.invoke()
+        else throw IllegalStateException("Getter was not provided")
+
+    operator fun setValue(receiver: Any, property: KProperty<*>, value: T) =
+        if (setter != null) setter.invoke(value)
+        else throw IllegalStateException("Setter was not provided")
 }
 
 inline fun <reified T : Any> T.cloneInstance(): T {
