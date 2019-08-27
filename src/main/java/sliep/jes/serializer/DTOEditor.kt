@@ -81,10 +81,8 @@ fun <T : DTOEditor> edit(clazz: Class<T>, callback: DTOEditorCallback): T = claz
                 "sync" -> {
                     val receiver = args[0] as Any
                     val safe = args[1] as Boolean
-                    val rc = receiver::class.java
                     try {
-                        for (prop in jes.keys())
-                            rc.getFieldNative(prop)[args[0]] = raw[prop]
+                        for (prop in jes.keys()) receiver.setFieldValueNative(prop, raw[prop])
                     } catch (e: Throwable) {
                         if (!safe) throw IllegalStateException("Failed to sync object $receiver", e)
                     }

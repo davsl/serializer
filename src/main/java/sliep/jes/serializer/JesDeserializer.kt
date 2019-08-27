@@ -74,7 +74,7 @@ class JesDeserializer {
     fun deserializeArray(
         componentType: Class<*>,
         jes: JSONArray,
-        instance: Array<Any?> = java.lang.reflect.Array.newInstance(componentType, jes.length()) as Array<Any?>
+        instance: Array<Any?> = componentType.newArrayInstanceNative(jes.length())
     ): Array<*> {
         for (i in 0 until jes.length()) instance[i] = objectValue(jes.opt(i), componentType)
         return instance
@@ -104,7 +104,7 @@ class JesDeserializer {
             }
             val fieldType = field.type
             val value = jes[key]
-            field[instance] = when {
+            val objectValue = when {
                 fieldType.isInstance(value) -> value
                 List::class.java.isAssignableFrom(fieldType) -> deserializeList(jes.getJSONArray(key), field)
                 Map::class.java.isAssignableFrom(fieldType) -> deserializeMap(jes.getJSONObject(key), field)
@@ -120,6 +120,7 @@ class JesDeserializer {
                     throw JSONException("Failed to deserialize field $key", e)
                 }
             }
+            field.setNative(instance, objectValue)
         }
         return instance
     }
@@ -137,8 +138,7 @@ class JesDeserializer {
     fun deserializeMap(jes: JSONObject, field: Field): Map<*, *> {
         val keyType = field.typeArguments[0] as? Class<*>
             ?: throw IllegalArgumentException("Map field ${field.name} has no key type, can't be deserialized")
-        if (keyType.kotlin.javaPrimitiveType == null && !String::class.java.isAssignableFrom(keyType))
-            throw IllegalArgumentException("Field ${field.name}: Map key can only be of type String or primitive")
+        require(!(keyType.kotlin.javaPrimitiveType == null && !String::class.java.isAssignableFrom(keyType))) { "Field ${field.name}: Map key can only be of type String or primitive" }
         val valueType = field.typeArguments[1] as? Class<*>
             ?: throw IllegalArgumentException("Map field ${field.name} has no value type, can't be deserialized")
         if (!field.type.isAssignableFrom(HashMap::class.java))

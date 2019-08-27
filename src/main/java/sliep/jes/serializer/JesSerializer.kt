@@ -9,6 +9,9 @@ import sliep.jes.serializer.impl.putJesDate
 import sliep.jes.serializer.impl.putJesImpl
 import java.lang.reflect.Modifier
 
+class NonJesObjectException(errorClass: Class<*>) :
+    Exception("Can't deserialize non ${JesObject::class.java.simpleName} classes. found instance of type $errorClass")
+
 fun toGenericJson(any: Any): Any = when (any) {
     is JesObject -> any.toJson()
     is Map<*, *> -> any.toJson()
@@ -45,8 +48,7 @@ class JesSerializer {
                     for (field in clazz.declaredFields) if (field.modifiers excludes TO_EXCLUDE) {
                         val key = field.getDeclaredAnnotation(JesName::class.java)?.name ?: field.name
                         if (has(key)) continue
-                        field.isAccessible = true
-                        val value = field[instance] ?: continue
+                        val value: Any = field.getNative(instance) ?: continue
                         try {
                             when {
                                 putJesImpl(field, key, value) -> Unit

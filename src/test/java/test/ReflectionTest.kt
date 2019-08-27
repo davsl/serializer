@@ -5,7 +5,6 @@ package test
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.*
-import java.lang.reflect.Modifier
 
 class ReflectionTest {
 
@@ -42,7 +41,7 @@ class ReflectionTest {
     fun constructorTest() {
         val newInstance = ModelTest::class.java.newInstanceNative()
         assertEquals("Hello", newInstance.susu)
-        assertEquals(3, ModelTest::class.java.declaredConstructors.filter(Modifier.PUBLIC).size)
+        assertEquals(3, ModelTest::class.java.declaredConstructors.filter { it.isPublic }.size)
         assertEquals(5, ModelTest::class.java.newInstanceNative(5).i)
         assertEquals(0, build<ModelTest> { }.i)
     }
@@ -52,6 +51,36 @@ class ReflectionTest {
         val instance = ModelTest::class.java.newInstanceNative()
         assertEquals(instance.susu, instance.getFieldValueNative<String>("susu"))
         assertEquals(instance.susu, instance::class.java.getFieldNative("susu")[instance])
+
+
+        val d = Deeo()
+        var field = d.getFieldValueNative<Deeo.Buddhah>("ciccio")
+        d.setFieldValueNative("ciccio", field.also { it.ew = "suca" })
+        field = d.getFieldValueNative("ciccio")
+        var primo: Int = field.getFieldValueNative("primo")
+        field.setFieldValueNative("primo", 233)
+        primo = field.getFieldValueNative("primo")
+        assertEquals(233, primo)
+        val kree = d.getFieldValueNative<Any>("kree")
+        val gg = d.getFieldValueNativeRecursive<Any>("ciccio.ew")
+
+        println()
+    }
+
+    class Deeo {
+        @JvmField
+        val ciccio = Buddhah()
+
+        class Buddhah {
+            @JvmField
+            var ew = "sdfg"
+            val primo: Int? = 234
+        }
+
+        companion object {
+            @JvmStatic
+            val kree = Buddhah()
+        }
     }
 
     @Test
@@ -63,7 +92,7 @@ class ReflectionTest {
     @Test
     fun duplicateTest() {
         val instance = ModelTest::class.java.newInstanceNative()
-        assertEquals(instance, instance.cloneInstance())
+        assertEquals(instance, instance.cloneNative())
     }
 
     @Test

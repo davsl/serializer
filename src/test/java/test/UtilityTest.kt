@@ -6,6 +6,7 @@ import org.junit.Test
 import sliep.jes.serializer.*
 import sliep.jes.serializer.impl.JesDate
 import sliep.jes.serializer.impl.JesName
+import java.lang.reflect.Modifier
 import java.util.*
 
 class UtilityTest {
@@ -37,13 +38,19 @@ class UtilityTest {
 
     @Test
     fun testFlags() {
-        val f1 = HELLO or WORLD
-        assertTrue(f1 includes HELLO)
-        assertTrue(f1 includes WORLD)
-        val f2 = f1 and WORLD.inv()
-        assertTrue(f2 excludes WORLD)
-        val f3 = f2 or HELLO
-        assertTrue(f3 includes HELLO)
+        val flags = Flags()
+        flags += Modifier.TRANSIENT
+        flags += Modifier.PRIVATE
+        flags += Modifier.FINAL
+        assertTrue(flags includes Modifier.FINAL)
+        assertTrue(Modifier.isFinal(flags.flags))
+        assertFalse(Modifier.isPublic(flags.flags))
+        flags -= Modifier.FINAL
+        assertTrue(flags excludes Modifier.FINAL)
+        assertFalse(Modifier.isFinal(flags.flags))
+        assertTrue(Modifier.isTransient(flags.flags))
+        assertTrue(Modifier.isPrivate(flags.flags))
+        assertTrue(flags[Modifier.PRIVATE])
     }
 
     @Test

@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "UNCHECKED_CAST")
 
 package sliep.jes.serializer
 
@@ -6,10 +6,14 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.lang.reflect.Field
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
 import kotlin.reflect.KClass
+import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty0
 
 /**
  * Add element to list if not contained. Useful to avoid duplicates
@@ -40,24 +44,6 @@ fun String.tryAsJSON(): Any? {
     suppress { return JSONArray(this) }
     return null
 }
-
-/**
- * Check if flag is contained in int
- * @author sliep
- * @receiver flags
- * @param flag to check
- * @return if flag is contained
- */
-infix fun Int.includes(flag: Int) = this and flag == flag
-
-/**
- * Check if flag is not contained in int
- * @author sliep
- * @receiver flags
- * @param flag to check
- * @return if flag is not contained
- */
-infix fun Int.excludes(flag: Int) = this and flag == 0
 
 inline val Int.sec get() = this * 1000
 inline val Int.min get() = this * 60000
@@ -90,8 +76,6 @@ fun String.md5(): String {
     }.toString()
 }
 
-
-@Suppress("UNCHECKED_CAST")
 fun <T> Number.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin) {
     Int::class -> toInt() as T
     Float::class -> toFloat() as T
@@ -105,7 +89,6 @@ fun <T> Number.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin)
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
 
-@Suppress("UNCHECKED_CAST")
 fun <T> String.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin) {
     Int::class -> toInt() as T
     Float::class -> toFloat() as T
@@ -172,10 +155,78 @@ inline fun suppress(vararg throwable: KClass<out Throwable>, block: () -> Unit) 
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-fun <T> Collection<*>.toTypedArray(type: Class<T>): Array<T> {
-    @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-    val thisCollection = this as java.util.Collection<T>
-    val component = java.lang.reflect.Array.newInstance(type, 0) as Array<T>
-    return thisCollection.toArray(component)
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+fun <T> Collection<*>.toTypedArray(type: Class<T>): Array<T> =
+    (this as java.util.Collection<T>).toArray(type.newArrayInstanceNative(0))
+
+/**
+ * Check if flag is contained in int
+ * @author sliep
+ * @receiver flags
+ * @param flag to check
+ * @return if flag is contained
+ */
+infix fun Int.includes(flag: Int) = this and flag == flag
+
+/**
+ * Check if flag is not contained in int
+ * @author sliep
+ * @receiver flags
+ * @param flag to check
+ * @return if flag is not contained
+ */
+infix fun Int.excludes(flag: Int) = this and flag == 0
+
+class Flags(var flags: Int = 0) {
+    infix fun includes(flag: Int) = (flags and flag) == flag
+    infix fun excludes(flag: Int) = (flags and flag) == 0
+
+    operator fun set(flag: Int, enabled: Boolean) {
+        if (enabled) plusAssign(flag)
+        else minusAssign(flag)
+    }
+
+    operator fun get(flag: Int) = includes(flag)
+
+    operator fun plusAssign(flag: Int) {
+        flags = flags or flag
+    }
+
+    operator fun minusAssign(flag: Int) {
+        flags = flags and flag.inv()
+    }
+}
+
+fun <T> linkTo(prop: KProperty0<T>) = LinkDelegate(prop::get, null)
+fun <T> linkTo(prop: KMutableProperty0<T>) = LinkDelegate(prop::get, prop::set)
+fun <T> linkTo(getter: (() -> T)?, setter: ((T) -> Unit)? = null) = LinkDelegate(getter, setter)
+
+class LinkDelegate<T>(private val getter: (() -> T)?, private val setter: ((T) -> Unit)?) {
+    operator fun getValue(receiver: Any, property: KProperty<*>): T =
+        if (getter != null) getter.invoke()
+        else throw IllegalStateException("Getter was not provided")
+
+    operator fun setValue(receiver: Any, property: KProperty<*>, value: T) =
+        if (setter != null) setter.invoke(value)
+        else throw IllegalStateException("Setter was not provided")
+}
+
+@Suppress("FunctionName")
+inline fun <reified T : Any, R : Any?> Super() = Super<T, R>(T::class.java)
+
+class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
+
+    operator fun getValue(thisRef: Any, property: KProperty<*>): R =
+        getField(property.hashCode(), property.name).getNative(thisRef) as R
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: R) =
+        getField(property.hashCode(), property.name).setNative(thisRef, value)
+
+    private fun getField(fieldId: Int, name: String): Field = superFields[fieldId] ?: synchronized(this) {
+        superFields[fieldId] ?: clazz.getDeclaredField(name).also { superFields[fieldId] = it }
+    }
+
+    companion object {
+        private val superFields = HashMap<Int, Field>()
+    }
 }
