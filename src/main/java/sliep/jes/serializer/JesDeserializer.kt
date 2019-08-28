@@ -104,7 +104,7 @@ class JesDeserializer {
             }
             val fieldType = field.type
             val value = jes[key]
-            val objectValue = when {
+            field[instance] = when {
                 fieldType.isInstance(value) -> value
                 List::class.java.isAssignableFrom(fieldType) -> deserializeList(jes.getJSONArray(key), field)
                 Map::class.java.isAssignableFrom(fieldType) -> deserializeMap(jes.getJSONObject(key), field)
@@ -120,7 +120,6 @@ class JesDeserializer {
                     throw JSONException("Failed to deserialize field $key", e)
                 }
             }
-            field.setNative(instance, objectValue)
         }
         return instance
     }

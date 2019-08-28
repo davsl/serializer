@@ -17,9 +17,16 @@ private fun initUnsafe(): Unsafe {
 private val unsafeClass = Unsafe::class.java
 private val unsafe = initUnsafe()
 private val cachedFields = HashMap<Class<*>, Array<Field>>()
-private val cachedAccessors = HashMap<Field, JesAccessor>()
 private val cachedMethods = HashMap<Class<*>, Array<Method>>()
 private val cachedConstructors = HashMap<Class<*>, Array<Constructor<*>>>()
+
+private inline fun addAll(collection: LinkedHashSet<Field>, array: Array<Field>) {
+    for (field in array) {
+        field.isAccessible = true
+        field.isFinal = false
+        collection.add(field)
+    }
+}
 
 private inline fun addAll(collection: HashMap<MethodKey, Method>, array: Array<Method>, nonStatic: Boolean = false) {
     for (method in array) {
@@ -55,142 +62,8 @@ private fun methodToString(clazz: String, method: String, params: Array<out Clas
         for (i in params.indices) add(params[i]?.name.toString())
     }.toString()
 
-private inline val Field.accessor: JesAccessor
-    get() {
-        cachedAccessors[this]?.let { return it }
-        return try {
-            if (isStatic) JesAccessorStatic(this) else JesAccessorInstance(this)
-        } catch (e: Throwable) {
-            FuckOffAccessor(this)
-        }.also { cachedAccessors[this] = it }
-    }
-
 private typealias FieldGetter = (Any?) -> Any?
 private typealias FieldSetter = (Any?, Any?) -> Unit
-
-abstract class JesAccessor(@JvmField val field: Field) {
-    init {
-        field.isFinal = false
-    }
-
-    private val fieldType: Class<*> = field.type
-    open val getValue: FieldGetter =
-        if (fieldType.isPrimitive) when (fieldType.name) {
-            "int" -> ::getInt
-            "float" -> ::getFloat
-            "double" -> ::getDouble
-            "long" -> ::getLong
-            "byte" -> ::getByte
-            "short" -> ::getShort
-            "char" -> ::getChar
-            "boolean" -> ::getBoolean
-            else -> ::get
-        } else ::get
-    open val setValue: FieldSetter =
-        if (fieldType.isPrimitive) when (fieldType.name) {
-            "int" -> ::setInt
-            "float" -> ::setFloat
-            "double" -> ::setDouble
-            "long" -> ::setLong
-            "byte" -> ::setByte
-            "short" -> ::setShort
-            "char" -> ::setChar
-            "boolean" -> ::setBoolean
-            else -> ::set
-        } as FieldSetter else ::set
-
-    protected abstract fun getBoolean(receiver: Any?): Boolean
-    protected abstract fun setBoolean(receiver: Any?, value: Boolean)
-    protected abstract fun getInt(receiver: Any?): Int
-    protected abstract fun setInt(receiver: Any?, value: Int)
-    protected abstract fun getFloat(receiver: Any?): Float
-    protected abstract fun setFloat(receiver: Any?, value: Float)
-    protected abstract fun getDouble(receiver: Any?): Double
-    protected abstract fun setDouble(receiver: Any?, value: Double)
-    protected abstract fun getLong(receiver: Any?): Long
-    protected abstract fun setLong(receiver: Any?, value: Long)
-    protected abstract fun getChar(receiver: Any?): Char
-    protected abstract fun setChar(receiver: Any?, value: Char)
-    protected abstract fun setShort(receiver: Any?, value: Short)
-    protected abstract fun getShort(receiver: Any?): Short
-    protected abstract fun getByte(receiver: Any?): Byte
-    protected abstract fun setByte(receiver: Any?, value: Byte)
-    protected abstract fun get(receiver: Any?): Any?
-    protected abstract fun set(receiver: Any?, value: Any?)
-}
-
-private open class JesAccessorInstance(field: Field) : JesAccessor(field) {
-    private var offset: Long = unsafe.objectFieldOffset(field)
-    override fun getBoolean(receiver: Any?): Boolean = unsafe.getBoolean(receiver, offset)
-    override fun setBoolean(receiver: Any?, value: Boolean) = unsafe.putBoolean(receiver, offset, value)
-    override fun getInt(receiver: Any?): Int = unsafe.getInt(receiver, offset)
-    override fun setInt(receiver: Any?, value: Int) = unsafe.putInt(receiver, offset, value)
-    override fun getFloat(receiver: Any?): Float = unsafe.getFloat(receiver, offset)
-    override fun setFloat(receiver: Any?, value: Float) = unsafe.putFloat(receiver, offset, value)
-    override fun getDouble(receiver: Any?): Double = unsafe.getDouble(receiver, offset)
-    override fun setDouble(receiver: Any?, value: Double) = unsafe.putDouble(receiver, offset, value)
-    override fun getLong(receiver: Any?): Long = unsafe.getLong(receiver, offset)
-    override fun setLong(receiver: Any?, value: Long) = unsafe.putLong(receiver, offset, value)
-    override fun getChar(receiver: Any?): Char = unsafe.getChar(receiver, offset)
-    override fun setChar(receiver: Any?, value: Char) = unsafe.putChar(receiver, offset, value)
-    override fun setShort(receiver: Any?, value: Short) = unsafe.putShort(receiver, offset, value)
-    override fun getShort(receiver: Any?): Short = unsafe.getShort(receiver, offset)
-    override fun getByte(receiver: Any?): Byte = unsafe.getByte(receiver, offset)
-    override fun setByte(receiver: Any?, value: Byte) = unsafe.putByte(receiver, offset, value)
-    override fun get(receiver: Any?): Any? = unsafe.getObject(receiver, offset)
-    override fun set(receiver: Any?, value: Any?) = unsafe.putObject(receiver, offset, value)
-}
-
-private class FuckOffAccessor(field: Field) : JesAccessor(field) {
-    init {
-        field.isAccessible = true
-    }
-
-    override val getValue: FieldGetter = { receiver -> field.get(receiver) }
-    override val setValue: FieldSetter = { receiver, value -> field.set(receiver, value) }
-
-    override fun getBoolean(receiver: Any?): Boolean = throw NotImplementedError()
-    override fun setBoolean(receiver: Any?, value: Boolean) = throw NotImplementedError()
-    override fun getInt(receiver: Any?): Int = throw NotImplementedError()
-    override fun setInt(receiver: Any?, value: Int) = throw NotImplementedError()
-    override fun getFloat(receiver: Any?): Float = throw NotImplementedError()
-    override fun setFloat(receiver: Any?, value: Float) = throw NotImplementedError()
-    override fun getDouble(receiver: Any?): Double = throw NotImplementedError()
-    override fun setDouble(receiver: Any?, value: Double) = throw NotImplementedError()
-    override fun getLong(receiver: Any?): Long = throw NotImplementedError()
-    override fun setLong(receiver: Any?, value: Long) = throw NotImplementedError()
-    override fun getChar(receiver: Any?): Char = throw NotImplementedError()
-    override fun setChar(receiver: Any?, value: Char) = throw NotImplementedError()
-    override fun setShort(receiver: Any?, value: Short) = throw NotImplementedError()
-    override fun getShort(receiver: Any?): Short = throw NotImplementedError()
-    override fun getByte(receiver: Any?): Byte = throw NotImplementedError()
-    override fun setByte(receiver: Any?, value: Byte) = throw NotImplementedError()
-    override fun get(receiver: Any?): Any? = throw NotImplementedError()
-    override fun set(receiver: Any?, value: Any?) = throw NotImplementedError()
-}
-
-private class JesAccessorStatic(field: Field) : JesAccessor(field) {
-    private var offset: Long = unsafe.staticFieldOffset(field)
-    private var companion: Any = unsafe.staticFieldBase(field)
-    override fun getBoolean(receiver: Any?): Boolean = unsafe.getBoolean(companion, offset)
-    override fun setBoolean(receiver: Any?, value: Boolean) = unsafe.putBoolean(companion, offset, value)
-    override fun getInt(receiver: Any?): Int = unsafe.getInt(companion, offset)
-    override fun setInt(receiver: Any?, value: Int) = unsafe.putInt(companion, offset, value)
-    override fun getFloat(receiver: Any?): Float = unsafe.getFloat(companion, offset)
-    override fun setFloat(receiver: Any?, value: Float) = unsafe.putFloat(companion, offset, value)
-    override fun getDouble(receiver: Any?): Double = unsafe.getDouble(companion, offset)
-    override fun setDouble(receiver: Any?, value: Double) = unsafe.putDouble(companion, offset, value)
-    override fun getLong(receiver: Any?): Long = unsafe.getLong(companion, offset)
-    override fun setLong(receiver: Any?, value: Long) = unsafe.putLong(companion, offset, value)
-    override fun getChar(receiver: Any?): Char = unsafe.getChar(companion, offset)
-    override fun setChar(receiver: Any?, value: Char) = unsafe.putChar(companion, offset, value)
-    override fun setShort(receiver: Any?, value: Short) = unsafe.putShort(companion, offset, value)
-    override fun getShort(receiver: Any?): Short = unsafe.getShort(companion, offset)
-    override fun getByte(receiver: Any?): Byte = unsafe.getByte(companion, offset)
-    override fun setByte(receiver: Any?, value: Byte) = unsafe.putByte(companion, offset, value)
-    override fun get(receiver: Any?): Any? = unsafe.getObject(companion, offset)
-    override fun set(receiver: Any?, value: Any?) = unsafe.putObject(companion, offset, value)
-}
 
 inline val Method.isGetter get() = name.startsWith("get") && parameterTypes.isEmpty()
 inline val Method.isSetter get() = name.startsWith("set") && parameterTypes.size == 1
@@ -213,7 +86,7 @@ inline var Member.isFinal
     get() = (modifiers and Modifier.FINAL) != 0
     set(value) = suppress {
         if (((modifiers and Modifier.FINAL) != 0) != value) accessFlagField
-            .setNative(this, if (value) modifiers or Modifier.FINAL else modifiers and Modifier.FINAL.inv())
+            .set(this, if (value) modifiers or Modifier.FINAL else modifiers and Modifier.FINAL.inv())
     }
 inline val Executable.signature: String
     get() {
@@ -229,9 +102,9 @@ val Class<*>.allFields: Array<Field>
     get() {
         cachedFields[this]?.let { return it }
         val allFields = LinkedHashSet<Field>()
-        for (field in declaredFields) allFields.add(field)
-        for (iFace in interfaces) for (field in iFace.allFields) allFields.add(field)
-        superclass?.let { for (field in it.allFields) allFields.add(field) }
+        addAll(allFields, declaredFields)
+        for (iFace in interfaces) addAll(allFields, iFace.allFields)
+        superclass?.let { addAll(allFields, it.allFields) }
         return allFields.toTypedArray().also { cachedFields[this] = it }
     }
 val Class<*>.allMethods: Array<Method>
@@ -310,27 +183,21 @@ inline fun <T> Class<T>.newUnsafeInstance(): T {
 }
 
 @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE", "INVISIBLE_MEMBER")
-inline fun <R : Any?> Field.getNative(receiver: Any?): R = accessor.getValue(receiver) as R
+inline fun Field.copyNative(from: Any?, to: Any?) = set(to, get(from))
 
-@Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE", "INVISIBLE_MEMBER")
-inline fun Field.setNative(receiver: Any?, value: Any?) = accessor.setValue(receiver, value)
-
-@Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE", "INVISIBLE_MEMBER")
-inline fun Field.copyNative(from: Any?, to: Any?) = accessor.let { it.setValue(to, it.getValue(from)) }
-
-inline fun <R : Any?> Class<*>.getStaticFieldValueNative(name: String): R = getFieldNative(name).getNative(null)
+inline fun <R : Any?> Class<*>.getStaticFieldValueNative(name: String): R = getFieldNative(name)[null] as R
 inline fun <R : Any?> Any.getFieldValueNative(name: String): R =
-    this::class.java.getFieldNative(name).getNative(this)
+    this::class.java.getFieldNative(name)[this] as R
 
-inline fun Class<*>.setStaticFieldValueNative(name: String, value: Any?) = getFieldNative(name).setNative(null, value)
+inline fun Class<*>.setStaticFieldValueNative(name: String, value: Any?) = getFieldNative(name).set(null, value)
 inline fun Any.setFieldValueNative(name: String, value: Any?) =
-    this::class.java.getFieldNative(name).setNative(this, value)
+    this::class.java.getFieldNative(name).set(this, value)
 
 inline fun <R : Any?> Any.getFieldValueNativeRecursive(name: String): R {
     var result: Any? = this
     for (part in name.split('.')) {
         checkNotNull(result) { "Failed to fetch $name because $part is null" }
-        result = result::class.java.getFieldNative(part).getNative(result)
+        result = result::class.java.getFieldNative(part).get(result)
     }
     return result as R
 }

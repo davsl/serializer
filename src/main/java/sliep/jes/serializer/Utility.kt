@@ -217,13 +217,13 @@ inline fun <reified T : Any, R : Any?> Super() = Super<T, R>(T::class.java)
 class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
 
     operator fun getValue(thisRef: Any, property: KProperty<*>): R =
-        getField(property.hashCode(), property.name).getNative(thisRef) as R
+        getField(property.hashCode(), property.name)[thisRef] as R
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: R) =
-        getField(property.hashCode(), property.name).setNative(thisRef, value)
+        getField(property.hashCode(), property.name).set(thisRef, value)
 
     private fun getField(fieldId: Int, name: String): Field = superFields[fieldId] ?: synchronized(this) {
-        superFields[fieldId] ?: clazz.getDeclaredField(name).also { superFields[fieldId] = it }
+        superFields[fieldId] ?: clazz.getFieldNative(name).also { superFields[fieldId] = it }
     }
 
     companion object {

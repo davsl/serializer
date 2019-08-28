@@ -43,22 +43,18 @@ class JesSerializer {
     fun serializeObject(instance: Any): JSONObject = JSONObject().apply {
         when (instance) {
             is JesObject -> {
-                var clazz = instance::class.java as Class<*>
-                while (true) {
-                    for (field in clazz.declaredFields) if (field.modifiers excludes TO_EXCLUDE) {
-                        val key = field.getDeclaredAnnotation(JesName::class.java)?.name ?: field.name
-                        if (has(key)) continue
-                        val value: Any = field.getNative(instance) ?: continue
-                        try {
-                            when {
-                                putJesImpl(field, key, value) -> Unit
-                                putJesDate(field, key, value) -> Unit
-                                else -> put(key, jsonValue(value))
-                            }
-                        } catch (ignored: NonJesObjectException) {
+                for (field in instance::class.java.allFields) if (field.modifiers excludes TO_EXCLUDE) {
+                    val key = field.getDeclaredAnnotation(JesName::class.java)?.name ?: field.name
+                    if (has(key)) continue
+                    val value: Any = field[instance] ?: continue
+                    try {
+                        when {
+                            putJesImpl(field, key, value) -> Unit
+                            putJesDate(field, key, value) -> Unit
+                            else -> put(key, jsonValue(value))
                         }
+                    } catch (ignored: NonJesObjectException) {
                     }
-                    clazz = clazz.superclass ?: break
                 }
             }
             is Map<*, *> -> for (entry in instance.entries) try {
