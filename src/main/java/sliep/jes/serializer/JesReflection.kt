@@ -9,12 +9,11 @@ import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashSet
 
 private fun initUnsafe(): Unsafe {
-    val unsafeField = unsafeClass.getDeclaredField("theUnsafe")
+    val unsafeField = Unsafe::class.java.getDeclaredField("theUnsafe")
     unsafeField.isAccessible = true
     return unsafeField.get(null) as Unsafe
 }
 
-private val unsafeClass = Unsafe::class.java
 private val unsafe = initUnsafe()
 private val cachedFields = HashMap<Class<*>, Array<Field>>()
 private val cachedMethods = HashMap<Class<*>, Array<Method>>()
@@ -51,10 +50,10 @@ private class MethodKey internal constructor(method: Method) {
 
 private val accessFlagField: Field by lazy {
     try {
-        Field::class.java.getFieldNative("modifiers")
+        Field::class.java.getDeclaredField("modifiers")
     } catch (e: Throwable) {
-        Field::class.java.getFieldNative("accessFlags")
-    }
+        Field::class.java.getDeclaredField("accessFlags")
+    }.also { it.isAccessible = true }
 }
 
 private fun methodToString(clazz: String, method: String, params: Array<out Class<*>?>): String =
