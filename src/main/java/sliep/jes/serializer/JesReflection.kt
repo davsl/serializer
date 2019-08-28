@@ -9,37 +9,19 @@ import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashSet
 
 private fun initUnsafe(): Unsafe {
-    val unsafeField = Unsafe::class.java.getDeclaredField("theUnsafe")
+    val unsafeField = unsafeClass.getDeclaredField("theUnsafe")
     unsafeField.isAccessible = true
     return unsafeField.get(null) as Unsafe
 }
 
-private fun declaredMethod(name: String): (Class<*>) -> Any = try {
-    val method = Class::class.java.getDeclaredMethod("${name}0", Boolean::class.java)
-    method.isAccessible = true
-    { method(it, false) }
-} catch (e: Throwable) {
-    val method = Class::class.java.getDeclaredMethod(name)
-    method.isAccessible = true
-    { method(it) }
-}
-
+private val unsafeClass = Unsafe::class.java
 private val unsafe = initUnsafe()
-private val getDeclaredFields = declaredMethod("getDeclaredFields")
 private val cachedFields = HashMap<Class<*>, Array<Field>>()
 private val cachedAccessors = HashMap<Field, JesAccessor>()
-private val getDeclaredMethods = declaredMethod("getDeclaredMethods")
 private val cachedMethods = HashMap<Class<*>, Array<Method>>()
-private val getDeclaredConstructors = declaredMethod("getDeclaredConstructors")
 private val cachedConstructors = HashMap<Class<*>, Array<Constructor<*>>>()
 
-private fun addAll(collection: LinkedHashSet<Field>, array: Any) {
-    array as Array<Field>
-    for (field in array) collection.add(field)
-}
-
-private fun addAll(collection: HashMap<MethodKey, Method>, array: Any, nonStatic: Boolean = false) {
-    array as Array<Method>
+private inline fun addAll(collection: HashMap<MethodKey, Method>, array: Array<Method>, nonStatic: Boolean = false) {
     for (method in array) {
         if (nonStatic && method.isStatic) continue
         val key = MethodKey(method)
@@ -76,21 +58,47 @@ private fun methodToString(clazz: String, method: String, params: Array<out Clas
 private inline val Field.accessor: JesAccessor
     get() {
         cachedAccessors[this]?.let { return it }
-        val accessor = try {
+        return try {
             if (isStatic) JesAccessorStatic(this) else JesAccessorInstance(this)
         } catch (e: Throwable) {
             FuckOffAccessor(this)
-        }
-        return accessor.also { cachedAccessors[this] = it }
+        }.also { cachedAccessors[this] = it }
     }
 
-private typealias FieldGetter<T> = (Any?) -> T
-private typealias FieldSetter<T> = (Any?, T) -> Unit
+private typealias FieldGetter = (Any?) -> Any?
+private typealias FieldSetter = (Any?, Any?) -> Unit
 
 abstract class JesAccessor(@JvmField val field: Field) {
+    init {
+        field.isFinal = false
+    }
+
     private val fieldType: Class<*> = field.type
-    private var getter: FieldGetter<*>? = null
-    private var setter: FieldSetter<*>? = null
+    open val getValue: FieldGetter =
+        if (fieldType.isPrimitive) when (fieldType.name) {
+            "int" -> ::getInt
+            "float" -> ::getFloat
+            "double" -> ::getDouble
+            "long" -> ::getLong
+            "byte" -> ::getByte
+            "short" -> ::getShort
+            "char" -> ::getChar
+            "boolean" -> ::getBoolean
+            else -> ::get
+        } else ::get
+    open val setValue: FieldSetter =
+        if (fieldType.isPrimitive) when (fieldType.name) {
+            "int" -> ::setInt
+            "float" -> ::setFloat
+            "double" -> ::setDouble
+            "long" -> ::setLong
+            "byte" -> ::setByte
+            "short" -> ::setShort
+            "char" -> ::setChar
+            "boolean" -> ::setBoolean
+            else -> ::set
+        } as FieldSetter else ::set
+
     protected abstract fun getBoolean(receiver: Any?): Boolean
     protected abstract fun setBoolean(receiver: Any?, value: Boolean)
     protected abstract fun getInt(receiver: Any?): Int
@@ -109,38 +117,6 @@ abstract class JesAccessor(@JvmField val field: Field) {
     protected abstract fun setByte(receiver: Any?, value: Byte)
     protected abstract fun get(receiver: Any?): Any?
     protected abstract fun set(receiver: Any?, value: Any?)
-
-    open fun getValue(receiver: Any?): Any? {
-        if (getter != null) return getter!!(receiver)
-        getter = when (fieldType) {
-            Int::class.javaPrimitiveType -> ::getInt
-            Float::class.javaPrimitiveType -> ::getFloat
-            Double::class.javaPrimitiveType -> ::getDouble
-            Long::class.javaPrimitiveType -> ::getLong
-            Byte::class.javaPrimitiveType -> ::getByte
-            Short::class.javaPrimitiveType -> ::getShort
-            Char::class.javaPrimitiveType -> ::getChar
-            Boolean::class.javaPrimitiveType -> ::getBoolean
-            else -> ::get
-        }
-        return getter!!(receiver)
-    }
-
-    open fun setValue(receiver: Any?, value: Any?) {
-        if (setter != null) return setter!!(receiver, value)
-        setter = when (fieldType) {
-            Int::class.javaPrimitiveType -> ::setInt
-            Float::class.javaPrimitiveType -> ::setFloat
-            Double::class.javaPrimitiveType -> ::setDouble
-            Long::class.javaPrimitiveType -> ::setLong
-            Byte::class.javaPrimitiveType -> ::setByte
-            Short::class.javaPrimitiveType -> ::setShort
-            Char::class.javaPrimitiveType -> ::setChar
-            Boolean::class.javaPrimitiveType -> ::setBoolean
-            else -> ::set
-        }
-        return setter!!(receiver, value)
-    }
 }
 
 private open class JesAccessorInstance(field: Field) : JesAccessor(field) {
@@ -168,8 +144,10 @@ private open class JesAccessorInstance(field: Field) : JesAccessor(field) {
 private class FuckOffAccessor(field: Field) : JesAccessor(field) {
     init {
         field.isAccessible = true
-        field.isFinal = false
     }
+
+    override val getValue: FieldGetter = { receiver -> field.get(receiver) }
+    override val setValue: FieldSetter = { receiver, value -> field.set(receiver, value) }
 
     override fun getBoolean(receiver: Any?): Boolean = throw NotImplementedError()
     override fun setBoolean(receiver: Any?, value: Boolean) = throw NotImplementedError()
@@ -189,8 +167,6 @@ private class FuckOffAccessor(field: Field) : JesAccessor(field) {
     override fun setByte(receiver: Any?, value: Byte) = throw NotImplementedError()
     override fun get(receiver: Any?): Any? = throw NotImplementedError()
     override fun set(receiver: Any?, value: Any?) = throw NotImplementedError()
-    override fun getValue(receiver: Any?): Any? = field.get(receiver)
-    override fun setValue(receiver: Any?, value: Any?) = field.set(receiver, value)
 }
 
 private class JesAccessorStatic(field: Field) : JesAccessor(field) {
@@ -236,8 +212,8 @@ inline val Member.isStrict get() = (modifiers and Modifier.STRICT) != 0
 inline var Member.isFinal
     get() = (modifiers and Modifier.FINAL) != 0
     set(value) = suppress {
-        if (((modifiers and Modifier.FINAL) != 0) != value)
-            accessFlagField.setNative(this, Flags(modifiers).also { it[Modifier.FINAL] = value }.flags)
+        if (((modifiers and Modifier.FINAL) != 0) != value) accessFlagField
+            .setNative(this, if (value) modifiers or Modifier.FINAL else modifiers and Modifier.FINAL.inv())
     }
 inline val Executable.signature: String
     get() {
@@ -253,16 +229,16 @@ val Class<*>.allFields: Array<Field>
     get() {
         cachedFields[this]?.let { return it }
         val allFields = LinkedHashSet<Field>()
-        addAll(allFields, getDeclaredFields(this))
-        for (iFace in interfaces) addAll(allFields, iFace.allFields)
-        superclass?.let { addAll(allFields, it.allFields) }
+        for (field in declaredFields) allFields.add(field)
+        for (iFace in interfaces) for (field in iFace.allFields) allFields.add(field)
+        superclass?.let { for (field in it.allFields) allFields.add(field) }
         return allFields.toTypedArray().also { cachedFields[this] = it }
     }
 val Class<*>.allMethods: Array<Method>
     get() {
         cachedMethods[this]?.let { return it }
         val allMethods = HashMap<MethodKey, Method>()
-        addAll(allMethods, getDeclaredMethods(this))
+        addAll(allMethods, declaredMethods)
         for (iFace in interfaces) addAll(allMethods, iFace.allMethods, true)
         superclass?.let { addAll(allMethods, it.allMethods) }
         return allMethods.values.toTypedArray().also { cachedMethods[this] = it }
@@ -270,8 +246,7 @@ val Class<*>.allMethods: Array<Method>
 val Class<*>.allConstructors: Array<Constructor<*>>
     get() {
         cachedConstructors[this]?.let { return it }
-        val allConstructors = getDeclaredConstructors(this) as Array<Constructor<*>>
-        return allConstructors.also { cachedConstructors[this] = it }
+        return declaredConstructors.also { cachedConstructors[this] = it }
     }
 
 inline val Field.typeArguments: Array<Type>

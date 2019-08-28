@@ -5,6 +5,7 @@ package test
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.*
+import kotlin.system.measureNanoTime
 
 class ReflectionTest {
 
@@ -52,8 +53,66 @@ class ReflectionTest {
         assertEquals(instance.susu, instance.getFieldValueNative<String>("susu"))
         assertEquals(instance.susu, instance::class.java.getFieldNative("susu")[instance])
 
+        val zzz = measureNanoTime {
+            repeat(20) {
+                when (Char::class.javaPrimitiveType!!) {
+                    Int::class.javaPrimitiveType -> 2
+                    Float::class.javaPrimitiveType -> 2
+                    Double::class.javaPrimitiveType -> 2
+                    Long::class.javaPrimitiveType -> 2
+                    Byte::class.javaPrimitiveType -> 2
+                    Short::class.javaPrimitiveType -> 2
+                    Char::class.javaPrimitiveType -> 2
+                    Boolean::class.javaPrimitiveType -> 2
+                    else -> 2
+                }
+            }
+        } / 20000f
+        val zds = measureNanoTime {
+            repeat(20) {
+                if (!Char::class.javaPrimitiveType!!.isPrimitive) 2
+                else when (Char::class.javaPrimitiveType!!.name) {
+                    "int" -> 2
+                    "float" -> 2
+                    "double" -> 2
+                    "long" -> 2
+                    "byte" -> 2
+                    "short" -> 2
+                    "char" -> 2
+                    "boolean" -> 2
+                    else -> 2
+                }
+            }
+        } / 20000f
+
 
         val d = Deeo()
+        var size = 0
+        val cuu = measureNanoTime {
+            val dields = d::class.java.allFields
+            size = dields.size
+            dields.forEach {
+                it.isAccessible = true
+                it.getNative(d)
+            }
+        } / 1000f / size //46
+        val cuu3 = measureNanoTime {
+            repeat(10) {
+                d::class.java.allFields.forEach { it.getNative(d) }
+            }
+        } / 10000f / size //02
+        val cuu4 = measureNanoTime {
+            repeat(10) {
+                d::class.java.allFields.forEach { it.get(d) }
+            }
+        } / 10000f / size //02
+        val cuu5 = measureNanoTime {
+            repeat(10) {
+                d::class.java.allFields.forEach { it.get(d) }
+            }
+        } / 10000f / size //02
+        println(cuu)
+
         var field = d.getFieldValueNative<Deeo.Buddhah>("ciccio")
         d.setFieldValueNative("ciccio", field.also { it.ew = "suca" })
         field = d.getFieldValueNative("ciccio")
@@ -69,7 +128,15 @@ class ReflectionTest {
 
     class Deeo {
         @JvmField
-        val ciccio = Buddhah()
+        var ciccio = Buddhah()
+        @JvmField
+        var cane = 23
+        @JvmField
+        var sdcvvs = true
+        @JvmField
+        var dcsco: Float? = 23f
+        @JvmField
+        var suino = 666 to "fetish"
 
         class Buddhah {
             @JvmField
