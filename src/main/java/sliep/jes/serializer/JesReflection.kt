@@ -31,7 +31,10 @@ private inline fun addAll(collection: HashMap<MethodKey, Method>, array: Array<M
     for (method in array) {
         if (nonStatic && method.isStatic) continue
         val key = MethodKey(method)
-        if (!collection.containsKey(key)) collection[key] = method
+        if (!collection.containsKey(key)) {
+            method.isAccessible = true
+            collection[key] = method
+        }
     }
 }
 
@@ -118,7 +121,9 @@ val Class<*>.allMethods: Array<Method>
 val Class<*>.allConstructors: Array<Constructor<*>>
     get() {
         cachedConstructors[this]?.let { return it }
-        return declaredConstructors.also { cachedConstructors[this] = it }
+        val allConstructors = declaredConstructors
+        for (constructor in allConstructors) constructor.isAccessible = true
+        return allConstructors.also { cachedConstructors[this] = it }
     }
 
 inline val Field.typeArguments: Array<Type>
