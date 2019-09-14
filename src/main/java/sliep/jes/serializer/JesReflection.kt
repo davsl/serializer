@@ -89,7 +89,7 @@ inline var Member.isFinal
     set(value) = suppress {
         if (((modifiers and Modifier.FINAL) != 0) != value) accessFlagField
             .set(this, if (value) modifiers or Modifier.FINAL else modifiers and Modifier.FINAL.inv())
-    }
+    }.unit
 inline val Executable.signature: String
     get() {
         val methodName = if (this is Constructor<*>) "<init>" else name

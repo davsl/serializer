@@ -45,21 +45,9 @@ fun String.tryAsJSON(): Any? {
     return null
 }
 
-inline val Int.sec get() = this * 1000
-inline val Int.min get() = this * 60000
-inline val Int.hour get() = this * 3600000
-
-inline val Long.sec get() = this * 1000
-inline val Long.min get() = this * 60000
-inline val Long.hour get() = this * 3600000
-
-inline val Double.sec get() = (this * 1000).toLong()
-inline val Double.min get() = (this * 60000).toLong()
-inline val Double.hour get() = (this * 3600000).toLong()
-
-inline val Int.day get() = this.toLong() * 86400000
-inline val Int.week get() = this.toLong() * 604800000
-inline val Int.year get() = this.toLong() * 220752000000
+inline val Number.sec get() = toLong() * 1000
+inline val Number.min get() = toLong() * 60000
+inline val Number.hour get() = toLong() * 3600000
 
 /**
  * Return md5 as string.
@@ -109,35 +97,6 @@ fun Throwable.traceToString(): String = StringWriter().use { writer ->
     }
 }
 
-inline fun <reified T> Array<T>.remove(element: T): Array<T> {
-    val indexOf = indexOf(element)
-    return if (indexOf == -1) this
-    else removeAt(indexOf)
-}
-
-inline fun <reified T> Array<T>.removeAt(index: Int): Array<T> {
-    if (index >= size) throw IndexOutOfBoundsException("Index: $index, Size: $size")
-    if (index < 0) throw NegativeArraySizeException()
-    return Array(size - 1) { i ->
-        when {
-            i >= index -> this@removeAt[i + 1]
-            else -> this@removeAt[i]
-        }
-    }
-}
-
-inline fun <reified T> Array<T>.add(element: T, index: Int = size): Array<T> {
-    if (index > size) throw IndexOutOfBoundsException("Index: $index, Size: $size")
-    if (index < 0) throw NegativeArraySizeException()
-    return Array(size + 1) { i ->
-        when {
-            i < index -> this@add[i]
-            i > index -> this@add[i - 1]
-            else -> element
-        }
-    }
-}
-
 fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
     for (value in enumConstants) if (value.value == id) return value
     throw IllegalArgumentException("No enum value for: $id in $this")
@@ -145,15 +104,17 @@ fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
 
 inline fun <reified T : Any> build(block: T.() -> Unit) = T::class.java.newUnsafeInstance().apply(block)
 
-inline fun suppress(vararg throwable: KClass<out Throwable>, block: () -> Unit) {
+inline fun <T> suppress(vararg throwable: KClass<out Throwable>, block: () -> T): T? {
     try {
-        block()
+        return block()
     } catch (e: Throwable) {
-        if (throwable.isEmpty()) return
-        for (t in throwable) if (t.java.isInstance(e)) return
+        if (throwable.isEmpty()) return null
+        for (t in throwable) if (t.java.isInstance(e)) return null
         throw e
     }
 }
+
+inline val Any?.unit get() = Unit
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 fun <T> Collection<*>.toTypedArray(type: Class<T>): Array<T> =
