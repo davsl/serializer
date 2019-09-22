@@ -10,10 +10,7 @@ import java.lang.reflect.Field
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
-import kotlin.reflect.KClass
-import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
-import kotlin.reflect.KProperty0
 
 /**
  * Add element to list if not contained. Useful to avoid duplicates
@@ -102,41 +99,9 @@ fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
     throw IllegalArgumentException("No enum value for: $id in $this")
 }
 
-inline fun <reified T : Any> build(block: T.() -> Unit) = T::class.java.newUnsafeInstance().apply(block)
-
-inline fun <T> suppress(vararg throwable: KClass<out Throwable>, block: () -> T): T? {
-    try {
-        return block()
-    } catch (e: Throwable) {
-        if (throwable.isEmpty()) return null
-        for (t in throwable) if (t.java.isInstance(e)) return null
-        throw e
-    }
-}
-
-inline val Any?.unit get() = Unit
-
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 fun <T> Collection<*>.toTypedArray(type: Class<T>): Array<T> =
     (this as java.util.Collection<T>).toArray(type.newArrayInstanceNative(0))
-
-/**
- * Check if flag is contained in int
- * @author sliep
- * @receiver flags
- * @param flag to check
- * @return if flag is contained
- */
-infix fun Int.includes(flag: Int) = this and flag == flag
-
-/**
- * Check if flag is not contained in int
- * @author sliep
- * @receiver flags
- * @param flag to check
- * @return if flag is not contained
- */
-infix fun Int.excludes(flag: Int) = this and flag == 0
 
 class Flags(var flags: Int = 0) {
     infix fun includes(flag: Int) = (flags and flag) == flag
@@ -158,10 +123,6 @@ class Flags(var flags: Int = 0) {
     }
 }
 
-fun <T> linkTo(prop: KProperty0<T>) = LinkDelegate(prop::get, null)
-fun <T> linkTo(prop: KMutableProperty0<T>) = LinkDelegate(prop::get, prop::set)
-fun <T> linkTo(getter: (() -> T)?, setter: ((T) -> Unit)? = null) = LinkDelegate(getter, setter)
-
 class LinkDelegate<T>(private val getter: (() -> T)?, private val setter: ((T) -> Unit)?) {
     operator fun getValue(receiver: Any, property: KProperty<*>): T =
         if (getter != null) getter.invoke()
@@ -172,22 +133,14 @@ class LinkDelegate<T>(private val getter: (() -> T)?, private val setter: ((T) -
         else throw IllegalStateException("Setter was not provided")
 }
 
-@Suppress("FunctionName")
-inline fun <reified T : Any, R : Any?> Super() = Super<T, R>(T::class.java)
-
 class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
+    private var field: Field? = null
 
     operator fun getValue(thisRef: Any, property: KProperty<*>): R =
-        getField(property.hashCode(), property.name)[thisRef] as R
+        (field ?: clazz.getFieldNative(property.name).also { field = it }).get(thisRef) as R
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: R) =
-        getField(property.hashCode(), property.name).set(thisRef, value)
-
-    private fun getField(fieldId: Int, name: String): Field = superFields[fieldId] ?: synchronized(this) {
-        superFields[fieldId] ?: clazz.getFieldNative(name).also { superFields[fieldId] = it }
-    }
-
-    companion object {
-        private val superFields = HashMap<Int, Field>()
-    }
+        (field ?: clazz.getFieldNative(property.name).also { field = it }).set(thisRef, value)
 }
+
+inline val Class<*>.Companion: Any get() = getStaticFieldValueNative("Companion")
