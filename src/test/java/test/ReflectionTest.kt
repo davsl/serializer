@@ -161,7 +161,7 @@ class ReflectionTest {
 
     class SubClass : SuperClass() {
         //        private val jesus = super.jesus
-        var jesus: Int by Super<SuperClass, Int>()
+        var jesus: Int by internalField()
     }
 
     val jees: Int by lazy {

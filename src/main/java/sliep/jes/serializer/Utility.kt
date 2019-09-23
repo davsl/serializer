@@ -6,11 +6,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.lang.reflect.Field
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
-import kotlin.reflect.KProperty
 
 /**
  * Add element to list if not contained. Useful to avoid duplicates
@@ -121,26 +119,6 @@ class Flags(var flags: Int = 0) {
     operator fun minusAssign(flag: Int) {
         flags = flags and flag.inv()
     }
-}
-
-class LinkDelegate<T>(private val getter: (() -> T)?, private val setter: ((T) -> Unit)?) {
-    operator fun getValue(receiver: Any, property: KProperty<*>): T =
-        if (getter != null) getter.invoke()
-        else throw IllegalStateException("Getter was not provided")
-
-    operator fun setValue(receiver: Any, property: KProperty<*>, value: T) =
-        if (setter != null) setter.invoke(value)
-        else throw IllegalStateException("Setter was not provided")
-}
-
-class Super<T : Any, R : Any?>(private val clazz: Class<T>) {
-    private var field: Field? = null
-
-    operator fun getValue(thisRef: Any, property: KProperty<*>): R =
-        (field ?: clazz.getFieldNative(property.name).also { field = it }).get(thisRef) as R
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: R) =
-        (field ?: clazz.getFieldNative(property.name).also { field = it }).set(thisRef, value)
 }
 
 inline val Class<*>.Companion: Any get() = getStaticFieldValueNative("Companion")
