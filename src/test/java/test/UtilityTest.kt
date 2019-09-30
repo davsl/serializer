@@ -55,15 +55,16 @@ class UtilityTest {
 
     @Test
     fun dtoEditorTest() {
-        val fff = Bb(1, "we", 1.3f)
+        val c = Cc(1, "we", 1.3f, "GO")
+        val fff = Bb(1, "we", 1.3f, c)
         val editor = edit<TestEditor>(object : DTOEditorCallback {
             override fun onCommit(result: JSONObject) = System.err.println("COMMIT $result")
 
-            override fun onPropertyChanged(prop: String, newValue: Any?, state: PropertyState) =
+            override fun onPropertyChanged(owner: Class<*>, prop: String, newValue: Any?, state: PropertyState) =
                 when (state) {
-                    PropertyState.ADDED -> println("Added $prop -> $newValue")
-                    PropertyState.CHANGED -> println("Editing $prop -> $newValue")
-                    PropertyState.REMOVED -> println("Removed $prop")
+                    PropertyState.ADDED -> println("Added ${owner.simpleName}.$prop -> $newValue")
+                    PropertyState.CHANGED -> println("Editing ${owner.simpleName}.$prop -> $newValue")
+                    PropertyState.REMOVED -> println("Removed ${owner.simpleName}.$prop")
                 }
         })
         editor.prop1 = 23
@@ -75,17 +76,17 @@ class UtilityTest {
         assertEquals("qwsdf", editor.prop2)
         editor.prop2 = "fgh"
         editor.prop2 = null
-        assertTrue(null == editor.prop2)
+        editor.editor2.bibbo = "GA"
+        check(null == editor.prop2)
         editor.prop3 = 2.34f
         editor.remove(Bb::prop3)
-        try {
-            editor.prop3
-            assertTrue(false)
-        } catch (e: NullPointerException) {
-        }
+        if (editor.has(editor::prop3)) editor.prop3
         editor["deeo"] = "bubu"
         assertEquals("bubu", editor["deeo"])
         editor.commit()
+        editor.editor2.bibbo = "GA"
+        editor.editor2.bibbo = "GU"
+        editor.editor2.prop2 = "sei ghei"
         val t: Bb = editor.build()
         println("Built -> $t")
         println("Original -> $fff")
@@ -93,16 +94,17 @@ class UtilityTest {
         editor.remove("deeo")
         editor.sync(fff)
         println("Sync -> $fff")
-        assertFalse(editor.isEmpty)
+        check(!editor.isEmpty)
         editor.clear()
-        assertTrue(editor.isEmpty)
+        check(editor.isEmpty)
         editor.date = Date()
         editor.bibbo = editor.date.time.toString()
         assertEquals(editor.date, Date(editor.bibbo.toLong()))
         editor.commit()
     }
 
-    data class Bb(val prop1: Int, val prop2: String?, val prop3: Float) : JesObject
+    data class Bb(val prop1: Int, val prop2: String?, val prop3: Float, val editor2: Cc) : JesObject
+    data class Cc(val prop1: Int, val prop2: String?, val prop3: Float, var bibbo: String) : JesObject
 
     interface TestEditor : DTOEditor {
         var prop1: Int
@@ -112,7 +114,19 @@ class UtilityTest {
         var date: Date
         @set:JesName("pullo")
         var bibbo: String
+        val editor2: TestEditor2
+
+        interface TestEditor2 : DTOEditor {
+            var prop1: Int
+            var prop2: String?
+            var prop3: Float
+            @set:JesDate("YY-mm HH-ss")
+            var date: Date
+            @set:JesName("pullo")
+            var bibbo: String
+        }
     }
+
 
     @Test
     fun testLazy() {

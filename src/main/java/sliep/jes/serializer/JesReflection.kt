@@ -67,7 +67,7 @@ private fun methodToString(clazz: String, method: String, params: Array<out Clas
 private typealias FieldGetter = (Any?) -> Any?
 private typealias FieldSetter = (Any?, Any?) -> Unit
 
-inline val Method.isGetter get() = name.startsWith("get") && parameterTypes.isEmpty()
+inline val Method.isGetter get() = (name.startsWith("get") || name.startsWith("is")) && parameterTypes.isEmpty()
 inline val Method.isSetter get() = name.startsWith("set") && parameterTypes.size == 1
 inline val Method.propName get() = name[3].toLowerCase() + name.substring(4)
 inline val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
