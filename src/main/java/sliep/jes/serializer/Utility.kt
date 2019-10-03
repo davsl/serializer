@@ -122,3 +122,31 @@ class Flags(var flags: Int = 0) {
 }
 
 inline val Class<*>.Companion: Any get() = getStaticFieldValueNative("Companion")
+
+fun Array<*>?.differsFrom(o2: Array<*>?): Boolean {
+    if (this === o2) return false
+    if (this.isNullOrEmpty()) return !o2.isNullOrEmpty()
+    if (o2.isNullOrEmpty()) return true
+    val length = this.size
+    if (o2.size != length) return true
+    for (i in 0 until length) if (!(if (this[i] == null) o2[i] == null else this[i] == o2[i])) return true
+    return false
+}
+
+fun <T, R> Array<T>.search(block: (T, Int) -> R?): R {
+    for (i in 0 until size) return block(this[i], i) ?: continue
+    throw IllegalStateException("Item not found")
+}
+
+inline fun <reified T> Array<T>.remove(index: Int) = Array(size - 1) { i ->
+    if (i < index) this[i]
+    else this[i + 1]
+}
+
+inline fun <reified T> Array<T>.add(index: Int = size, newItem: T) = Array(size + 1) { i ->
+    when {
+        i < index -> this[i]
+        i == index -> newItem
+        else -> this[i - 1]
+    }
+}
