@@ -138,6 +138,11 @@ fun <T, R> Array<T>.search(block: (T, Int) -> R?): R {
     throw IllegalStateException("Item not found")
 }
 
+fun <T, R> Collection<T>.search(block: (T, Int) -> R?): R {
+    for ((i, item) in this.withIndex()) return block(item, i) ?: continue
+    throw IllegalStateException("Item not found")
+}
+
 inline fun <reified T> Array<T>.remove(index: Int) = Array(size - 1) { i ->
     if (i < index) this[i]
     else this[i + 1]
