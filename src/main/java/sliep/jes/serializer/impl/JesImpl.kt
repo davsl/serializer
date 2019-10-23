@@ -1,7 +1,7 @@
 package sliep.jes.serializer.impl
 
 import org.json.JSONObject
-import sliep.jes.serializer.newInstanceNative
+import sliep.jes.serializer.instantiate
 import java.lang.reflect.AccessibleObject
 import java.util.*
 import kotlin.reflect.KClass
@@ -15,7 +15,7 @@ private val serializers = HashMap<KClass<*>, JesSerializerImpl<*, *>>()
 @Suppress("UNCHECKED_CAST")
 private operator fun HashMap<KClass<*>, JesSerializerImpl<*, *>>.get(impl: JesImpl): JesSerializerImpl<Any, Any> {
     serializers[impl.serializer]?.let { return it as JesSerializerImpl<Any, Any> }
-    val serializer = impl.serializer.java.newInstanceNative()
+    val serializer = impl.serializer.java.instantiate()
     serializers[impl.serializer] = serializer
     return serializer as JesSerializerImpl<Any, Any>
 }

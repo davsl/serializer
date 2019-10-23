@@ -36,7 +36,7 @@ fun <T : DTOEditor> edit(clazz: Class<T>, callback: DTOEditorCallback): T = claz
             "set" -> {
                 val prop = propName(args[0])
                 return insert(prop, args[1], suppress {
-                    clazz.getMethodNative(
+                    clazz.method(
                         "set${prop.capitalizeFirst()}",
                         args[1]?.let { it::class.java })
                 })
@@ -62,12 +62,12 @@ fun <T : DTOEditor> edit(clazz: Class<T>, callback: DTOEditorCallback): T = claz
                 val receiver = args[0] as Any
                 val safe = args[1] as Boolean
                 try {
-                    for (field in raw.entries) receiver.setFieldValueNative(field.key, field.value)
+                    for (field in raw.entries) receiver.setFieldValue(field.key, field.value)
                 } catch (e: Throwable) {
                     if (!safe) throw IllegalStateException("Failed to sync object $receiver", e)
                 }
                 for (editor in editors)
-                    editor.value.sync(receiver.getFieldValueNative(editor.key) ?: continue, safe)
+                    editor.value.sync(receiver.fieldValue(editor.key) ?: continue, safe)
                 return Unit
             }
             else -> return when {

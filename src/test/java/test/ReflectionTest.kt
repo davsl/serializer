@@ -5,6 +5,7 @@ package test
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.*
+import java.lang.reflect.Modifier
 import kotlin.system.measureNanoTime
 
 class ReflectionTest {
@@ -40,18 +41,18 @@ class ReflectionTest {
 
     @Test
     fun constructorTest() {
-        val newInstance = ModelTest::class.java.newInstanceNative()
+        val newInstance = ModelTest::class.java.instantiate()
         assertEquals("Hello", newInstance.susu)
-        assertEquals(3, ModelTest::class.java.declaredConstructors.filter { it.isPublic }.size)
-        assertEquals(5, ModelTest::class.java.newInstanceNative(5).i)
+        assertEquals(3, ModelTest::class.java.declaredConstructors.filter { Modifier.isPublic(it.modifiers) }.size)
+        assertEquals(5, ModelTest::class.java.instantiate(5).i)
         assertEquals(0, build<ModelTest> { }.i)
     }
 
     @Test
     fun fieldsTest() {
-        val instance = ModelTest::class.java.newInstanceNative()
-        assertEquals(instance.susu, instance.getFieldValueNative<String>("susu"))
-        assertEquals(instance.susu, instance::class.java.getFieldNative("susu")[instance])
+        val instance = ModelTest::class.java.instantiate()
+        assertEquals(instance.susu, instance.fieldValue<String>("susu"))
+        assertEquals(instance.susu, instance::class.java.field("susu")[instance])
 
         val d = Deeo()
         val size = 7
@@ -80,15 +81,15 @@ class ReflectionTest {
         } / 10000f / repeat / size
         println()
 
-        var field = d.getFieldValueNative<Deeo.Buddhah>("ciccio")
-        d.setFieldValueNative("ciccio", field.also { it.ew = "suca" })
-        field = d.getFieldValueNative("ciccio")
-        var primo: Int = field.getFieldValueNative("primo")
-        field.setFieldValueNative("primo", 233)
-        primo = field.getFieldValueNative("primo")
+        var field = d.fieldValue<Deeo.Buddhah>("ciccio")
+        d.setFieldValue("ciccio", field.also { it.ew = "suca" })
+        field = d.fieldValue("ciccio")
+        var primo: Int = field.fieldValue("primo")
+        field.setFieldValue("primo", 233)
+        primo = field.fieldValue("primo")
         assertEquals(233, primo)
-        val kree = d.getFieldValueNative<Any>("kree")
-        val gg = d.getFieldValueNativeRecursive<Any>("ciccio.ew")
+        val kree = d.fieldValue<Any>("kree")
+        val gg = d.fieldValue<Any>("ciccio", "ew")
 
         println()
     }
@@ -119,13 +120,13 @@ class ReflectionTest {
 
     @Test
     fun methodsTest() {
-        val instance = ModelTest::class.java.newInstanceNative()
-        assertEquals(instance.susu, instance.getFieldValueNative<String>("susu"))
+        val instance = ModelTest::class.java.instantiate()
+        assertEquals(instance.susu, instance.fieldValue<String>("susu"))
     }
 
     @Test
     fun duplicateTest() {
-        val instance = ModelTest::class.java.newInstanceNative()
+        val instance = ModelTest::class.java.instantiate()
         assertEquals(instance, instance.cloneNative())
     }
 

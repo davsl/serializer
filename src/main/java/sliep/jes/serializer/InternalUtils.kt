@@ -30,10 +30,10 @@ inline fun <reified T : Any, R : Any?> T.internalField(clazz: Class<out T> = T::
 class InternalField<T : Any, R : Any?>(private val clazz: Class<out T>) {
     private var field: Field? = null
     operator fun getValue(thisRef: Any, property: KProperty<*>): R =
-        (field ?: clazz.getFieldNative(property.name).also { field = it }).get(thisRef) as R
+        (field ?: clazz.field(property.name).also { field = it }).get(thisRef) as R
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: R) =
-        (field ?: clazz.getFieldNative(property.name).also { field = it }).set(thisRef, value)
+        (field ?: clazz.field(property.name).also { field = it }).set(thisRef, value)
 }
 
 //endregion
@@ -63,6 +63,6 @@ abstract class InternalMethod<F>(private val clazz: Class<*>, private vararg val
     private var method: Method? = null
     protected abstract fun function(method: Method): F
     operator fun getValue(thisRef: Any?, property: KProperty<*>): F =
-        function(method ?: clazz.getMethodNative(property.name, *args).also { method = it })
+        function(method ?: clazz.method(property.name, *args).also { method = it })
 }
 //endregion

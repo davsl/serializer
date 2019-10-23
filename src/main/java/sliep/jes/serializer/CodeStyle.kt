@@ -4,7 +4,7 @@ package sliep.jes.serializer
 
 import kotlin.reflect.KClass
 
-inline fun <reified T : Any> build(block: T.() -> Unit) = T::class.java.newUnsafeInstance().apply(block)
+inline fun <reified T : Any> build(block: T.() -> Unit) = T::class.java.allocateInstance().apply(block)
 
 inline fun <T> suppress(vararg throwable: KClass<out Throwable>, block: () -> T): T? {
     try {

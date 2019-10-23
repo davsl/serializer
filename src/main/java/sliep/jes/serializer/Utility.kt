@@ -99,7 +99,7 @@ fun <T : ValueEnum> Class<T>.fromId(id: Int): T {
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 fun <T> Collection<*>.toTypedArray(type: Class<T>): Array<T> =
-    (this as java.util.Collection<T>).toArray(type.newArrayInstanceNative(0))
+    (this as java.util.Collection<T>).toArray(type.instantiateArray(0))
 
 class Flags(var flags: Int = 0) {
     infix fun includes(flag: Int) = (flags and flag) == flag
@@ -121,7 +121,7 @@ class Flags(var flags: Int = 0) {
     }
 }
 
-inline val Class<*>.Companion: Any get() = getStaticFieldValueNative("Companion")
+inline val Class<*>.Companion: Any get() = staticFieldValue("Companion")
 
 fun Array<*>?.differsFrom(o2: Array<*>?): Boolean {
     if (this === o2) return false

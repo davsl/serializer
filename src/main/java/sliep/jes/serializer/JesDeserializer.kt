@@ -74,7 +74,7 @@ class JesDeserializer {
     fun deserializeArray(
         componentType: Class<*>,
         jes: JSONArray,
-        instance: Array<Any?> = componentType.newArrayInstanceNative(jes.length())
+        instance: Array<Any?> = componentType.instantiateArray(jes.length())
     ): Array<*> {
         for (i in 0 until jes.length()) instance[i] = objectValue(jes.opt(i), componentType)
         return instance
@@ -92,13 +92,13 @@ class JesDeserializer {
         else -> throw IllegalStateException("Can't convert String to $type")
     }
 
-    fun deserializeObject(type: Class<*>, jes: JSONObject, instance: Any = type.newUnsafeInstance()): Any {
+    fun deserializeObject(type: Class<*>, jes: JSONObject, instance: Any = type.allocateInstance()): Any {
         val keys = jes.keys()
         while (keys.hasNext()) {
             val key = keys.next()
             if (jes.isNull(key)) continue
             val field = try {
-                type.getFieldNative { (it.getDeclaredAnnotation(JesName::class.java)?.name ?: it.name) == key }
+                type.field { (it.getDeclaredAnnotation(JesName::class.java)?.name ?: it.name) == key }
             } catch (e: NoSuchFieldException) {
                 continue
             }

@@ -7,8 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/reflect/ObjectAllocator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/reflect/UnsafeAllocator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/CodeStyle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/CodeStyle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/DTOEditor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/DTOEditor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/InternalUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/InternalUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,9 +61,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Kotlin File" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
-        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -97,12 +106,9 @@
     <option name="AUTOSCROLL_FROM_SOURCE" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test\dto" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer" />
@@ -111,9 +117,12 @@
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer.impl" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer" />
+      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test\dto" />
+      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -128,7 +137,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.Publish">
+  <component name="RunManager" selected="Gradle.Compile">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -231,13 +240,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00034" summary="yeah">
-      <created>1556476010163</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1556476010163</updated>
     </task>
     <task id="LOCAL-00035" summary="yeah">
       <created>1556808322438</created>
@@ -575,7 +577,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570113003720</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="added utility">
+      <created>1570113967543</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1570113967543</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
@@ -625,7 +634,6 @@
     <MESSAGE value="Very small fix" />
     <MESSAGE value="added fun" />
     <MESSAGE value="added date serialization" />
-    <MESSAGE value="added utility" />
     <MESSAGE value="added annotation to customize serialization" />
     <MESSAGE value="Added DTOEditor" />
     <MESSAGE value="Added LinkDelegate" />
@@ -636,7 +644,8 @@
     <MESSAGE value="fix&#10;added utility" />
     <MESSAGE value="fixed dto editor" />
     <MESSAGE value="compilu" />
-    <option name="LAST_COMMIT_MESSAGE" value="compilu" />
+    <MESSAGE value="added utility" />
+    <option name="LAST_COMMIT_MESSAGE" value="added utility" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
