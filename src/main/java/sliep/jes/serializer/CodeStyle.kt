@@ -6,11 +6,16 @@ import kotlin.reflect.KClass
 
 inline fun <reified T : Any> build(block: T.() -> Unit) = T::class.java.allocateInstance().apply(block)
 
+inline fun <T> suppress(block: () -> T): T? = try {
+    block()
+} catch (e: Throwable) {
+    null
+}
+
 inline fun <T> suppress(vararg throwable: KClass<out Throwable>, block: () -> T): T? {
     try {
         return block()
     } catch (e: Throwable) {
-        if (throwable.isEmpty()) return null
         for (t in throwable) if (t.java.isInstance(e)) return null
         throw e
     }

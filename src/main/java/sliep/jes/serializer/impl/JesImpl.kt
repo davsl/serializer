@@ -1,6 +1,8 @@
 package sliep.jes.serializer.impl
 
+import org.json.JSONException
 import org.json.JSONObject
+import sliep.jes.serializer.NonJesObjectException
 import sliep.jes.serializer.instantiate
 import java.lang.reflect.AccessibleObject
 import java.util.*
@@ -9,6 +11,14 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class JesImpl(val serializer: KClass<out JesSerializerImpl<*, *>>, vararg val args: String)
+
+interface JesSerializerImpl<JV, OV> {
+    @Throws(NonJesObjectException::class)
+    fun toJson(value: OV, vararg args: String): JV
+
+    @Throws(JSONException::class)
+    fun fromJson(value: JV, type: Class<*>, vararg args: String): OV
+}
 
 private val serializers = HashMap<KClass<*>, JesSerializerImpl<*, *>>()
 

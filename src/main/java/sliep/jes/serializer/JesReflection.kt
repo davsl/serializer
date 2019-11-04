@@ -132,7 +132,7 @@ fun Any.invokeSetter(field: String, value: Any?) {
 inline val Class<*>.dimensions get() = name.lastIndexOf('[') + 1
 inline val Array<*>.contentTypes get() = Array(size) { i -> this[i]?.let { it::class.java } }
 
-private val allocator = ObjectAllocator.getAllocator()
+private val allocator by lazy { ObjectAllocator.getAllocator() }
 private val cachedFields = HashMap<Class<*>, Array<Field>>()
 private val cachedMethods = HashMap<Class<*>, Array<Method>>()
 private val cachedConstructors = HashMap<Class<*>, Array<Constructor<*>>>()
