@@ -7,12 +7,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/CodeStyle.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/Deserializer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/JesObject.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/NonJesObjectException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/Serializer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/UserSerializer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/ValueEnum.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/annotations/JesDate.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/annotations/Serializer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bintray.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/bintray.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/CodeStyle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/CodeStyle.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesSerializerImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dokka.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/CodeStyle.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/DTOEditor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/InternalUtils.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesDeserializer.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesObject.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesReflection.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/JesSerializer.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Loggable.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Utility.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/ValueEnum.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesDate.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/impl/JesName.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/annotations/JsonName.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/reflect/ObjectAllocator.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/reflect/UnsafeAllocator.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/JesSerializerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/LoggableTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/ReflectionTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/UtilityTest.kt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -83,7 +112,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="MANAGE_IGNORE_FILES_PROPERTY" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -101,9 +130,12 @@
     <option name="AUTOSCROLL_FROM_SOURCE" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test" />
+      <recent name="$PROJECT_DIR$/src/main" />
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer" />
@@ -112,12 +144,9 @@
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="sliep.jes.serializer.impl" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\test\java\test" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test\dto" />
-      <recent name="C:\Users\ASUS\IdeaProjects\serializer\src\test\java\test" />
+      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -132,7 +161,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.Publish">
+  <component name="RunManager" selected="Gradle.JesSerializerTest">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -170,6 +199,26 @@
         <option name="vmOptions" value="" />
       </ExternalSystemSettings>
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="JesSerializerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;sliep.jes.serializer.JesSerializerTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
     <configuration name="Publish" type="GradleRunConfiguration" factoryName="Gradle">
@@ -218,9 +267,12 @@
       <item itemvalue="Gradle.Documentation" />
       <item itemvalue="Gradle.Publish" />
       <item itemvalue="Gradle.UtilityTest.dtoEditorTest" />
+      <item itemvalue="Gradle.JesSerializerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.JesSerializerTest" />
+        <item itemvalue="Gradle.JesSerializerTest" />
         <item itemvalue="Gradle.UtilityTest.dtoEditorTest" />
       </list>
     </recent_temporary>
