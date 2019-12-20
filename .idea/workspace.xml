@@ -7,22 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Serializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/JesDate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/JsonName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/SerializeWith.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/PerformanceTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/test.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/CodeStyle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/CodeStyle.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/Deserializer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/Serializer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/annotations/JesDate.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/annotations/JsonName.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/annotations/Serializer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/PerformanceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/PerformanceTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,13 +292,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00038" summary="added fun">
-      <created>1557143873105</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1557143873105</updated>
     </task>
     <task id="LOCAL-00039" summary="fix">
       <created>1557145316384</created>
@@ -650,7 +629,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576597278342</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="improvements">
+      <created>1576853658833</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1576853658833</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
@@ -686,7 +672,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="added array" />
     <MESSAGE value="Rearranged workspace" />
     <MESSAGE value="fix JsonArray.toList() in android it does not exist" />
     <MESSAGE value="Introduced ValueEnum" />
@@ -711,7 +696,8 @@
     <MESSAGE value="changed reflection names" />
     <MESSAGE value="fix dependency" />
     <MESSAGE value="added dependency injection" />
-    <option name="LAST_COMMIT_MESSAGE" value="added dependency injection" />
+    <MESSAGE value="improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="improvements" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -753,26 +739,26 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="603" y="235" key="#xdebugger.evaluate/0.0.1680.1050@0.0.1680.1050" timestamp="1576847411325" />
-    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1576597278199">
+    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1576853658663">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1576597278199" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1576853565203">
+    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1576853658663" />
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1576853850982">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1576853565203" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1576853565202">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850982" />
+    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1576853850980">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1576853565202" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1576853565201">
+    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850980" />
+    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1576853850979">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1576853565201" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1576853565202">
+    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850979" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1576853850981">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1576853565202" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850981" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1576849239585">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -789,10 +775,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1576849239584" />
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1576597281142">
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1576853660242">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1576597281142" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1576853660242" />
     <state x="506" y="160" width="667" height="729" key="find.popup" timestamp="1576848892011">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

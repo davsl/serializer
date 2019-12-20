@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package sliep.jes.serializer
 
 import com.google.gson.Gson
@@ -12,28 +14,35 @@ class PerformanceTest {
     fun serializePrimitiveValues() {
         val input =
             JSONArray(InputStreamReader(this::class.java.getResourceAsStream("/test.json")).use { it.readText() })
+
         System.err.println("Jes vs Gson performance test (${input.length()} bytes)")
         System.err.println()
+
         lateinit var gsonInstance: Gson
-        bm("Gson instantiation took ") { gsonInstance = Gson() }
         lateinit var gson: Array<TestJson>
         lateinit var jes: Array<TestJson>
-        var gt = bm("Deserializing Gson:")
-        { gson = gsonInstance.fromJson(input.toString(), Array<TestJson>::class.java) }
-        var jt = bm("Deserializing Jes:") { jes = input.fromJson() }
-        Assert.assertArrayEquals(jes, gson)
+        lateinit var gsonOrig: String
+        lateinit var jesOrig: JSONArray
+        var gt: Float
+        var jt: Float
+
+        bm("Gson instantiation took ") { gsonInstance = Gson() }
+        gt = bm("Deserializing Gson:") { gson = gsonInstance.fromJson(input.toString(), Array<TestJson>::class.java) }
+        jt = bm("Deserializing Jes:") { jes = input.fromJson() }
         System.err.println("Jes is ${gt / jt} times faster than gson")
+        Assert.assertArrayEquals(jes, gson)
         System.err.println("CONTENT IS IDENTICAL")
         System.err.println()
 
-        gt = bm("Deserializing Gson 100 times avg:", 100)
-        { gsonInstance.fromJson(input.toString(), Array<TestJson>::class.java) }
+        gt = bm("Deserializing Gson 100 times avg:", 100) {
+            gsonInstance.fromJson(
+                input.toString(),
+                Array<TestJson>::class.java
+            )
+        }
         jt = bm("Deserializing Jes 100 times avg:", 100) { input.fromJson<TestJson>() }
         System.err.println("Jes is ${gt / jt} times faster than gson")
         System.err.println()
-
-        lateinit var gsonOrig: String
-        lateinit var jesOrig: JSONArray
 
         gt = bm("Serializing Gson:") { gsonOrig = gsonInstance.toJson(gson) }
         jt = bm("Serializing Jes:") { jesOrig = jes.toJson() }
@@ -43,8 +52,7 @@ class PerformanceTest {
         System.err.println("CONTENT IS IDENTICAL")
         System.err.println()
 
-        gt = bm("Serializing Gson 100 times avg:", 100)
-        { gsonInstance.toJson(gson) }
+        gt = bm("Serializing Gson 100 times avg:", 100) { gsonInstance.toJson(gson) }
         jt = bm("Serializing Jes 100 times avg:", 100) { gson.toJson() }
         System.err.println("Jes is ${gt / jt} times faster than gson")
         System.err.println()
