@@ -69,16 +69,17 @@ fun <T> String.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin)
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
 }
 
-inline fun <reified T : JesObject> JSONObject.fromJson(target: T? = null) = fromJson(T::class.java, target)
-inline fun <reified T : JesObject> JSONArray.fromJson(target: Array<T>? = null) = fromJson(T::class.java, target)
+inline fun <reified T : JesObject> JSONObject.fromJson(target: T? = null): T =
+    Deserializer.objectValueObject(this, T::class.java, target) as T
+
+inline fun <reified T : JesObject> JSONArray.fromJson(target: Array<T> = arrayOfNulls<T>(length()) as Array<T>): Array<T> =
+    Deserializer.objectValueArray(this, T::class.java, target) as Array<T>
 
 inline fun <T : JesObject> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
-    if (target == null) Deserializer().objectValue(this, type) as T
-    else Deserializer().objectValue(this, type, target) as T
+    Deserializer.objectValueObject(this, type, target) as T
 
 inline fun <T : JesObject> JSONArray.fromJson(type: Class<T>, target: Array<T>? = null): Array<T> =
-    if (target == null) Deserializer().objectValue(this, type) as Array<T>
-    else Deserializer().objectValue(this, type, target) as Array<T>
+    Deserializer.objectValueArray(this, type, target) as Array<T>
 
 fun toGenericJson(any: Any): Any = when (any) {
     is JesObject -> any.toJson()
@@ -89,10 +90,10 @@ fun toGenericJson(any: Any): Any = when (any) {
     else -> throw NonJesObjectException(any::class.java)
 }
 
-inline fun JesObject.toJson(): JSONObject = Serializer().jsonValue(this) as JSONObject
-inline fun Map<*, *>.toJson(): JSONObject = Serializer().jsonValue(this) as JSONObject
-inline fun Array<*>.toJson(): JSONArray = Serializer().jsonValue(this) as JSONArray
-inline fun List<*>.toJson(): JSONArray = Serializer().jsonValue(this) as JSONArray
+inline fun JesObject.toJson(): JSONObject = Serializer.jsonValue(this) as JSONObject
+inline fun Map<*, *>.toJson(): JSONObject = Serializer.jsonValue(this) as JSONObject
+inline fun Array<*>.toJson(): JSONArray = Serializer.jsonValue(this) as JSONArray
+inline fun List<*>.toJson(): JSONArray = Serializer.jsonValue(this) as JSONArray
 
 inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
 

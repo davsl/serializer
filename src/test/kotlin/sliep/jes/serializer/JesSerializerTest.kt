@@ -8,7 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.annotations.JesDate
 import sliep.jes.serializer.annotations.JsonName
-import sliep.jes.serializer.annotations.Serializer
+import sliep.jes.serializer.annotations.SerializeWith
 import java.util.*
 
 class JesSerializerTest {
@@ -35,7 +35,7 @@ class JesSerializerTest {
         assertEquals(modelTest.toString(), modelTest.fromJson<ModelTest>().toJson().toString())
         val fromJson = modelTest.fromJson<ModelTest>()
         fromJson.s = "ARRRRRRG"
-        assertEquals(fromJson.ciccio, AnEnumClass.SSUUS)
+        assertEquals(fromJson.abcd, AnEnumClass.SSUUS)
         modelTest.fromJson(fromJson)
         assertEquals("A B C D", fromJson.s)
     }
@@ -59,7 +59,7 @@ class JesSerializerTest {
     @Test
     fun testEnum() {
         val modelTest = JSONObject(ModelTest.TEST_JSON).fromJson<ModelTest>()
-        assertEquals(modelTest.ciccio, AnEnumClass.SSUUS)
+        assertEquals(modelTest.abcd, AnEnumClass.SSUUS)
     }
 
     enum class AnEnumClass(override val value: Int) : ValueEnum {
@@ -87,25 +87,25 @@ class JesSerializerTest {
         var s: String,
         val i: Int,
         val f: Float,
-        val ciccio: AnEnumClass,
+        val abcd: AnEnumClass,
         val d: Double,
         val b: Boolean,
         val c: Char,
         val l: Long,
         @JesDate("HH:mm:ss")
-        val puzzy: Date,
+        val x: Date,
         val deee: Array<Int>,
         val doo: List<Skkkk>,
         val mappy: Map<Int, Skkkk>,
         val o: ModelTest2,
-        @Serializer(JesTestSerializer::class)
+        @SerializeWith(JesTestSerializer::class)
         var impl: ModelImplTest
     ) : JesObject {
         companion object {
             const val TEST_JSON = "{\n" +
                     "  \"pippo\": \"A B C D\",\n" +
                     "  \"i\": 123,\n" +
-                    "  \"ciccio\": 2,\n" +
+                    "  \"abcd\": 2,\n" +
                     "  \"deee\": [1,2,3,5,78,8],\n" +
                     "  \"doo\": [{" +
                     "    \"ulul\": \"E F G\",\n" +
@@ -121,7 +121,7 @@ class JesSerializerTest {
                     "  \"b\": true,\n" +
                     "  \"c\": \"c\",\n" +
                     "  \"l\": 34567654345678,\n" +
-                    "  \"puzzy\": \"13:14:00\",\n" +
+                    "  \"x\": \"13:14:00\",\n" +
                     "  \"o\": {\n" +
                     "    \"s\": \"E F G\"\n" +
                     "  }\n" +
