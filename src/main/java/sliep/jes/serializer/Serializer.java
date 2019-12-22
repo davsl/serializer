@@ -14,60 +14,53 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 
 public final class Serializer {
+    private static final int MODIFIER_STATIC_TRANSIENT = Modifier.TRANSIENT | Modifier.STATIC;
+    private static final int MODIFIER_ENUM = 16384;
+
     @NotNull
-    public static Object jsonValue(@NotNull Object value) throws NonJesObjectException {
+    public static Object jsonValue(@NotNull Object value) {
         Class<?> type = value.getClass();
         if (type.isPrimitive() || value instanceof String || value instanceof Number || type == Character.class || type == Boolean.class)
             return value;
         if (type.isArray()) {
             JSONArray result = new JSONArray();
             if (value instanceof Object[]) {
-                for (Object element : ((Object[]) value))
-                    if (element != null) result.put(jsonValue(element));
+                for (Object element : ((Object[]) value)) result.put(element == null ? null : jsonValue(element));
             } else {
                 for (int i = 0; i < Array.getLength(value); i++) result.put(Array.get(value, i));
             }
             return result;
         }
-        if (value instanceof Iterable<?>) {
-            JSONArray result = new JSONArray();
-            for (Object item : (Iterable<?>) value) result.put(jsonValue(item));
-            return result;
-        }
-        if (type.isEnum())
+        if ((type.getModifiers() & MODIFIER_ENUM) != 0)
             if (value instanceof ValueEnum) return ((ValueEnum) value).getValue();
             else return ((Enum<?>) value).name();
-        if (value instanceof JesObject) {
-            JSONObject result = new JSONObject();
-            for (Field field : JesUtilsKt.accessor.fields(type))
-                if ((field.getModifiers() & (Modifier.TRANSIENT | Modifier.STATIC)) == 0) {
-                    JsonName jsonName = field.getAnnotation(JsonName.class);
-                    String key = jsonName == null ? field.getName() : jsonName.value();
-                    if (result.has(key)) throw new IllegalStateException("Duplicate declaration of key " + key);
-                    try {
-                        Object fValue = field.get(value);
-                        if (fValue != null) result.put(key, valueFor(field, fValue));
-                    } catch (IllegalAccessException ignored) {
-                    }
-                }
+        if (value instanceof Iterable<?>) {
+            JSONArray result = new JSONArray();
+            for (Object element : (Iterable<?>) value) result.put(element == null ? null : jsonValue(element));
             return result;
         }
         if (value instanceof Map<?, ?>) {
             JSONObject result = new JSONObject();
             for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
-                Object entryValue = entry.getValue();
-                if (entryValue == null) continue;
-                String key = entry.getKey().toString();
-                if (result.has(key)) throw new IllegalStateException("Duplicate declaration of key " + key);
-                result.put(key, jsonValue(entryValue));
+                Object element = entry.getValue();
+                result.put(entry.getKey().toString(), element == null ? null : jsonValue(element));
             }
             return result;
         }
-        throw new NonJesObjectException(type);
+        JSONObject result = new JSONObject();
+        for (Field field : JesUtilsKt.accessor.fields(type))
+            if ((field.getModifiers() & MODIFIER_STATIC_TRANSIENT) == 0) try {
+                JsonName jsonName = field.getAnnotation(JsonName.class);
+                Object fValue = field.get(value);
+                if (fValue != null)
+                    result.put(jsonName == null ? field.getName() : jsonName.value(), valueFor(field, fValue));
+            } catch (IllegalAccessException ignored) {
+            }
+        return result;
     }
 
     @NotNull
-    private static Object valueFor(@NotNull Field field, @NotNull Object value) throws NonJesObjectException {
+    private static Object valueFor(@NotNull Field field, @NotNull Object value) {
         SerializeWith impl = field.getAnnotation(SerializeWith.class);
         if (impl != null) return SerializeWith.Provider.toJson(impl, value);
         JesDate date = field.getAnnotation(JesDate.class);

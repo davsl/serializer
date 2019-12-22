@@ -10,8 +10,6 @@ import java.io.InputStreamReader
 
 class PerformanceTest {
 
-    //4.49
-    //0.26
     @Test
     fun jesVsGson() {
         val input =
@@ -91,16 +89,16 @@ class PerformanceTest {
         @JvmField val friends: Array<TestJsonFriend>,
         @JvmField val greeting: String,
         @JvmField val favoriteFruit: String
-    ) : JesObject {
+    ) {
         data class TestJsonName(
             @JvmField val first: String,
             @JvmField val last: String
-        ) : JesObject
+        )
 
         data class TestJsonFriend(
             @JvmField val id: Int,
             @JvmField val name: String
-        ) : JesObject
+        )
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

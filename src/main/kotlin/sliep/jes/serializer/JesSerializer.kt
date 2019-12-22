@@ -20,10 +20,9 @@ inline fun <T> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
 inline fun <T> JSONArray.fromJson(type: Class<T>, target: T? = null): T =
     objectValueArray(this, type, target) as T
 
-inline fun JesObject.toJson(): JSONObject = jsonValue(this) as JSONObject
-inline fun Map<*, *>.toJson(): JSONObject = jsonValue(this) as JSONObject
+inline fun Any.toJson(): JSONObject = jsonValue(this) as JSONObject
 inline fun Array<*>.toJson(): JSONArray = jsonValue(this) as JSONArray
-inline fun Collection<*>.toJson(): JSONArray = jsonValue(this) as JSONArray
+inline fun Iterable<*>.toJson(): JSONArray = jsonValue(this) as JSONArray
 
 inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
 

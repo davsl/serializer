@@ -81,7 +81,7 @@ class JesSerializerTest {
         )
     }
 
-    data class Skkkk(val ulul: String, val ddfdf: Int) : JesObject
+    data class Skkkk(val ulul: String, val ddfdf: Int)
 
     data class ModelTest(
         @JsonName("pippo")
@@ -101,7 +101,7 @@ class JesSerializerTest {
         val o: ModelTest2,
         @SerializeWith(JesTestSerializer::class)
         var impl: ModelImplTest
-    ) : JesObject {
+    ) {
         companion object {
             const val TEST_JSON = "{\n" +
                     "  \"pippo\": \"A B C D\",\n" +
@@ -132,5 +132,5 @@ class JesSerializerTest {
 
     class ModelTest2(
         val s: String
-    ) : JesObject
+    )
 }

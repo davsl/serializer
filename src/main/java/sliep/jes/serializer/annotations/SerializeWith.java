@@ -2,7 +2,6 @@ package sliep.jes.serializer.annotations;
 
 import org.jetbrains.annotations.NotNull;
 import sliep.jes.reflection.JesConstructorsKt;
-import sliep.jes.serializer.NonJesObjectException;
 import sliep.jes.serializer.UserSerializer;
 
 import java.lang.annotation.*;
@@ -35,11 +34,7 @@ public @interface SerializeWith {
 
         @NotNull
         public static Object toJson(@NotNull SerializeWith annotation, @NotNull Object value) {
-            try {
-                return get(annotation).toJson(value);
-            } catch (NonJesObjectException e) {
-                throw new IllegalStateException(e);
-            }
+            return get(annotation).toJson(value);
         }
 
         @NotNull
