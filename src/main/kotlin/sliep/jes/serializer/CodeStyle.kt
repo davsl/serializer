@@ -2,8 +2,6 @@
 
 package sliep.jes.serializer
 
-import org.json.JSONArray
-import org.json.JSONObject
 import sliep.jes.reflection.accessor
 import kotlin.reflect.KClass
 
@@ -67,38 +65,4 @@ fun <T> String.toDynamic(clazz: Class<T>): T = when ((clazz as Class<*>).kotlin)
     String::class -> this as T
     Boolean::class -> toBoolean() as T
     else -> throw IllegalArgumentException("Can't convert a number to an instance of type $clazz")
-}
-
-inline fun <reified T : JesObject> JSONObject.fromJson(target: T? = null): T =
-    Deserializer.objectValueObject(this, T::class.java, target) as T
-
-inline fun <reified T : JesObject> JSONArray.fromJson(target: Array<T> = arrayOfNulls<T>(length()) as Array<T>): Array<T> =
-    Deserializer.objectValueArray(this, T::class.java, target) as Array<T>
-
-inline fun <T : JesObject> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
-    Deserializer.objectValueObject(this, type, target) as T
-
-inline fun <T : JesObject> JSONArray.fromJson(type: Class<T>, target: Array<T>? = null): Array<T> =
-    Deserializer.objectValueArray(this, type, target) as Array<T>
-
-fun toGenericJson(any: Any): Any = when (any) {
-    is JesObject -> any.toJson()
-    is Map<*, *> -> any.toJson()
-    is Array<*> -> any.toJson()
-    is List<*> -> any.toJson()
-    is JSONObject, is JSONArray -> any
-    else -> throw NonJesObjectException(any::class.java)
-}
-
-inline fun JesObject.toJson(): JSONObject = Serializer.jsonValue(this) as JSONObject
-inline fun Map<*, *>.toJson(): JSONObject = Serializer.jsonValue(this) as JSONObject
-inline fun Array<*>.toJson(): JSONArray = Serializer.jsonValue(this) as JSONArray
-inline fun List<*>.toJson(): JSONArray = Serializer.jsonValue(this) as JSONArray
-
-inline fun <reified T : Any> JSONArray.toTypedArray(): Array<T> = Array(length()) { i -> opt(i) as T }
-
-fun String.tryAsJSON(): Any? {
-    suppress { return JSONObject(this) }
-    suppress { return JSONArray(this) }
-    return null
 }

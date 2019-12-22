@@ -10,8 +10,10 @@ import java.io.InputStreamReader
 
 class PerformanceTest {
 
+    //4.49
+    //0.26
     @Test
-    fun serializePrimitiveValues() {
+    fun jesVsGson() {
         val input =
             JSONArray(InputStreamReader(this::class.java.getResourceAsStream("/test.json")).use { it.readText() })
 
@@ -40,7 +42,7 @@ class PerformanceTest {
                 Array<TestJson>::class.java
             )
         }
-        jt = bm("Deserializing Jes 100 times avg:", 100) { input.fromJson<TestJson>() }
+        jt = bm("Deserializing Jes 100 times avg:", 100) { input.fromJson<Array<TestJson>>() }
         System.err.println("Jes is ${gt / jt} times faster than gson")
         System.err.println()
 

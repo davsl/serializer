@@ -9,6 +9,7 @@ import org.junit.Test
 import sliep.jes.serializer.annotations.JesDate
 import sliep.jes.serializer.annotations.JsonName
 import sliep.jes.serializer.annotations.SerializeWith
+import java.lang.reflect.Type
 import java.util.*
 
 class JesSerializerTest {
@@ -74,7 +75,7 @@ class JesSerializerTest {
         override fun toJson(value: ModelImplTest): String =
             "${value.a}----${value.b}"
 
-        override fun fromJson(value: String, type: Class<*>) = ModelImplTest(
+        override fun fromJson(value: String, type: Type) = ModelImplTest(
             value.substring(0, value.indexOf("----")),
             value.substring(value.indexOf("----") + 4).toInt()
         )
@@ -96,7 +97,7 @@ class JesSerializerTest {
         val x: Date,
         val deee: Array<Int>,
         val doo: List<Skkkk>,
-        val mappy: Map<Int, Skkkk>,
+        val mappy: Map<String, Skkkk>,
         val o: ModelTest2,
         @SerializeWith(JesTestSerializer::class)
         var impl: ModelImplTest

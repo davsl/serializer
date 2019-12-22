@@ -7,63 +7,193 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import sliep.jes.reflection.JesUtilsKt;
 import sliep.jes.serializer.annotations.JesDate;
+import sliep.jes.serializer.annotations.JsonName;
 import sliep.jes.serializer.annotations.SerializeWith;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.*;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public final class Deserializer {
+    private static final int MODIFIER_STATIC_TRANSIENT = Modifier.TRANSIENT | Modifier.STATIC;
+    private static final int MODIFIER_ENUM = 16384;
+
     @NotNull
-    public static Object objectValue(@NotNull Object jes, @NotNull Class<?> type) {
-        if (type.isInstance(jes)) return jes;
-        if (jes instanceof JSONArray) return objectValueArray((JSONArray) jes, type.getComponentType(), null);
+    public static Object objectValue(@NotNull Object jes, @NotNull Type type) {
+        if (jes instanceof JSONArray) return objectValueArray((JSONArray) jes, type, null);
         if (jes instanceof JSONObject) return objectValueObject((JSONObject) jes, type, null);
-        if (type.isEnum()) return objectValueEnum(jes.toString(), type);
-        if (jes instanceof Number) return objectValueNumber((Number) jes, type);
-        if (jes instanceof String) return objectValueString((String) jes, type);
+        return objectValueType(jes, (Class<?>) type);
+    }
+
+    @NotNull
+    public static Object objectValueArray(@NotNull JSONArray jes, @NotNull Type arrayType, @Nullable Object target) {
+        if (arrayType instanceof Class<?>) {
+            if (JSONArray.class == arrayType) return jes;
+            Class<?> componentType = ((Class<?>) arrayType).getComponentType();
+            if (componentType == null)
+                throw new IllegalStateException("Expected array type, found " + arrayType.getTypeName());
+            if (componentType.isPrimitive()) {
+                Object result = target != null ? target : Array.newInstance(componentType, jes.length());
+                for (int i = 0; i < Array.getLength(result); i++)
+                    Array.set(result, i, objectValuePrimitive(jes.get(i), componentType));
+                return result;
+            } else {
+                Object[] result = (Object[]) (target != null ? target : Array.newInstance(componentType, jes.length()));
+                for (int i = 0; i < result.length; i++)
+                    result[i] = objectValue(jes.get(i), componentType);
+                return result;
+            }
+        }
+        if (arrayType instanceof GenericArrayType) {
+            Type componentType = ((GenericArrayType) arrayType).getGenericComponentType();
+            Object[] result = (Object[]) (target != null ? target : Array.newInstance((Class<?>) (componentType instanceof Class<?> ? componentType : ((ParameterizedType) componentType).getRawType()), jes.length()));
+            for (int i = 0; i < result.length; i++)
+                result[i] = objectValue(jes.get(i), componentType);
+            return result;
+        }
+        if (arrayType instanceof ParameterizedType) {
+            Class<?> type = (Class<?>) ((ParameterizedType) arrayType).getRawType();
+            Type componentType = ((ParameterizedType) arrayType).getActualTypeArguments()[0];
+            Collection<Object> result;
+            if (target != null) result = (Collection<Object>) target;
+            else if (List.class.isAssignableFrom(type))
+                if (ArrayList.class == type || List.class == type) result = new ArrayList<>(jes.length());
+                else if (LinkedList.class == type) result = new LinkedList<>();
+                else if (Vector.class == type) result = new Vector<>(jes.length());
+                else if (Stack.class == type) result = new Stack<>();
+                else throw new IllegalStateException(
+                            "Supported List types: [ArrayList, LinkedList, Vector, Stack], found " + arrayType.getTypeName());
+            else if (Set.class.isAssignableFrom(type))
+                if (HashSet.class == type || Set.class == type) result = new HashSet<>(jes.length());
+                else if (LinkedHashSet.class == type) result = new LinkedHashSet<>(jes.length());
+                else if (TreeSet.class == type) result = new TreeSet<>();
+                else throw new IllegalStateException(
+                            "Supported Set types: [HashSet, LinkedHashSet, TreeSet], found " + arrayType.getTypeName());
+            else throw new IllegalStateException("Expected list or set type, found " + arrayType.getTypeName());
+            for (int i = 0; i < jes.length(); i++) result.add(objectValue(jes.get(i), componentType));
+            return result;
+        }
+        throw new IllegalStateException("Expected array or collection type, found " + arrayType.getTypeName());
+    }
+
+    @NotNull
+    public static Object objectValueObject(@NotNull JSONObject jes, @NotNull Type genericType, @Nullable Object target) {
+        if (genericType instanceof Class<?>) {
+            if (JSONObject.class == genericType) return jes;
+            Class<?> type = (Class<?>) genericType;
+            Object result = target != null ? target : JesUtilsKt.accessor.allocateInstance(type);
+            for (String key : jes.keySet()) {
+                if (jes.isNull(key)) continue;
+                Field field = null;
+                for (Field f : JesUtilsKt.accessor.fields(type)) {
+                    JsonName name = f.getAnnotation(JsonName.class);
+                    if ((f.getModifiers() & MODIFIER_STATIC_TRANSIENT) == 0 && key.equals(name == null ? f.getName() : name.value())) {
+                        field = f;
+                        break;
+                    }
+                }
+                if (field != null) try {
+                    field.set(result, valueFor(field, jes.get(key)));
+                } catch (Throwable e) {
+                    throw new JSONException("Failed to deserialize field " + field.getDeclaringClass().getSimpleName() + "." + key + " of type " + field.getType().getName(), e);
+                }
+            }
+            return result;
+        }
+        if (genericType instanceof ParameterizedType) {
+            Class<?> type = (Class<?>) ((ParameterizedType) genericType).getRawType();
+            Type componentType = ((ParameterizedType) genericType).getActualTypeArguments()[1];
+            Map<Object, Object> result;
+            if (target != null) result = (Map<Object, Object>) target;
+            else if (HashMap.class == type || Map.class == type) result = new HashMap<>(jes.length());
+            else if (LinkedHashMap.class == type) result = new LinkedHashMap<>(jes.length());
+            else if (TreeMap.class == type) result = new TreeMap<>();
+            else throw new IllegalStateException(
+                        "Supported Set types: [HashMap, LinkedHashMap, TreeMap], found " + genericType.getTypeName());
+            for (String key : jes.keySet())
+                result.put(key, objectValue(jes.get(key), componentType));
+            return result;
+        }
+        throw new IllegalStateException("Expected object or map type, found " + genericType.getTypeName());
+    }
+
+    @NotNull
+    public static Object objectValueType(@NotNull Object jes, @NotNull Class<?> type) {
+        if (jes instanceof String) {
+            if (type == String.class) return jes;
+            if (type.isPrimitive()) {
+                if (type == int.class) return Integer.parseInt((String) jes);
+                if (type == boolean.class) return Boolean.parseBoolean((String) jes);
+                if (type == float.class) return Float.parseFloat((String) jes);
+                if (type == double.class) return Double.parseDouble((String) jes);
+                if (type == long.class) return Long.parseLong((String) jes);
+                if (type == char.class) return ((String) jes).charAt(0);
+                if (type == short.class) return Short.parseShort((String) jes);
+                if (type == byte.class) return Byte.parseByte((String) jes);
+            }
+            if ((type.getModifiers() & MODIFIER_ENUM) != 0) return objectValueEnum(jes, type);
+            if (type == Integer.class) return Integer.parseInt((String) jes);
+            if (type == Boolean.class) return Boolean.parseBoolean((String) jes);
+            if (type == Float.class) return Float.parseFloat((String) jes);
+            if (type == Double.class) return Double.parseDouble((String) jes);
+            if (type == Long.class) return Long.parseLong((String) jes);
+            if (type == Character.class) return ((String) jes).charAt(0);
+            if (type == Short.class) return Short.parseShort((String) jes);
+            if (type == Byte.class) return Byte.parseByte((String) jes);
+            if (type == JSONObject.class) return new JSONObject((String) jes);
+            if (type == JSONArray.class) return new JSONArray((String) jes);
+            Class<?> componentType = type.getComponentType();
+            if (componentType != null) objectValueArray(new JSONArray((String) jes), componentType, null);
+            return objectValueObject(new JSONObject((String) jes), type, null);
+        }
+        if (type == String.class) return jes.toString();
+        if (type.isPrimitive()) return objectValuePrimitive(jes, type);
+        if ((type.getModifiers() & MODIFIER_ENUM) != 0)
+            return objectValueEnum(jes instanceof Integer ? jes : ((Number) jes).intValue(), type);
+        if (type == Integer.class)
+            return jes instanceof Integer ? jes : ((Number) jes).intValue();
+        if (type == Boolean.class)
+            return jes instanceof Number ? ((Number) jes).intValue() != 0 : jes == Boolean.TRUE;
+        if (type == Float.class)
+            return jes instanceof Float ? jes : ((Number) jes).floatValue();
+        if (type == Double.class)
+            return jes instanceof Double ? jes : ((Number) jes).doubleValue();
+        if (type == Long.class)
+            return jes instanceof Long ? jes : ((Number) jes).longValue();
+        if (type == Character.class)
+            return jes instanceof Character ? jes : (char) ((Number) jes).intValue();
+        if (type == Short.class)
+            return ((Number) jes).shortValue();
+        if (type == Byte.class)
+            return ((Number) jes).byteValue();
         return jes;
     }
 
     @NotNull
-    public static Object objectValueArray(@NotNull JSONArray jes, @NotNull Class<?> componentType, @Nullable Object target) {
-        Object result = target != null ? target : Array.newInstance(componentType, jes.length());
-        if (result instanceof Object[])
-            for (int i = 0; i < ((Object[]) result).length; i++)
-                ((Object[]) result)[i] = objectValue(jes.get(i), componentType);
-        else
-            for (int i = 0; i < Array.getLength(result); i++)
-                Array.set(result, i, objectValue(jes.get(i), componentType));
-        return result;
+    private static Object objectValuePrimitive(@NotNull Object jes, @NotNull Class<?> type) {
+        if (type == int.class)
+            return jes instanceof Integer ? jes : ((Number) jes).intValue();
+        if (type == boolean.class)
+            return jes instanceof Number ? ((Number) jes).intValue() != 0 : jes == Boolean.TRUE;
+        if (type == float.class)
+            return jes instanceof Float ? jes : ((Number) jes).floatValue();
+        if (type == double.class)
+            return jes instanceof Double ? jes : ((Number) jes).doubleValue();
+        if (type == long.class)
+            return jes instanceof Long ? jes : ((Number) jes).longValue();
+        if (type == char.class)
+            return jes instanceof Character ? jes : (char) ((Number) jes).intValue();
+        if (type == short.class)
+            return ((Number) jes).shortValue();
+        if (type == byte.class)
+            return ((Number) jes).byteValue();
+        throw new UnsupportedOperationException("Invalid primitive type " + type);
     }
 
     @NotNull
-    public static Object objectValueObject(@NotNull JSONObject jes, @NotNull Class<?> type, @Nullable Object target) {
-        Object result = target != null ? target : JesUtilsKt.accessor.allocateInstance(type);
-        for (String key : jes.keySet()) {
-            if (jes.isNull(key)) continue;
-            Field field = null;
-            for (Field f : JesUtilsKt.accessor.fields(type))
-                if ((f.getModifiers() & (Modifier.TRANSIENT | Modifier.STATIC)) == 0 && f.getName().equals(key)) {
-                    field = f;
-                    break;
-                }
-            if (field == null) continue;
-            try {
-                field.set(result, valueFor(field, jes.get(key)));
-            } catch (Throwable e) {
-                throw new JSONException("Failed to deserialize field " + field.getDeclaringClass().getSimpleName() + "." + key + " of type " + field.getType().getName(), e);
-            }
-        }
-        return result;
-    }
-
-    @NotNull
-    public static Object objectValueEnum(@NotNull String jes, @NotNull Class<?> type) {
+    private static Object objectValueEnum(@NotNull Object jes, @NotNull Class<?> type) {
         if (ValueEnum.class.isAssignableFrom(type)) {
-            int id = Integer.parseInt(jes);
+            int id = jes instanceof Integer ? (int) jes : Integer.parseInt((String) jes);
             for (Object constant : type.getEnumConstants())
                 if (((ValueEnum) constant).getValue() == id) return constant;
             throw new IllegalArgumentException("No enum constant for value: " + id + " in " + type);
@@ -75,85 +205,12 @@ public final class Deserializer {
     }
 
     @NotNull
-    private static Object objectValueNumber(@NotNull Number jes, @NotNull Class<?> type) {
-        if (type.isPrimitive()) {
-            if (type == int.class) return jes.intValue();
-            if (type == float.class) return jes.floatValue();
-            if (type == byte.class) return jes.byteValue();
-            if (type == double.class) return jes.doubleValue();
-            if (type == long.class) return jes.longValue();
-            if (type == char.class) return (char) jes.intValue();
-            if (type == boolean.class) return jes.intValue() != 0;
-            if (type == short.class) return jes.shortValue();
-        }
-        if (type == Integer.class) return jes.intValue();
-        if (type == Float.class) return jes.floatValue();
-        if (type == Byte.class) return jes.byteValue();
-        if (type == Double.class) return jes.doubleValue();
-        if (type == Long.class) return jes.longValue();
-        if (type == Character.class) return (char) jes.intValue();
-        if (type == Boolean.class) return jes.intValue() != 0;
-        if (type == Short.class) return jes.shortValue();
-        return jes.toString();
-    }
-
-    @NotNull
-    private static Object objectValueString(@NotNull String jes, @NotNull Class<?> type) {
-        if (type.isPrimitive()) {
-            if (type == int.class) return Integer.parseInt(jes);
-            if (type == float.class) return Float.parseFloat(jes);
-            if (type == byte.class) return Byte.parseByte(jes);
-            if (type == double.class) return Double.parseDouble(jes);
-            if (type == long.class) return Long.parseLong(jes);
-            if (type == char.class) return jes.charAt(0);
-            if (type == boolean.class) return Boolean.parseBoolean(jes);
-            if (type == short.class) return Short.parseShort(jes);
-        }
-        if (type == Integer.class) return Integer.parseInt(jes);
-        if (type == Float.class) return Float.parseFloat(jes);
-        if (type == Byte.class) return Byte.parseByte(jes);
-        if (type == Double.class) return Double.parseDouble(jes);
-        if (type == Long.class) return Long.parseLong(jes);
-        if (type == Character.class) return jes.charAt(0);
-        if (type == Boolean.class) return Boolean.parseBoolean(jes);
-        if (type == Short.class) return Short.parseShort(jes);
-        if (JSONObject.class.isAssignableFrom(type)) return new JSONObject(jes);
-        if (JSONArray.class.isAssignableFrom(type)) return new JSONArray(jes);
-        if (type.getComponentType() != null) objectValueArray(new JSONArray(jes), type.getComponentType(), null);
-        return objectValueObject(new JSONObject(jes), type, null);
-    }
-
-    @NotNull
     private static Object valueFor(@NotNull Field field, @NotNull Object value) {
-        Class<?> type = field.getType();
+        Type type = field.getGenericType();
         SerializeWith impl = field.getAnnotation(SerializeWith.class);
         if (impl != null) return SerializeWith.Provider.fromJson(impl, value, type);
         JesDate date = field.getAnnotation(JesDate.class);
         if (date != null) return JesDate.Provider.fromJson(date, value);
-        if (List.class.isAssignableFrom(type)) {
-            Class<?> componentType = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
-            List<Object> result;
-            if (type.isAssignableFrom(ArrayList.class)) result = new ArrayList<>();
-            else if (type.isAssignableFrom(LinkedList.class)) result = new LinkedList<>();
-            else throw new IllegalStateException("List type not supported: " + type);
-            JSONArray jes = (JSONArray) value;
-            for (int i = 0; i < jes.length(); i++) result.add(objectValue(jes.get(i), componentType));
-            return result;
-        }
-        if (Map.class.isAssignableFrom(type)) {
-            Class<?>[] componentType = (Class<?>[]) ((ParameterizedType) field.getGenericType()).getActualTypeArguments();
-            if (!String.class.isAssignableFrom(componentType[0]))
-                throw new IllegalStateException("Map key type not supported: " + componentType[0]);
-            Map<Object, Object> result;
-            if (type.isAssignableFrom(LinkedHashMap.class)) result = new LinkedHashMap<>();
-            else if (type.isAssignableFrom(HashMap.class)) result = new HashMap<>();
-            else if (type.isAssignableFrom(TreeMap.class)) result = new TreeMap<>();
-            else throw new IllegalStateException("Map type not supported: " + type);
-            JSONObject jes = (JSONObject) value;
-            for (String key : jes.keySet())
-                result.put(key, objectValue(jes.get(key), componentType[1]));
-            return result;
-        }
         return objectValue(value, type);
     }
 }

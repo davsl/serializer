@@ -6,8 +6,14 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
+    <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="improvements">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/JesSerializer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/SerializeWith.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/SerializeWith.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/CodeStyle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/CodeStyle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/UserSerializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/UserSerializer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/PerformanceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/PerformanceTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,9 +58,10 @@
       <list>
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
+        <option value="AnnotationType" />
         <option value="Kotlin File" />
         <option value="Class" />
-        <option value="AnnotationType" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -85,7 +92,8 @@
     <property name="MANAGE_IGNORE_FILES_PROPERTY" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="kotlin&#10;JAVA" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test/java" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -111,28 +119,29 @@
       <recent name="sliep.jes.serializer" />
       <recent name="test" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="sliep.jes.serializer" />
+      <recent name="sliep.jes.serializer.di" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/java" />
+      <recent name="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer" />
+      <recent name="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer" />
+      <recent name="$PROJECT_DIR$/src/test" />
+      <recent name="$PROJECT_DIR$/src/main" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="sliep.jes.serializer.serializers" />
+      <recent name="sliep.jes.serializer.annotations" />
+      <recent name="sliep.jes.serializer" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/dio" />
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
       <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer\newSer" />
     </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="sliep.jes.serializer" />
-      <recent name="sliep.jes.serializer.di" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="sliep.jes.serializer.annotations" />
-      <recent name="sliep.jes.serializer" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer" />
-      <recent name="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer" />
-      <recent name="$PROJECT_DIR$/src/test" />
-      <recent name="$PROJECT_DIR$/src/main" />
-      <recent name="C:\Users\dades\IdeaProjects\serializer\src\main\java\sliep\jes\serializer" />
-    </key>
   </component>
-  <component name="RunManager" selected="Gradle.PerformanceTest.serializePrimitiveValues">
+  <component name="RunManager" selected="Gradle.PerformanceTest">
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -212,12 +221,12 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="PerformanceTest.serializePrimitiveValues" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PerformanceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;sliep.jes.serializer.PerformanceTest.serializePrimitiveValues&quot;" />
+        <option name="scriptParameters" value="--tests &quot;sliep.jes.serializer.PerformanceTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -253,19 +262,28 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="Scratch" type="Java Scratch" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Scratch" />
+      <option name="SCRATCH_FILE_URL" value="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Gradle.Compile" />
       <item itemvalue="Gradle.Documentation" />
       <item itemvalue="Gradle.Publish" />
       <item itemvalue="Gradle.JesSerializerTest" />
       <item itemvalue="Gradle.DependencyInjectionTest" />
-      <item itemvalue="Gradle.PerformanceTest.serializePrimitiveValues" />
+      <item itemvalue="Java Scratch.Scratch" />
+      <item itemvalue="Gradle.PerformanceTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.PerformanceTest.serializePrimitiveValues" />
-        <item itemvalue="Gradle.JesSerializerTest" />
+        <item itemvalue="Gradle.PerformanceTest" />
         <item itemvalue="Gradle.DependencyInjectionTest" />
+        <item itemvalue="Gradle.JesSerializerTest" />
+        <item itemvalue="Java Scratch.Scratch" />
         <item itemvalue="Gradle.JesSerializerTest" />
       </list>
     </recent_temporary>
@@ -292,13 +310,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00039" summary="fix">
-      <created>1557145316384</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1557145316384</updated>
     </task>
     <task id="LOCAL-00040" summary="yee">
       <created>1557320678416</created>
@@ -636,7 +647,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576853658833</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="improvements">
+      <created>1576854009198</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1576854009198</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
@@ -648,6 +666,11 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="COLUMN_WIDTH">
+                <map>
+                  <entry key="3" value="131" />
+                </map>
+              </option>
               <option name="COLUMN_ORDER" />
             </State>
           </value>
@@ -703,18 +726,18 @@
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576597105500">
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577015061523">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576597105500" />
-    <state x="100" y="100" width="1480" height="850" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1576597105854">
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577015061523" />
+    <state x="100" y="100" width="1480" height="850" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1577014986876">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="100" y="100" width="1480" height="850" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576597105854" />
-    <state x="627" y="248" key="#com.intellij.ide.util.MemberChooser" timestamp="1576850816281">
+    <state x="100" y="100" width="1480" height="850" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577014986876" />
+    <state x="627" y="248" key="#com.intellij.ide.util.MemberChooser" timestamp="1577013101670">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="627" y="248" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1576850816281" />
+    <state x="627" y="248" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1577013101670" />
     <state x="395" y="457" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1576849799556">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -727,75 +750,84 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="473" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576832927963" />
-    <state x="578" y="279" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1576851187951">
+    <state x="578" y="279" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1576927114950">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="578" y="279" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576851187951" />
+    <state x="578" y="279" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576927114950" />
     <state x="614" y="184" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog" timestamp="1576595951727">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="614" y="184" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576595951727" />
-    <state x="603" y="235" key="#xdebugger.evaluate" timestamp="1576847411325">
+    <state x="603" y="235" key="#xdebugger.evaluate" timestamp="1576929362497">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="603" y="235" key="#xdebugger.evaluate/0.0.1680.1050@0.0.1680.1050" timestamp="1576847411325" />
-    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1576853658663">
+    <state x="603" y="235" key="#xdebugger.evaluate/0.0.1680.1050@0.0.1680.1050" timestamp="1576929362497" />
+    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1577014075766">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1576853658663" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1576853850982">
+    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1577014075766" />
+    <state x="100" y="100" width="1480" height="850" key="DiffContextDialog" timestamp="1577014986876">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850982" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1576853850980">
+    <state x="100" y="100" width="1480" height="850" key="DiffContextDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577014986876" />
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1577015296621">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850980" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1576853850979">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1577015296621" />
+    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1577015296620">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850979" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1576853850981">
+    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1577015296620" />
+    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1577015296620">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1576853850981" />
-    <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1576849239585">
+    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1577015296620" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1577015296621">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="354" key="GridCell.Tab.1.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1576849239585" />
-    <state width="1638" height="354" key="GridCell.Tab.1.center" timestamp="1576849239584">
+    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1577015296621" />
+    <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1577013119966">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="354" key="GridCell.Tab.1.center/0.0.1680.1050@0.0.1680.1050" timestamp="1576849239584" />
-    <state width="1638" height="354" key="GridCell.Tab.1.left" timestamp="1576849239584">
+    <state width="1638" height="354" key="GridCell.Tab.1.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1577013119966" />
+    <state width="1638" height="354" key="GridCell.Tab.1.center" timestamp="1577013119966">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="354" key="GridCell.Tab.1.left/0.0.1680.1050@0.0.1680.1050" timestamp="1576849239584" />
-    <state width="1638" height="354" key="GridCell.Tab.1.right" timestamp="1576849239584">
+    <state width="1638" height="354" key="GridCell.Tab.1.center/0.0.1680.1050@0.0.1680.1050" timestamp="1577013119966" />
+    <state width="1638" height="354" key="GridCell.Tab.1.left" timestamp="1577013119965">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="354" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1576849239584" />
+    <state width="1638" height="354" key="GridCell.Tab.1.left/0.0.1680.1050@0.0.1680.1050" timestamp="1577013119965" />
+    <state width="1638" height="354" key="GridCell.Tab.1.right" timestamp="1577013119966">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1577013119966" />
+    <state x="617" y="243" key="RollbackChangesDialog" timestamp="1576928580635">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="617" y="243" key="RollbackChangesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576928580635" />
     <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1576853660242">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1576853660242" />
-    <state x="506" y="160" width="667" height="729" key="find.popup" timestamp="1576848892011">
+    <state x="506" y="160" width="667" height="729" key="find.popup" timestamp="1576921755986">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="506" y="160" width="667" height="729" key="find.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1576848892011" />
+    <state x="506" y="160" width="667" height="729" key="find.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1576921755986" />
     <state width="600" height="424" key="javadoc.popup" timestamp="1576595709556">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="600" height="424" key="javadoc.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1576595709556" />
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1576837215714">
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1576924579402">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1576837215714" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1576924579402" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="Remote">
         <watch expression="((StackTraceElement[])trace)[2]" custom="java.lang.StackTraceElement[]" />
+        <watch expression="((WildcardTypeImpl)((java.lang.reflect.Type[])((ParameterizedTypeImpl)field).actualTypeArguments)[0]).lowerBounds" custom="sun.reflect.generics.reflectiveObjects.WildcardTypeImpl,sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl,java.lang.reflect.Type[]" />
       </configuration>
     </watches-manager>
   </component>

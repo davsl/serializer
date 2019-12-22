@@ -6,6 +6,7 @@ import sliep.jes.serializer.NonJesObjectException;
 import sliep.jes.serializer.UserSerializer;
 
 import java.lang.annotation.*;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 @Documented
@@ -42,7 +43,7 @@ public @interface SerializeWith {
         }
 
         @NotNull
-        public static Object fromJson(@NotNull SerializeWith annotation, @NotNull Object value, @NotNull Class<?> type) {
+        public static Object fromJson(@NotNull SerializeWith annotation, @NotNull Object value, @NotNull Type type) {
             return get(annotation).fromJson(value, type);
         }
     }
