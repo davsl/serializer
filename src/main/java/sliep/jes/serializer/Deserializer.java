@@ -15,7 +15,7 @@ import java.util.*;
 import static sliep.jes.serializer.Serializer.MODIFIER_ENUM;
 import static sliep.jes.serializer.Serializer.MODIFIER_STATIC_TRANSIENT;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public final class Deserializer {
 
     @NotNull
@@ -85,13 +85,14 @@ public final class Deserializer {
             for (String key : jes.keySet()) {
                 if (jes.isNull(key)) continue;
                 Field field = null;
-                for (Field f : JesUtilsKt.accessor.fields(type)) {
-                    JsonName name = f.getAnnotation(JsonName.class);
-                    if ((f.getModifiers() & MODIFIER_STATIC_TRANSIENT) == 0 && key.equals(name == null ? f.getName() : name.value())) {
-                        field = f;
-                        break;
+                for (Field tmp : JesUtilsKt.accessor.fields(type))
+                    if ((tmp.getModifiers() & MODIFIER_STATIC_TRANSIENT) == 0) {
+                        JsonName name = tmp.getAnnotation(JsonName.class);
+                        if (key.equals(name == null ? tmp.getName() : name.value())) {
+                            field = tmp;
+                            break;
+                        }
                     }
-                }
                 if (field != null) try {
                     field.set(result, valueFor(field, jes.get(key)));
                 } catch (Throwable e) {
@@ -208,8 +209,7 @@ public final class Deserializer {
     private static Object valueFor(@NotNull Field field, @NotNull Object value) {
         Type type = field.getGenericType();
         for (Annotation annotation : field.getDeclaredAnnotations()) {
-            //noinspection unchecked
-            UserSerializer<Annotation, Object, Object> serializer = (UserSerializer<Annotation, Object, Object>) Serializer.serializers.get(annotation.annotationType());
+            UserSerializer serializer = Serializer.serializers.get(annotation.annotationType());
             if (serializer != null) return serializer.fromJson(annotation, value, type);
         }
         return objectValue(value, type);

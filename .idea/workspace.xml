@@ -7,18 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/TypeToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/UserSerializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/di/DIModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Serializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/JesDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/JesDate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/SerializeWith.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/JesSerializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/JesSerializer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/UserSerializer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sliep/jes/serializer/di/DIModule.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/sliep/jes/serializer/JesSerializerTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -356,13 +347,6 @@
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
     </task>
-    <task id="LOCAL-00042" summary="added fun to set field">
-      <created>1557484478453</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1557484478453</updated>
-    </task>
     <task id="LOCAL-00043" summary="added trace to string">
       <created>1557505172423</created>
       <option name="number" value="00043" />
@@ -699,7 +683,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577016921584</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="improved Serializer">
+      <created>1577097835141</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1577097835141</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
@@ -807,10 +798,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="603" y="235" key="#xdebugger.evaluate/0.0.1680.1050@0.0.1680.1050" timestamp="1577097301970" />
-    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1577016921452">
+    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1577097834990">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1577016921452" />
+    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1577097834990" />
     <state width="262" height="466" key="DebuggerActiveHint" timestamp="1577097285047">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -819,22 +810,22 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="100" y="100" width="1480" height="850" key="DiffContextDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577014986876" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1577097654466">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1577100299579">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1577097654466" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1577097654465">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1577100299579" />
+    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1577100299578">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1577097654465" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1577097654464">
+    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1577100299578" />
+    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1577100299577">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1577097654464" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1577097654466">
+    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1577100299577" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1577100299578">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1577097654466" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1577100299578" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1577097401574">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -851,14 +842,14 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1577097401574" />
-    <state x="617" y="243" key="RollbackChangesDialog" timestamp="1576928580635">
+    <state x="617" y="243" key="RollbackChangesDialog" timestamp="1577099747390">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="617" y="243" key="RollbackChangesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1576928580635" />
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1577016922944">
+    <state x="617" y="243" key="RollbackChangesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577099747390" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1577097836627">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1577016922944" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1577097836627" />
     <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1577018404535">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

@@ -13,10 +13,11 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public final class Serializer {
     static final int MODIFIER_STATIC_TRANSIENT = Modifier.TRANSIENT | Modifier.STATIC;
     static final int MODIFIER_ENUM = 16384;
-    static final HashMap<Class<?>, UserSerializer<? extends Annotation, ?, ?>> serializers = new HashMap<>();
+    static final HashMap<Class<?>, UserSerializer> serializers = new HashMap<>();
 
     @NotNull
     public static Object jsonValue(@NotNull Object value) {
@@ -63,8 +64,7 @@ public final class Serializer {
     @NotNull
     private static Object valueFor(@NotNull Field field, @NotNull Object value) {
         for (Annotation annotation : field.getDeclaredAnnotations()) {
-            //noinspection unchecked
-            UserSerializer<Annotation, Object, Object> serializer = (UserSerializer<Annotation, Object, Object>) serializers.get(annotation.annotationType());
+            UserSerializer serializer = serializers.get(annotation.annotationType());
             if (serializer != null) return serializer.toJson(annotation, value);
         }
         return jsonValue(value);
