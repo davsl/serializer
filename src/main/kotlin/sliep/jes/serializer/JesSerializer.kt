@@ -20,6 +20,12 @@ inline fun <T> JSONObject.fromJson(type: Class<T>, target: T? = null): T =
 inline fun <T> JSONArray.fromJson(type: Class<T>, target: T? = null): T =
     objectValueArray(this, type, target) as T
 
+inline fun <reified T> JSONObject.fromJsonType(target: T? = null): T =
+    objectValueObject(this, object : TypeToken<T>() {}.type, target) as T
+
+inline fun <reified T> JSONArray.fromJsonType(target: T? = null): T =
+    objectValueArray(this, object : TypeToken<T>() {}.type, target) as T
+
 inline fun Any.toJson(): JSONObject = jsonValue(this) as JSONObject
 inline fun Array<*>.toJson(): JSONArray = jsonValue(this) as JSONArray
 inline fun Iterable<*>.toJson(): JSONArray = jsonValue(this) as JSONArray

@@ -8,7 +8,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import sliep.jes.serializer.annotations.JesDate
 import sliep.jes.serializer.annotations.JsonName
-import sliep.jes.serializer.annotations.SerializeWith
 import java.lang.reflect.Type
 import java.util.*
 
@@ -50,7 +49,7 @@ class JesSerializerTest {
     }
 
     @Test
-    fun jsonArrayToArray() {
+    fun JSONArrayToArray() {
         val ar1 = JSONArray("[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\"]")
         val ar2 = JSONArray("[1,2,3,4,5]")
         assertEquals("c", ar1.toTypedArray<String>()[2])
@@ -71,14 +70,20 @@ class JesSerializerTest {
 
     class ModelImplTest(val a: String, val b: Int)
 
-    class JesTestSerializer : UserSerializer<String, ModelImplTest> {
-        override fun toJson(value: ModelImplTest): String =
-            "${value.a}----${value.b}"
+    @MustBeDocumented
+    @Retention(AnnotationRetention.RUNTIME)
+    @Target(AnnotationTarget.FIELD)
+    annotation class MyCustomSerializer {
+        companion object : UserSerializer<MyCustomSerializer, String, ModelImplTest>(MyCustomSerializer::class.java) {
+            override fun toJson(annotation: MyCustomSerializer, value: ModelImplTest): String =
+                "${value.a}----${value.b}"
 
-        override fun fromJson(value: String, type: Type) = ModelImplTest(
-            value.substring(0, value.indexOf("----")),
-            value.substring(value.indexOf("----") + 4).toInt()
-        )
+            override fun fromJson(annotation: MyCustomSerializer, value: String, type: Type): ModelImplTest =
+                ModelImplTest(
+                    value.substring(0, value.indexOf("----")),
+                    value.substring(value.indexOf("----") + 4).toInt()
+                )
+        }
     }
 
     data class Skkkk(val ulul: String, val ddfdf: Int)
@@ -99,7 +104,8 @@ class JesSerializerTest {
         val doo: List<Skkkk>,
         val mappy: Map<String, Skkkk>,
         val o: ModelTest2,
-        @SerializeWith(JesTestSerializer::class)
+        @JvmField
+        @MyCustomSerializer
         var impl: ModelImplTest
     ) {
         companion object {

@@ -4,18 +4,19 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sliep.jes.reflection.JesUtilsKt;
-import sliep.jes.serializer.annotations.JesDate;
 import sliep.jes.serializer.annotations.JsonName;
-import sliep.jes.serializer.annotations.SerializeWith;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Map;
 
 public final class Serializer {
-    private static final int MODIFIER_STATIC_TRANSIENT = Modifier.TRANSIENT | Modifier.STATIC;
-    private static final int MODIFIER_ENUM = 16384;
+    static final int MODIFIER_STATIC_TRANSIENT = Modifier.TRANSIENT | Modifier.STATIC;
+    static final int MODIFIER_ENUM = 16384;
+    static final HashMap<Class<?>, UserSerializer<? extends Annotation, ?, ?>> serializers = new HashMap<>();
 
     @NotNull
     public static Object jsonValue(@NotNull Object value) {
@@ -61,10 +62,11 @@ public final class Serializer {
 
     @NotNull
     private static Object valueFor(@NotNull Field field, @NotNull Object value) {
-        SerializeWith impl = field.getAnnotation(SerializeWith.class);
-        if (impl != null) return SerializeWith.Provider.toJson(impl, value);
-        JesDate date = field.getAnnotation(JesDate.class);
-        if (date != null) return JesDate.Provider.toJson(date, value);
+        for (Annotation annotation : field.getDeclaredAnnotations()) {
+            //noinspection unchecked
+            UserSerializer<Annotation, Object, Object> serializer = (UserSerializer<Annotation, Object, Object>) serializers.get(annotation.annotationType());
+            if (serializer != null) return serializer.toJson(annotation, value);
+        }
         return jsonValue(value);
     }
 }

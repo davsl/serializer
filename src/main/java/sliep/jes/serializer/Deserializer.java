@@ -6,17 +6,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sliep.jes.reflection.JesUtilsKt;
-import sliep.jes.serializer.annotations.JesDate;
 import sliep.jes.serializer.annotations.JsonName;
-import sliep.jes.serializer.annotations.SerializeWith;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 
+import static sliep.jes.serializer.Serializer.MODIFIER_ENUM;
+import static sliep.jes.serializer.Serializer.MODIFIER_STATIC_TRANSIENT;
+
 @SuppressWarnings("unchecked")
 public final class Deserializer {
-    private static final int MODIFIER_STATIC_TRANSIENT = Modifier.TRANSIENT | Modifier.STATIC;
-    private static final int MODIFIER_ENUM = 16384;
 
     @NotNull
     public static Object objectValue(@NotNull Object jes, @NotNull Type type) {
@@ -207,10 +207,11 @@ public final class Deserializer {
     @NotNull
     private static Object valueFor(@NotNull Field field, @NotNull Object value) {
         Type type = field.getGenericType();
-        SerializeWith impl = field.getAnnotation(SerializeWith.class);
-        if (impl != null) return SerializeWith.Provider.fromJson(impl, value, type);
-        JesDate date = field.getAnnotation(JesDate.class);
-        if (date != null) return JesDate.Provider.fromJson(date, value);
+        for (Annotation annotation : field.getDeclaredAnnotations()) {
+            //noinspection unchecked
+            UserSerializer<Annotation, Object, Object> serializer = (UserSerializer<Annotation, Object, Object>) Serializer.serializers.get(annotation.annotationType());
+            if (serializer != null) return serializer.fromJson(annotation, value, type);
+        }
         return objectValue(value, type);
     }
 }
