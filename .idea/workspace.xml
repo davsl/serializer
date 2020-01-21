@@ -8,8 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bintray.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/bintray.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/UserSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/UserSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -347,13 +348,6 @@
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
     </task>
-    <task id="LOCAL-00044" summary="improved code">
-      <created>1557645961508</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1557645961508</updated>
-    </task>
     <task id="LOCAL-00045" summary="improved code">
       <created>1557647959035</created>
       <option name="number" value="00045" />
@@ -690,7 +684,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577100428247</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="fix">
+      <created>1579577941380</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1579577941381</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
@@ -798,10 +799,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="603" y="235" key="#xdebugger.evaluate/0.0.1680.1050@0.0.1680.1050" timestamp="1577097301970" />
-    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1577100428143">
+    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1579577941192">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1577100428143" />
+    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1579577941192" />
     <state width="262" height="466" key="DebuggerActiveHint" timestamp="1577097285047">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -810,22 +811,22 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="100" y="100" width="1480" height="850" key="DiffContextDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577014986876" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1579577912469">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1579579074850">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1579577912469" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1579577912468">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074850" />
+    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1579579074849">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1579577912468" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1579577912467">
+    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074849" />
+    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1579579074848">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1579577912467" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1579577912469">
+    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074848" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1579579074849">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1579577912469" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074849" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1578390193220">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -846,10 +847,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="617" y="243" key="RollbackChangesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577099747390" />
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1577100429309">
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1579577943172">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1577100429309" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1579577943172" />
     <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1577018404535">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

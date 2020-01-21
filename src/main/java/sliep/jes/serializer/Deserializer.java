@@ -22,7 +22,18 @@ public final class Deserializer {
     public static Object objectValue(@NotNull Object jes, @NotNull Type type) {
         if (jes instanceof JSONArray) return objectValueArray((JSONArray) jes, type, null);
         if (jes instanceof JSONObject) return objectValueObject((JSONObject) jes, type, null);
-        return objectValueType(jes, (Class<?>) type);
+        if (type instanceof Class) return objectValueType(jes, (Class<?>) type);
+        if (jes instanceof String) {
+            try {
+                return objectValueArray(new JSONArray((String) jes), type, null);
+            } catch (JSONException ignored) {
+            }
+            try {
+                return objectValueObject(new JSONObject((String) jes), type, null);
+            } catch (JSONException ignored) {
+            }
+        }
+        throw new IllegalArgumentException("Failed to deserialize object " + jes + " with type " + type.getTypeName());
     }
 
     @NotNull
