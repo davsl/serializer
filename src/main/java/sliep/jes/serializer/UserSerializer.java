@@ -1,7 +1,7 @@
 package sliep.jes.serializer;
 
-import jdk.internal.jline.internal.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 
 import java.lang.annotation.Annotation;
