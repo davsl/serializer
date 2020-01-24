@@ -8,9 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" id="48d03d6b-a2be-48e2-80df-060c80be5826" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bintray.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/bintray.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/Deserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/UserSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/UserSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/JesDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sliep/jes/serializer/annotations/JesDate.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,12 +52,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Interface" />
-        <option value="AnnotationType" />
         <option value="Kotlin File" />
         <option value="Interface" />
         <option value="Kotlin Class" />
         <option value="Class" />
+        <option value="AnnotationType" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
@@ -165,26 +165,6 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="CommentsTest.testParseComments" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.google.gson.CommentsTest.testParseComments&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="Compile" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -198,25 +178,6 @@
           <list>
             <option value="clean" />
             <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" value="" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="Documentation" type="GradleRunConfiguration" factoryName="Gradle">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dokka" />
           </list>
         </option>
         <option name="vmOptions" value="" />
@@ -307,21 +268,18 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.Compile" />
-      <item itemvalue="Gradle.Documentation" />
       <item itemvalue="Gradle.Publish" />
       <item itemvalue="Gradle.JesSerializerTest" />
       <item itemvalue="Gradle.PerformanceTest" />
-      <item itemvalue="Gradle.CommentsTest.testParseComments" />
       <item itemvalue="Gradle.CommentsTest" />
       <item itemvalue="Gradle.JsonArrayTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.JesSerializerTest" />
         <item itemvalue="Gradle.PerformanceTest" />
         <item itemvalue="Gradle.JsonArrayTest" />
-        <item itemvalue="Gradle.JesSerializerTest" />
         <item itemvalue="Gradle.CommentsTest" />
-        <item itemvalue="Gradle.CommentsTest.testParseComments" />
       </list>
     </recent_temporary>
   </component>
@@ -347,13 +305,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550673333360</updated>
-    </task>
-    <task id="LOCAL-00045" summary="improved code">
-      <created>1557647959035</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1557647959035</updated>
     </task>
     <task id="LOCAL-00046" summary="improved loggable">
       <created>1557649802052</created>
@@ -691,7 +642,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579577941381</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="fix">
+      <created>1579579097917</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1579579097918</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="UpdateCopyrightCheckinHandler">
@@ -763,10 +721,10 @@
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577015061523">
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579895474419">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577015061523" />
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1579895474419" />
     <state x="100" y="100" width="1480" height="850" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1577014986876">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -799,10 +757,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="603" y="235" key="#xdebugger.evaluate/0.0.1680.1050@0.0.1680.1050" timestamp="1577097301970" />
-    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1579577941192">
+    <state x="473" y="127" key="CommitChangelistDialog2" timestamp="1579579097735">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1579577941192" />
+    <state x="473" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1579579097735" />
     <state width="262" height="466" key="DebuggerActiveHint" timestamp="1577097285047">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -811,22 +769,22 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="100" y="100" width="1480" height="850" key="DiffContextDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577014986876" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1579579074850">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1579895583023">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074850" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1579579074849">
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1579895583023" />
+    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1579895583022">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074849" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1579579074848">
+    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1579895583022" />
+    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1579895583021">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074848" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1579579074849">
+    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1579895583021" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1579895583022">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1579579074849" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1579895583022" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1578390193220">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -847,10 +805,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="617" y="243" key="RollbackChangesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1577099747390" />
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1579577943172">
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1579579099100">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1579577943172" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1579579099100" />
     <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1577018404535">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

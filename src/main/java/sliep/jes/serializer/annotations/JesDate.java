@@ -26,6 +26,7 @@ public @interface JesDate {
             super(JesDate.class);
         }
 
+        @NotNull
         @Override
         public String toJson(@NotNull JesDate annotation, @NotNull Date value) {
             return get(annotation).format(value);
