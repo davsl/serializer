@@ -23,17 +23,8 @@ public final class Deserializer {
         if (jes instanceof JSONArray) return objectValueArray((JSONArray) jes, type, null);
         if (jes instanceof JSONObject) return objectValueObject((JSONObject) jes, type, null);
         if (type instanceof Class) return objectValueType(jes, (Class<?>) type);
-        if (jes instanceof String) {
-            try {
-                return objectValueArray(new JSONArray((String) jes), type, null);
-            } catch (JSONException ignored) {
-            }
-            try {
-                return objectValueObject(new JSONObject((String) jes), type, null);
-            } catch (JSONException ignored) {
-            }
-        }
-        throw new IllegalArgumentException("Failed to deserialize object " + jes + " with type " + type.getTypeName());
+        if (jes instanceof String) return objectValueString((String) jes, type);
+        return jes;
     }
 
     @NotNull
@@ -154,9 +145,7 @@ public final class Deserializer {
             if (type == Byte.class) return Byte.parseByte((String) jes);
             if (type == JSONObject.class) return new JSONObject((String) jes);
             if (type == JSONArray.class) return new JSONArray((String) jes);
-            Class<?> componentType = type.getComponentType();
-            if (componentType != null) objectValueArray(new JSONArray((String) jes), componentType, null);
-            return objectValueObject(new JSONObject((String) jes), type, null);
+            return objectValueString((String) jes, type);
         }
         if (type == String.class) return jes.toString();
         if (type.isPrimitive()) return objectValuePrimitive(jes, type);
@@ -179,6 +168,19 @@ public final class Deserializer {
         if (type == Byte.class)
             return ((Number) jes).byteValue();
         return jes;
+    }
+
+    @NotNull
+    public static Object objectValueString(@NotNull String jes, @NotNull Type type) {
+        try {
+            return objectValueObject(new JSONObject(jes), type, null);
+        } catch (JSONException ignored) {
+        }
+        try {
+            return objectValueArray(new JSONArray(jes), type, null);
+        } catch (JSONException ignored) {
+        }
+        throw new IllegalArgumentException("Failed to deserialize object from String: " + jes);
     }
 
     @NotNull
